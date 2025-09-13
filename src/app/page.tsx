@@ -75,7 +75,7 @@ export default function Home() {
             aria-hidden="true"
             className="absolute inset-0 top-0 -z-10 h-full w-full bg-background"
           >
-            <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(0,255,102,0.1)] opacity-50 blur-[80px]"></div>
+            <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-primary/10 opacity-50 blur-[80px]"></div>
           </div>
           <div className="container grid grid-cols-1 items-center gap-12 md:grid-cols-2">
             <motion.div 

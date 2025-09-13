@@ -13,7 +13,8 @@ import {
   ShieldCheck,
   LogOut,
   ShoppingCart,
-  Boxes
+  Boxes,
+  FolderKanban,
 } from 'lucide-react';
 
 import {
@@ -30,6 +31,7 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 
 const ngoMenuItems = [
   { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
+  { path: '/dashboard/projects', label: 'Projects', icon: FolderKanban },
   { path: '/dashboard/verify', label: 'New Verification', icon: FilePlus2 },
   { path: '/dashboard/marketplace', label: 'Marketplace', icon: Store },
   { path: '/dashboard/my-tokens', label: 'My Tokens', icon: Boxes },

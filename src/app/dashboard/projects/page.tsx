@@ -1,3 +1,4 @@
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -45,12 +46,17 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <div className="animate-fade-in-up">
+    <div className="animate-fade-in-up space-y-8">
+      <div>
+        <h1 className="text-3xl font-bold font-headline">Projects</h1>
+        <p className="text-muted-foreground">Manage your carbon credit projects and view their verification status.</p>
+      </div>
+
       <Card className="bg-card/50 backdrop-blur-sm">
         <CardHeader className="flex-row items-center justify-between">
             <div>
                 <CardTitle>Your Projects</CardTitle>
-                <CardDescription>Manage your carbon credit projects and view their verification status.</CardDescription>
+                <CardDescription>A list of all your registered carbon sequestration projects.</CardDescription>
             </div>
             <Link href="/dashboard/verify">
                 <Button>
@@ -83,13 +89,13 @@ export default function ProjectsPage() {
                             <TableCell>
                                 <Badge 
                                     variant={project.status === 'Verified' ? 'default' : project.status === 'Pending' ? 'secondary' : 'destructive'}
-                                    className={project.status === 'Verified' ? 'bg-primary/20 text-primary-foreground' : ''}
+                                    className={project.status === 'Verified' ? 'bg-primary/20 text-primary-foreground border-primary/50' : ''}
                                 >
                                     {project.status}
                                 </Badge>
                             </TableCell>
                             <TableCell>{project.area}</TableCell>
-                            <TableCell>{project.tco2}</TableCell>
+                            <TableCell className="font-semibold text-primary">{project.tco2}</TableCell>
                             <TableCell>{project.lastUpdate}</TableCell>
                             <TableCell className="text-right">
                                 <Button variant="ghost" size="icon">
