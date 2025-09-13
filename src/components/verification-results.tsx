@@ -1,3 +1,4 @@
+
 'use client';
 import {
   Card,
@@ -18,6 +19,8 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import type { VerifyCarbonCaptureOutput } from '@/ai/flows/ai-verification';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 
 type Props = {
   verification: VerifyCarbonCaptureOutput;
@@ -35,6 +38,9 @@ const MetricCard = ({ title, value, unit, children }: { title: string; value: st
 )
 
 export function VerificationResults({ verification }: Props) {
+  const { toast } = useToast();
+  const [minted, setMinted] = useState(false);
+  
   const {
     verificationScore,
     completenessPct,
@@ -44,6 +50,21 @@ export function VerificationResults({ verification }: Props) {
   } = verification;
   
   const isVerified = verificationScore >= 80;
+
+  const handleMint = () => {
+    toast({
+        title: "Minting Initiated",
+        description: "Your CARBO tokens are being minted on the blockchain. This may take a moment."
+    });
+    setMinted(true);
+  }
+
+  const handleList = () => {
+    toast({
+        title: "Tokens Listed!",
+        description: "Your tokens are now available on the marketplace."
+    });
+  }
 
   return (
     <Card className="bg-card/50 backdrop-blur-sm">
@@ -107,10 +128,16 @@ export function VerificationResults({ verification }: Props) {
             <Download className="mr-2 size-4" />
             Download Report
           </Button>
-          {isVerified && (
-            <Button>
+          {isVerified && !minted && (
+            <Button onClick={handleMint}>
                 <Send className="mr-2 size-4" />
-                Mint CARBO Tokens
+                Mint Tokens
+            </Button>
+          )}
+          {minted && (
+             <Button onClick={handleList}>
+                <Send className="mr-2 size-4" />
+                List for Sale
             </Button>
           )}
       </CardFooter>

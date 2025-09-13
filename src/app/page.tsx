@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowRight, CheckCircle, Cpu, Leaf, Zap } from 'lucide-react';
+import { ArrowRight, Cpu, Leaf, Zap } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
@@ -57,7 +57,7 @@ export default function Home() {
             <Link href="#about">About</Link>
           </nav>
           <div className="flex items-center justify-end space-x-4">
-             <Link href="/dashboard">
+             <Link href="/login">
                 <Button>
                   Launch App <ArrowRight className="ml-2 size-4" />
                 </Button>
@@ -77,19 +77,19 @@ export default function Home() {
           <div className="container grid grid-cols-1 items-center gap-12 md:grid-cols-2">
             <div className="max-w-xl animate-fade-in-up">
               <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl">
-                The Future of Carbon Credits.
+                Tokenizing Blue Carbon.
               </h1>
               <p className="mt-6 text-lg text-muted-foreground">
                 CARBO-NEX is a decentralized platform for verifying and tokenizing blue carbon credits. We use AI and blockchain to bring transparency, liquidity, and trust to the carbon market.
               </p>
               <div className="mt-8 flex gap-4">
-                 <Link href="/dashboard">
+                 <Link href="/login">
                   <Button size="lg">
                     Get Started
                   </Button>
                 </Link>
                 <Button size="lg" variant="outline">
-                  Learn More
+                  Join as NGO / Buyer / Verifier
                 </Button>
               </div>
             </div>
@@ -160,6 +160,7 @@ export default function Home() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground">{feature.description}</p>
+
                   </CardContent>
                 </Card>
               ))}
