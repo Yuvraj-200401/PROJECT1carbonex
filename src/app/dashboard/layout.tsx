@@ -55,19 +55,17 @@ export default function DashboardLayout({
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen bg-background">
-        <Sidebar className="bg-sidebar-gradient">
-          <DashboardSidebar role={role} user={user}/>
-        </Sidebar>
-        <SidebarInset>
-          <div className="flex h-full flex-col">
-            <DashboardHeader role={role} user={user} />
-            <main className="flex-1 overflow-y-auto p-4 md:p-8">
-              {children}
-            </main>
-          </div>
-        </SidebarInset>
-      </div>
+        <div className="flex min-h-screen bg-background">
+            <Sidebar className="bg-sidebar-gradient">
+              <DashboardSidebar role={role} user={user}/>
+            </Sidebar>
+            <div className="flex-1 flex flex-col">
+                <DashboardHeader role={role} user={user} />
+                <main className="flex-1 overflow-y-auto p-4 md:p-8">
+                  {children}
+                </main>
+            </div>
+        </div>
     </SidebarProvider>
   );
 }
