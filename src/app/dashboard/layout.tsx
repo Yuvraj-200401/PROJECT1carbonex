@@ -1,12 +1,6 @@
 
 'use client';
 import { useEffect, useState } from 'react';
-import {
-  SidebarProvider,
-  Sidebar,
-  SidebarInset,
-} from '@/components/ui/sidebar';
-import DashboardSidebar from '@/components/dashboard-sidebar';
 import DashboardHeader from '@/components/dashboard-header';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -38,34 +32,29 @@ export default function DashboardLayout({
 
   if (loading || !role || !user) {
     return (
-        <div className="flex min-h-screen w-full bg-background">
-            <div className="hidden md:block w-64 p-4 space-y-2 border-r">
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-                <Skeleton className="h-8 w-full" />
-            </div>
-            <div className="flex-1 p-8">
+        <div className="flex flex-col min-h-screen w-full bg-background">
+            <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-8">
+                 <Skeleton className="h-8 w-36" />
+                 <div className="flex items-center gap-4">
+                    <Skeleton className="h-8 w-24" />
+                    <Skeleton className="h-8 w-24" />
+                    <Skeleton className="size-8 rounded-full" />
+                 </div>
+            </header>
+            <main className="flex-1 p-4 md:p-8">
                  <Skeleton className="h-12 w-1/3 mb-8" />
                  <Skeleton className="h-64 w-full" />
-            </div>
+            </main>
         </div>
     )
   }
 
   return (
-    <SidebarProvider>
-        <div className="flex min-h-screen bg-background">
-            <Sidebar className="bg-sidebar-gradient">
-              <DashboardSidebar role={role} user={user}/>
-            </Sidebar>
-            <div className="flex-1 flex flex-col">
-                <DashboardHeader role={role} user={user} />
-                <main className="flex-1 overflow-y-auto p-4 md:p-8">
-                  {children}
-                </main>
-            </div>
-        </div>
-    </SidebarProvider>
+    <div className="flex min-h-screen w-full flex-col bg-background">
+        <DashboardHeader role={role} user={user} />
+        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+            {children}
+        </main>
+    </div>
   );
 }
