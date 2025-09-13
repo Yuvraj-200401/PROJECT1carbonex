@@ -29,6 +29,9 @@ import { CarboNexLogo } from './icons';
 import { Separator } from './ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
+import { auth } from '@/lib/firebase';
+import { signOut, User } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 const ngoMenuItems = [
   { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
@@ -48,8 +51,9 @@ const verifierMenuItems = [
 ];
 
 
-export default function DashboardSidebar({ role }: { role: string }) {
+export default function DashboardSidebar({ role, user }: { role: string; user: User | null }) {
   const pathname = usePathname();
+  const router = useRouter();
 
   let menuItems: { path: string, label: string, icon: React.ElementType }[] = [];
   let userProfile = { name: "Eco Ventures", type: "NGO" };
@@ -57,21 +61,30 @@ export default function DashboardSidebar({ role }: { role: string }) {
   switch (role) {
     case 'buyer':
       menuItems = buyerMenuItems;
-      userProfile = { name: "Green Buyer Co.", type: "Buyer" };
+      userProfile = { name: user?.displayName || "Green Buyer Co.", type: "Buyer" };
       break;
     case 'verifier':
       menuItems = verifierMenuItems;
-       userProfile = { name: "NCCR Verifier", type: "Verifier" };
+       userProfile = { name: user?.displayName || "NCCR Verifier", type: "Verifier" };
       break;
     case 'ngo':
     default:
       menuItems = ngoMenuItems;
-      userProfile = { name: "Eco Ventures", type: "NGO" };
+      userProfile = { name: user?.displayName || "Eco Ventures", type: "NGO" };
       break;
   }
   
   // Always add settings for all roles
   menuItems.push({ path: '/dashboard/settings', label: 'Settings', icon: Settings });
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('userName');
+    localStorage.removeItem('userImage');
+    router.push('/login');
+  };
+
 
   return (
     <>
@@ -113,19 +126,17 @@ export default function DashboardSidebar({ role }: { role: string }) {
               </SidebarMenuButton>
            </SidebarMenuItem>
            <SidebarMenuItem>
-              <Link href="/login" legacyBehavior passHref>
-                <SidebarMenuButton className="justify-start text-muted-foreground hover:text-destructive">
-                    <LogOut className="size-5" />
-                    <span>Logout</span>
-                </SidebarMenuButton>
-              </Link>
+              <SidebarMenuButton onClick={handleLogout} className="justify-start text-muted-foreground hover:text-destructive">
+                  <LogOut className="size-5" />
+                  <span>Logout</span>
+              </SidebarMenuButton>
            </SidebarMenuItem>
         </SidebarMenu>
         <Separator className="my-2" />
         <div className="flex items-center gap-3 p-2">
             <Avatar>
-              <AvatarImage src={`https://picsum.photos/seed/${userProfile.name}/40/40`} />
-              <AvatarFallback>{userProfile.name.substring(0, 2)}</AvatarFallback>
+              <AvatarImage src={user?.photoURL || `https://picsum.photos/seed/${userProfile.name}/40/40`} />
+              <AvatarFallback>{userProfile.name.substring(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col text-sm">
                 <span className="font-semibold">{userProfile.name}</span>

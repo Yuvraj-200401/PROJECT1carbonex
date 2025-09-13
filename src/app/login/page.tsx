@@ -4,30 +4,48 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CarboNexLogo } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
+import { auth } from '@/lib/firebase';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { Chrome } from 'lucide-react';
 
 export default function LoginPage() {
     const router = useRouter();
     const { toast } = useToast();
-    const [isLogin, setIsLogin] = useState(true);
     const [role, setRole] = useState('ngo');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // In a real app, you'd handle actual authentication here.
-        // For the hackathon, we'll just store the role and redirect.
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('userRole', role);
+    const handleGoogleSignIn = async () => {
+        setIsSubmitting(true);
+        const provider = new GoogleAuthProvider();
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('userRole', role);
+                // Storing user info to be used in the dashboard
+                localStorage.setItem('userName', user.displayName || 'Anonymous');
+                localStorage.setItem('userImage', user.photoURL || '');
+            }
+
+            toast({
+                title: `Logged in as ${user.displayName}`,
+                description: "Redirecting to your dashboard...",
+            });
+            router.push('/dashboard');
+        } catch (error: any) {
+            console.error("Google Sign-In Error: ", error);
+            toast({
+                variant: 'destructive',
+                title: 'Authentication Failed',
+                description: error.message,
+            });
+            setIsSubmitting(false);
         }
-        toast({
-            title: `Logged in as ${role.toUpperCase()}`,
-            description: "Redirecting to your dashboard...",
-        });
-        router.push('/dashboard');
     };
 
     return (
@@ -38,26 +56,15 @@ export default function LoginPage() {
                         <CarboNexLogo className="size-12 text-primary" />
                     </div>
                     <CardTitle className="font-headline text-3xl">
-                        {isLogin ? 'Welcome Back' : 'Create an Account'}
+                        Welcome to CARBO-NEX
                     </CardTitle>
                     <CardDescription>
-                        {isLogin ? 'Select your role to sign in to your dashboard.' : 'Sign up to tokenize your carbon assets.'}
+                       Select your role and sign in to continue.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        {!isLogin && (
-                             <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input id="email" type="email" placeholder="you@example.com" required />
-                            </div>
-                        )}
-                        <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input id="password" type="password" required defaultValue="password" />
-                        </div>
-
-                        <div className="space-y-3">
+                    <div className="space-y-6">
+                         <div className="space-y-3">
                             <Label>I am a...</Label>
                             <RadioGroup defaultValue="ngo" onValueChange={setRole} className="flex space-x-4">
                                 <div className="flex items-center space-x-2">
@@ -75,14 +82,9 @@ export default function LoginPage() {
                             </RadioGroup>
                         </div>
                         
-                        <Button type="submit" className="w-full">
-                            {isLogin ? 'Login' : 'Sign Up'}
-                        </Button>
-                    </form>
-                    <div className="mt-4 text-center text-sm">
-                        {isLogin ? "Don't have an account?" : "Already have an account?"}
-                        <Button variant="link" onClick={() => setIsLogin(!isLogin)} className="px-1">
-                            {isLogin ? 'Sign Up' : 'Login'}
+                        <Button onClick={handleGoogleSignIn} disabled={isSubmitting} className="w-full">
+                           <Chrome className="mr-2" />
+                            {isSubmitting ? 'Signing in...' : 'Sign in with Google'}
                         </Button>
                     </div>
                 </CardContent>

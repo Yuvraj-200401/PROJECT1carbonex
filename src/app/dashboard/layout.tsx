@@ -10,6 +10,8 @@ import DashboardSidebar from '@/components/dashboard-sidebar';
 import DashboardHeader from '@/components/dashboard-header';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { auth } from '@/lib/firebase';
+import { onAuthStateChanged, User } from 'firebase/auth';
 
 export default function DashboardLayout({
   children,
@@ -17,18 +19,30 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [role, setRole] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const userRole = localStorage.getItem('userRole');
-    if (!userRole) {
-      router.push('/login');
-    } else {
-      setRole(userRole);
-    }
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (!currentUser) {
+        router.push('/login');
+      } else {
+        setUser(currentUser);
+        const userRole = localStorage.getItem('userRole');
+        if (!userRole) {
+          router.push('/login'); // Role not set, force re-login/role selection
+        } else {
+          setRole(userRole);
+        }
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
   }, [router]);
 
-  if (!role) {
+  if (loading || !role || !user) {
     return (
         <div className="flex min-h-screen w-full bg-background">
             <div className="hidden md:block w-64 p-4 space-y-2 border-r">
@@ -49,7 +63,7 @@ export default function DashboardLayout({
     <SidebarProvider>
       <div className="min-h-screen bg-background">
         <Sidebar>
-          <DashboardSidebar role={role} />
+          <DashboardSidebar role={role} user={user}/>
         </Sidebar>
         <SidebarInset>
           <div className="flex h-full flex-col">
