@@ -56,12 +56,12 @@ export default function DashboardLayout({
   return (
     <SidebarProvider>
       <div className="min-h-screen bg-background">
-        <Sidebar>
+        <Sidebar className="bg-sidebar-gradient">
           <DashboardSidebar role={role} user={user}/>
         </Sidebar>
         <SidebarInset>
           <div className="flex h-full flex-col">
-            <DashboardHeader role={role} />
+            <DashboardHeader role={role} user={user} />
             <main className="flex-1 overflow-y-auto p-4 md:p-8">
               {children}
             </main>

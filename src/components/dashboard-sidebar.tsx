@@ -6,7 +6,6 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   FilePlus2,
-  List,
   Store,
   Settings,
   CircleHelp,
@@ -17,7 +16,6 @@ import {
   Boxes
 } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import {
   SidebarHeader,
   SidebarContent,
@@ -33,19 +31,21 @@ import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 const ngoMenuItems = [
   { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { path: '/dashboard/verify', label: 'New Verification', icon: FilePlus2 },
-  { path: '/dashboard/projects', label: 'Projects', icon: List },
   { path: '/dashboard/marketplace', label: 'Marketplace', icon: Store },
   { path: '/dashboard/my-tokens', label: 'My Tokens', icon: Boxes },
   { path: '/dashboard/wallet', label: 'Wallet', icon: Wallet },
+  { path: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
 const buyerMenuItems = [
   { path: '/dashboard', label: 'Marketplace', icon: Store },
   { path: '/dashboard/purchases', label: 'My Purchases', icon: ShoppingCart },
+  { path: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
 const verifierMenuItems = [
   { path: '/dashboard', label: 'Pending Submissions', icon: ShieldCheck },
+  { path: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
 
@@ -72,9 +72,6 @@ export default function DashboardSidebar({ role, user }: { role: string; user: {
       break;
   }
   
-  // Always add settings for all roles
-  menuItems.push({ path: '/dashboard/settings', label: 'Settings', icon: Settings });
-
   const handleLogout = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userName');
@@ -87,8 +84,8 @@ export default function DashboardSidebar({ role, user }: { role: string; user: {
     <>
       <SidebarHeader>
         <div className="flex items-center gap-2">
-          <CarboNexLogo className="size-7 text-primary" />
-          <span className="text-lg font-bold font-headline tracking-tight">
+          <CarboNexLogo className="size-7 text-primary md:hidden" />
+           <span className="text-lg font-bold font-headline tracking-tight md:hidden">
             CARBO-NEX
           </span>
         </div>

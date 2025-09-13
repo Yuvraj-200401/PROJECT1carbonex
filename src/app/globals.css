@@ -93,3 +93,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .bg-sidebar-gradient {
+    background-image: linear-gradient(to bottom, hsl(var(--sidebar-background)) 70%, hsl(var(--background)));
+  }
+}

@@ -1,38 +1,23 @@
 
 'use client';
-import { usePathname } from 'next/navigation';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
 import { Bell, PlusCircle, Wallet } from 'lucide-react';
 import Link from 'next/link';
+import { CarboNexLogo } from './icons';
 
-export default function DashboardHeader({ role } : { role: string }) {
-  const pathname = usePathname();
-  let pageTitle = pathname.split('/').pop()?.replace('-', ' ') ?? 'Dashboard';
-
-  if (pathname === '/dashboard') {
-    switch (role) {
-      case 'ngo':
-        pageTitle = 'Overview';
-        break;
-      case 'buyer':
-        pageTitle = 'Marketplace';
-        break;
-      case 'verifier':
-        pageTitle = 'Pending Submissions';
-        break;
-      default:
-        pageTitle = 'Dashboard';
-    }
-  }
-
+export default function DashboardHeader({ role, user }: { role: string, user: { name: string, image: string } | null }) {
+  
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-8">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="md:hidden" />
-        <h1 className="text-xl font-semibold capitalize font-headline">
-          {pageTitle}
-        </h1>
+         <div className="flex items-center gap-2">
+          <CarboNexLogo className="size-7 text-primary hidden md:flex" />
+          <span className="text-lg font-bold font-headline tracking-tight hidden md:flex">
+            CARBO-NEX
+          </span>
+        </div>
       </div>
 
       <div className="flex items-center gap-2">
