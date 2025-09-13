@@ -81,9 +81,11 @@ export default function DashboardHeader({ role, user }: { role: string; user: { 
   }
   
   const handleLogout = () => {
-    localStorage.removeItem('userRole');
-    localStorage.removeItem('userName');
-    localStorage.removeItem('userImage');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('userRole');
+      localStorage.removeItem('userName');
+      localStorage.removeItem('userImage');
+    }
     router.push('/login');
   };
 
