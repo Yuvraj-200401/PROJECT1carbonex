@@ -66,7 +66,7 @@ export default function LoginPage() {
                     <div className="space-y-6">
                          <div className="space-y-3">
                             <Label>I am a...</Label>
-                            <RadioGroup defaultValue="ngo" onValueChange={setRole} className="flex space-x-4">
+                            <RadioGroup defaultValue="ngo" onValueChange={setRole} className="grid grid-cols-3 gap-4">
                                 <div className="flex items-center space-x-2">
                                     <RadioGroupItem value="ngo" id="r_ngo" />
                                     <Label htmlFor="r_ngo">NGO</Label>
@@ -83,7 +83,7 @@ export default function LoginPage() {
                         </div>
                         
                         <Button onClick={handleGoogleSignIn} disabled={isSubmitting} className="w-full">
-                           <Chrome className="mr-2" />
+                           <Chrome className="mr-2 size-4" />
                             {isSubmitting ? 'Signing in...' : 'Sign in with Google'}
                         </Button>
                     </div>

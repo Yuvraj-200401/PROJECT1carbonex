@@ -25,18 +25,19 @@ export default function DashboardLayout({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (!currentUser) {
-        router.push('/login');
-      } else {
+      if (currentUser) {
         setUser(currentUser);
         const userRole = localStorage.getItem('userRole');
-        if (!userRole) {
-          router.push('/login'); // Role not set, force re-login/role selection
-        } else {
+        if (userRole) {
           setRole(userRole);
+          setLoading(false);
+        } else {
+          // If role is missing, maybe they haven't completed the role selection
+          router.push('/login');
         }
+      } else {
+        router.push('/login');
       }
-      setLoading(false);
     });
 
     return () => unsubscribe();
