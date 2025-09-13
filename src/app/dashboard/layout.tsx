@@ -22,6 +22,7 @@ export default function DashboardLayout({
   const router = useRouter();
 
   useEffect(() => {
+    // We are in a client component, so we can safely access localStorage
     const userRole = localStorage.getItem('userRole');
     const userName = localStorage.getItem('userName');
     const userImage = localStorage.getItem('userImage');

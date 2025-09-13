@@ -2,8 +2,6 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { auth } from '@/lib/firebase';
-import { onAuthStateChanged } from 'firebase/auth';
 
 import NGOOverview from '@/components/dashboards/ngo-overview';
 import BuyerMarketplace from '@/components/dashboards/buyer-marketplace';
@@ -16,21 +14,13 @@ export default function DashboardRootPage() {
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const userRole = localStorage.getItem('userRole');
-            if (userRole) {
-                setRole(userRole);
-            } else {
-                router.push('/login'); // If somehow role is missing, redirect to login
-            }
-        } else {
-            router.push('/login');
-        }
-        setLoading(false);
-    });
-
-    return () => unsubscribe();
+    const userRole = localStorage.getItem('userRole');
+    if (userRole) {
+        setRole(userRole);
+    } else {
+        router.push('/login'); // If somehow role is missing, redirect to login
+    }
+    setLoading(false);
   }, [router]);
 
   const renderDashboard = () => {
