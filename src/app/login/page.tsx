@@ -8,9 +8,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CarboNexLogo } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
-import { auth } from '@/lib/firebase';
-import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
-import { Chrome } from 'lucide-react';
+import { LogIn } from 'lucide-react';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -18,31 +16,33 @@ export default function LoginPage() {
     const [role, setRole] = useState('ngo');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleGoogleSignIn = async () => {
+    const handleLogin = () => {
         setIsSubmitting(true);
-        const provider = new GoogleAuthProvider();
         try {
-            const result = await signInWithPopup(auth, provider);
-            const user = result.user;
-            
             if (typeof window !== 'undefined') {
                 localStorage.setItem('userRole', role);
-                // Storing user info to be used in the dashboard
-                localStorage.setItem('userName', user.displayName || 'Anonymous');
-                localStorage.setItem('userImage', user.photoURL || '');
+                
+                const userNames: { [key: string]: string } = {
+                    ngo: 'Eco Ventures',
+                    buyer: 'Green Buyer Co.',
+                    verifier: 'NCCR Verifier',
+                };
+
+                localStorage.setItem('userName', userNames[role]);
+                localStorage.setItem('userImage', `https://picsum.photos/seed/${userNames[role]}/40/40`);
             }
 
             toast({
-                title: `Logged in as ${user.displayName}`,
+                title: `Logged in as ${role.toUpperCase()}`,
                 description: "Redirecting to your dashboard...",
             });
             router.push('/dashboard');
         } catch (error: any) {
-            console.error("Google Sign-In Error: ", error);
+            console.error("Login Error: ", error);
             toast({
                 variant: 'destructive',
-                title: 'Authentication Failed',
-                description: error.message,
+                title: 'Login Failed',
+                description: 'Could not simulate login.',
             });
             setIsSubmitting(false);
         }
@@ -59,7 +59,7 @@ export default function LoginPage() {
                         Welcome to CARBO-NEX
                     </CardTitle>
                     <CardDescription>
-                       Select your role and sign in to continue.
+                       Select your role to access the demo dashboard.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -82,9 +82,9 @@ export default function LoginPage() {
                             </RadioGroup>
                         </div>
                         
-                        <Button onClick={handleGoogleSignIn} disabled={isSubmitting} className="w-full">
-                           <Chrome className="mr-2 size-4" />
-                            {isSubmitting ? 'Signing in...' : 'Sign in with Google'}
+                        <Button onClick={handleLogin} disabled={isSubmitting} className="w-full">
+                           <LogIn className="mr-2 size-4" />
+                            {isSubmitting ? 'Loading...' : 'Access Demo Dashboard'}
                         </Button>
                     </div>
                 </CardContent>

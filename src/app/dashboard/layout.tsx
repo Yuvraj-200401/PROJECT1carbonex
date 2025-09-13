@@ -10,8 +10,6 @@ import DashboardSidebar from '@/components/dashboard-sidebar';
 import DashboardHeader from '@/components/dashboard-header';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
-import { auth } from '@/lib/firebase';
-import { onAuthStateChanged, User } from 'firebase/auth';
 
 export default function DashboardLayout({
   children,
@@ -19,28 +17,22 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [role, setRole] = useState<string | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{name: string, image: string} | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        const userRole = localStorage.getItem('userRole');
-        if (userRole) {
-          setRole(userRole);
-          setLoading(false);
-        } else {
-          // If role is missing, maybe they haven't completed the role selection
-          router.push('/login');
-        }
-      } else {
-        router.push('/login');
-      }
-    });
+    const userRole = localStorage.getItem('userRole');
+    const userName = localStorage.getItem('userName');
+    const userImage = localStorage.getItem('userImage');
 
-    return () => unsubscribe();
+    if (userRole && userName) {
+        setRole(userRole);
+        setUser({ name: userName, image: userImage || '' });
+    } else {
+        router.push('/login');
+    }
+    setLoading(false);
   }, [router]);
 
   if (loading || !role || !user) {

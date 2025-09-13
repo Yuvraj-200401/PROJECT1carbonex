@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   FilePlus2,
@@ -28,10 +28,6 @@ import {
 import { CarboNexLogo } from './icons';
 import { Separator } from './ui/separator';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
-import { Button } from './ui/button';
-import { auth } from '@/lib/firebase';
-import { signOut, User } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 
 const ngoMenuItems = [
   { path: '/dashboard', label: 'Overview', icon: LayoutDashboard },
@@ -51,34 +47,33 @@ const verifierMenuItems = [
 ];
 
 
-export default function DashboardSidebar({ role, user }: { role: string; user: User | null }) {
+export default function DashboardSidebar({ role, user }: { role: string; user: { name: string, image: string } | null }) {
   const pathname = usePathname();
   const router = useRouter();
 
   let menuItems: { path: string, label: string, icon: React.ElementType }[] = [];
-  let userProfile = { name: "Eco Ventures", type: "NGO" };
+  let userProfile = { name: "Demo User", type: "Role" };
 
   switch (role) {
     case 'buyer':
       menuItems = buyerMenuItems;
-      userProfile = { name: user?.displayName || "Green Buyer Co.", type: "Buyer" };
+      userProfile = { name: user?.name || "Green Buyer Co.", type: "Buyer" };
       break;
     case 'verifier':
       menuItems = verifierMenuItems;
-       userProfile = { name: user?.displayName || "NCCR Verifier", type: "Verifier" };
+       userProfile = { name: user?.name || "NCCR Verifier", type: "Verifier" };
       break;
     case 'ngo':
     default:
       menuItems = ngoMenuItems;
-      userProfile = { name: user?.displayName || "Eco Ventures", type: "NGO" };
+      userProfile = { name: user?.name || "Eco Ventures", type: "NGO" };
       break;
   }
   
   // Always add settings for all roles
   menuItems.push({ path: '/dashboard/settings', label: 'Settings', icon: Settings });
 
-  const handleLogout = async () => {
-    await signOut(auth);
+  const handleLogout = () => {
     localStorage.removeItem('userRole');
     localStorage.removeItem('userName');
     localStorage.removeItem('userImage');
@@ -135,7 +130,7 @@ export default function DashboardSidebar({ role, user }: { role: string; user: U
         <Separator className="my-2" />
         <div className="flex items-center gap-3 p-2">
             <Avatar>
-              <AvatarImage src={user?.photoURL || `https://picsum.photos/seed/${userProfile.name}/40/40`} />
+              <AvatarImage src={user?.image || `https://picsum.photos/seed/${userProfile.name}/40/40`} />
               <AvatarFallback>{userProfile.name.substring(0, 2).toUpperCase()}</AvatarFallback>
             </Avatar>
             <div className="flex flex-col text-sm">
