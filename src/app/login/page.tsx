@@ -4,11 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CarboNexLogo } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
-import { LogIn } from 'lucide-react';
+import { LogIn, User, ShieldCheck, ShoppingBag } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function LoginPage() {
     const router = useRouter();
@@ -16,11 +15,11 @@ export default function LoginPage() {
     const [role, setRole] = useState('ngo');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const handleLogin = () => {
+    const handleLogin = (selectedRole: string) => {
         setIsSubmitting(true);
         try {
             if (typeof window !== 'undefined') {
-                localStorage.setItem('userRole', role);
+                localStorage.setItem('userRole', selectedRole);
                 
                 const userNames: { [key: string]: string } = {
                     ngo: 'Eco Ventures',
@@ -28,12 +27,12 @@ export default function LoginPage() {
                     verifier: 'NCCR Verifier',
                 };
 
-                localStorage.setItem('userName', userNames[role]);
-                localStorage.setItem('userImage', `https://picsum.photos/seed/${userNames[role]}/40/40`);
+                localStorage.setItem('userName', userNames[selectedRole]);
+                localStorage.setItem('userImage', `https://picsum.photos/seed/${userNames[selectedRole]}/40/40`);
             }
 
             toast({
-                title: `Logged in as ${role.toUpperCase()}`,
+                title: `Logged in as ${selectedRole.toUpperCase()}`,
                 description: "Redirecting to your dashboard...",
             });
             router.push('/dashboard');
@@ -48,44 +47,49 @@ export default function LoginPage() {
         }
     };
 
+    const roles = [
+        { id: 'ngo', name: 'NGO', description: 'Submit and manage carbon projects.', icon: <User /> },
+        { id: 'buyer', name: 'Buyer', description: 'Purchase verified carbon credits.', icon: <ShoppingBag /> },
+        { id: 'verifier', name: 'Verifier', description: 'Review and approve projects.', icon: <ShieldCheck /> },
+    ];
+
     return (
         <div className="flex min-h-screen items-center justify-center bg-background p-4">
-            <Card className="w-full max-w-md animate-fade-in-up bg-card/50 backdrop-blur-sm">
+            <Card className="w-full max-w-lg animate-fade-in-up bg-card/50 backdrop-blur-sm">
                  <CardHeader className="text-center">
                     <div className="mx-auto mb-4">
                         <CarboNexLogo className="size-12 text-primary" />
                     </div>
                     <CardTitle className="font-headline text-3xl">
-                        Welcome to CARBO-NEX
+                        Join CARBO-NEX
                     </CardTitle>
                     <CardDescription>
                        Select your role to access the demo dashboard.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="space-y-6">
-                         <div className="space-y-3">
-                            <Label>I am a...</Label>
-                            <RadioGroup defaultValue="ngo" onValueChange={setRole} className="grid grid-cols-3 gap-4">
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="ngo" id="r_ngo" />
-                                    <Label htmlFor="r_ngo">NGO</Label>
+                    <div className="space-y-4">
+                        {roles.map((r) => (
+                           <button 
+                             key={r.id}
+                             onClick={() => handleLogin(r.id)}
+                             disabled={isSubmitting}
+                             className={cn(
+                                 "w-full text-left p-4 rounded-lg border flex items-center gap-4 transition-all hover:bg-muted/50",
+                                 role === r.id && "bg-muted ring-2 ring-primary"
+                              )}
+                              onMouseEnter={() => setRole(r.id)}
+                           >
+                                <div className="p-2 rounded-md bg-primary/10 text-primary">
+                                    {r.icon}
                                 </div>
-                                <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="buyer" id="r_buyer" />
-                                    <Label htmlFor="r_buyer">Buyer</Label>
+                                <div>
+                                    <h3 className="font-semibold">{r.name}</h3>
+                                    <p className="text-sm text-muted-foreground">{r.description}</p>
                                 </div>
-                                 <div className="flex items-center space-x-2">
-                                    <RadioGroupItem value="verifier" id="r_verifier" />
-                                    <Label htmlFor="r_verifier">Verifier</Label>
-                                </div>
-                            </RadioGroup>
-                        </div>
-                        
-                        <Button onClick={handleLogin} disabled={isSubmitting} className="w-full">
-                           <LogIn className="mr-2 size-4" />
-                            {isSubmitting ? 'Loading...' : 'Access Demo Dashboard'}
-                        </Button>
+                                <LogIn className="ml-auto size-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                           </button>
+                        ))}
                     </div>
                 </CardContent>
             </Card>

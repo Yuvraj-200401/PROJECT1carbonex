@@ -1,3 +1,5 @@
+
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -5,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Cpu, Leaf, Zap } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { motion } from 'framer-motion';
 
 const heroImage = PlaceHolderImages.find((img) => img.id === 'hero-3d-landing');
 const featureImage1 = PlaceHolderImages.find((img) => img.id === 'feature-1');
@@ -14,7 +17,7 @@ const featureImage3 = PlaceHolderImages.find((img) => img.id === 'feature-3');
 
 export default function Home() {
   const stats = [
-    { value: '1M+', label: 'Tons CO2 Verified' },
+    { value: '1M+', label: 'Tons CO₂ Verified' },
     { value: '250+', label: 'Projects Funded' },
     { value: '$50M+', label: 'Value Transacted' },
     { value: '99.8%', label: 'Verification Accuracy' },
@@ -75,9 +78,13 @@ export default function Home() {
             <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(0,255,102,0.1)] opacity-50 blur-[80px]"></div>
           </div>
           <div className="container grid grid-cols-1 items-center gap-12 md:grid-cols-2">
-            <div className="max-w-xl animate-fade-in-up">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-xl">
               <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl">
-                Tokenizing Blue Carbon.
+                Tokenizing Blue Carbon with AI + Blockchain.
               </h1>
               <p className="mt-6 text-lg text-muted-foreground">
                 CARBO-NEX is a decentralized platform for verifying and tokenizing blue carbon credits. We use AI and blockchain to bring transparency, liquidity, and trust to the carbon market.
@@ -88,12 +95,19 @@ export default function Home() {
                     Get Started
                   </Button>
                 </Link>
-                <Button size="lg" variant="outline">
-                  Join as NGO / Buyer / Verifier
-                </Button>
+                <Link href="/dashboard/marketplace">
+                    <Button size="lg" variant="outline">
+                    Explore Marketplace
+                    </Button>
+                </Link>
               </div>
-            </div>
-            <div className="relative h-64 w-full animate-fade-in-up [animation-delay:200ms] md:h-96">
+            </motion.div>
+            <motion.div 
+              className="relative h-64 w-full md:h-96"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
                 {heroImage && 
                     <Image
                         src={heroImage.imageUrl}
@@ -104,7 +118,7 @@ export default function Home() {
                         priority
                     />
                 }
-            </div>
+            </motion.div>
           </div>
         </section>
 

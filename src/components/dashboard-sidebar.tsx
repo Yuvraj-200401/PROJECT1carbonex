@@ -13,7 +13,8 @@ import {
   Wallet,
   ShieldCheck,
   LogOut,
-  ShoppingCart
+  ShoppingCart,
+  Boxes
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -34,6 +35,7 @@ const ngoMenuItems = [
   { path: '/dashboard/verify', label: 'New Verification', icon: FilePlus2 },
   { path: '/dashboard/projects', label: 'Projects', icon: List },
   { path: '/dashboard/marketplace', label: 'Marketplace', icon: Store },
+  { path: '/dashboard/my-tokens', label: 'My Tokens', icon: Boxes },
   { path: '/dashboard/wallet', label: 'Wallet', icon: Wallet },
 ];
 
@@ -98,7 +100,7 @@ export default function DashboardSidebar({ role, user }: { role: string; user: {
             <SidebarMenuItem key={item.path}>
               <Link href={item.path} legacyBehavior passHref>
                 <SidebarMenuButton
-                  isActive={pathname.startsWith(item.path) && (item.path !== '/dashboard' || pathname === '/dashboard')}
+                  isActive={pathname === item.path || (item.path !== '/dashboard' && pathname.startsWith(item.path))}
                   tooltip={item.label}
                   className="justify-start"
                 >
