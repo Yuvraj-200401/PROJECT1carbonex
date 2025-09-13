@@ -1,3 +1,47 @@
+
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-3d-landing",
+      "description": "3D abstract illustration for landing page hero",
+      "imageUrl": "https://picsum.photos/seed/carbonex-hero/1200/800",
+      "imageHint": "abstract geometric"
+    },
+    {
+      "id": "feature-1",
+      "description": "Abstract image for AI-Powered Verification feature",
+      "imageUrl": "https://picsum.photos/seed/carbonex-f1/600/400",
+      "imageHint": "data visualization"
+    },
+    {
+      "id": "feature-2",
+      "description": "Abstract image for Tokenize Your Impact feature",
+      "imageUrl": "https://picsum.photos/seed/carbonex-f2/600/400",
+      "imageHint": "digital currency"
+    },
+    {
+      "id": "feature-3",
+      "description": "Abstract image for Liquid Marketplace feature",
+      "imageUrl": "https://picsum.photos/seed/carbonex-f3/600/400",
+      "imageHint": "financial chart"
+    },
+    {
+      "id": "project-image-1",
+      "description": "Drone image of a mangrove forest",
+      "imageUrl": "https://picsum.photos/seed/project-1/400/300",
+      "imageHint": "mangrove forest"
+    },
+    {
+      "id": "project-image-2",
+      "description": "Drone image of a coastal wetland",
+      "imageUrl": "https://picsum.photos/seed/project-2/400/300",
+      "imageHint": "coastal wetland"
+    },
+    {
+      "id": "project-image-3",
+      "description": "Drone image of a seagrass meadow",
+      "imageUrl": "https://picsum.photos/seed/project-3/400/300",
+      "imageHint": "seagrass meadow"
+    }
+  ]
 }
