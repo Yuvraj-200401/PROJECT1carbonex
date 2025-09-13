@@ -1,6 +1,14 @@
+
+'use client';
+
+import { useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/hooks/use-toast";
 import { ShoppingCart } from "lucide-react";
 
 const listings = [
@@ -34,8 +42,70 @@ const listings = [
   },
 ];
 
+function BuyDialog({ listing, onPurchase }: { listing: typeof listings[0], onPurchase: (amount: number) => void }) {
+    const [amount, setAmount] = useState(1);
+    const [isOpen, setIsOpen] = useState(false);
+    const totalCost = (amount * listing.pricePerTon).toFixed(2);
+
+    const handlePurchase = () => {
+        onPurchase(amount);
+        setIsOpen(false);
+    }
+
+    return (
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+            <DialogTrigger asChild>
+                <Button className="w-full">
+                    <ShoppingCart className="mr-2 size-4" />
+                    Buy Now
+                </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                <DialogTitle>Buy Carbon Credits</DialogTitle>
+                <DialogDescription>
+                    Purchase tokens from the &quot;{listing.projectName}&quot; project.
+                </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-4 items-center gap-4">
+                        <Label htmlFor="amount" className="text-right">
+                        Amount (tCO₂)
+                        </Label>
+                        <Input
+                        id="amount"
+                        type="number"
+                        value={amount}
+                        onChange={(e) => setAmount(Math.min(listing.tco2, Math.max(1, parseInt(e.target.value) || 1)))}
+                        className="col-span-3"
+                        max={listing.tco2}
+                        min={1}
+                        />
+                    </div>
+                     <div className="text-right text-lg font-bold">
+                        Total: <span className="text-primary">${totalCost}</span>
+                    </div>
+                </div>
+                <DialogFooter>
+                    <Button type="submit" onClick={handlePurchase}>Confirm Purchase</Button>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
 
 export default function MarketplacePage() {
+    const { toast } = useToast();
+
+    const handlePurchase = (projectName: string, amount: number) => {
+        console.log(`Simulating purchase of ${amount} tCO2 from ${projectName}`);
+        toast({
+            title: "Purchase Successful!",
+            description: `You have purchased ${amount} CARBO tokens from ${projectName}.`,
+        })
+    }
+
   return (
     <div className="animate-fade-in-up space-y-8">
       <div>
@@ -58,10 +128,7 @@ export default function MarketplacePage() {
                 <div className="mt-4 text-2xl font-semibold text-primary">${listing.pricePerTon.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">/ ton</span></div>
             </CardContent>
             <CardFooter className="flex gap-2">
-                <Button className="w-full">
-                    <ShoppingCart className="mr-2 size-4" />
-                    Buy Now
-                </Button>
+                <BuyDialog listing={listing} onPurchase={(amount) => handlePurchase(listing.projectName, amount)} />
                 <Button variant="outline" className="w-full">
                     View Project
                 </Button>
