@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Button } from '@/components/ui/button';
-import { Bell, PlusCircle } from 'lucide-react';
+import { Bell, PlusCircle, Wallet } from 'lucide-react';
 import Link from 'next/link';
 
 export default function DashboardHeader() {
@@ -21,9 +21,15 @@ export default function DashboardHeader() {
 
       <div className="flex items-center gap-2">
         <Link href="/dashboard/verify">
-        <Button size="sm">
+        <Button size="sm" variant="outline">
             <PlusCircle className="mr-2 size-4" />
-            New Verification
+            New Project
+        </Button>
+        </Link>
+        <Link href="/dashboard/wallet">
+        <Button size="sm">
+            <Wallet className="mr-2 size-4" />
+            1,800 CARBO
         </Button>
         </Link>
         <Button variant="ghost" size="icon">

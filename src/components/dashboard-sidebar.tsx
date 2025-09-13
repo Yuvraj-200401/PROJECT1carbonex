@@ -9,6 +9,7 @@ import {
   Store,
   Settings,
   CircleHelp,
+  Wallet,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -30,6 +31,7 @@ const menuItems = [
   { path: '/dashboard/verify', label: 'New Verification', icon: FilePlus2 },
   { path: '/dashboard/projects', label: 'Projects', icon: List },
   { path: '/dashboard/marketplace', label: 'Marketplace', icon: Store },
+  { path: '/dashboard/wallet', label: 'Wallet', icon: Wallet },
   { path: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -53,7 +55,7 @@ export default function DashboardSidebar() {
             <SidebarMenuItem key={item.path}>
               <Link href={item.path} legacyBehavior passHref>
                 <SidebarMenuButton
-                  isActive={pathname === item.path}
+                  isActive={pathname.startsWith(item.path) && (item.path !== '/dashboard' || pathname === '/dashboard')}
                   tooltip={item.label}
                   className="justify-start"
                 >
