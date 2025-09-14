@@ -1,50 +1,40 @@
 
+'use client';
+import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Eye, MoreHorizontal, PlusCircle } from "lucide-react";
+import { Eye, MoreHorizontal, PlusCircle, Send } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-
-const projects = [
-  {
-    name: "Sulu Sea Seagrass Meadow",
-    area: "1,200 ha",
-    status: "Verified",
-    lastUpdate: "2023-10-26",
-    tco2: "1,500",
-    image: PlaceHolderImages.find(img => img.id === 'project-image-3')
-  },
-  {
-    name: "Amazon Delta Reforestation",
-    area: "5,000 ha",
-    status: "Pending",
-    lastUpdate: "2023-10-22",
-    tco2: "N/A",
-    image: PlaceHolderImages.find(img => img.id === 'project-image-2')
-  },
-  {
-    name: "Coastal Blue Carbon Initiative",
-    area: "850 ha",
-    status: "Action Required",
-    lastUpdate: "2023-10-20",
-    tco2: "N/A",
-    image: PlaceHolderImages.find(img => img.id === 'project-image-1')
-  },
-  {
-    name: "Palawan Mangrove Restoration",
-    area: "2,500 ha",
-    status: "Verified",
-    lastUpdate: "2023-09-15",
-    tco2: "950",
-    image: PlaceHolderImages.find(img => img.id === 'project-image-1')
-  },
-];
+import { getProjects, updateProject, type Project } from "@/lib/demo-data";
+import { useToast } from "@/hooks/use-toast";
 
 
 export default function ProjectsPage() {
+  const { toast } = useToast();
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    setProjects(getProjects());
+  }, []);
+
+  const handleMintTokens = (projectId: string) => {
+    const project = projects.find(p => p.id === projectId);
+    if(project) {
+        // In a real app, this would be a more complex flow. Here we just update the status.
+        // For the demo, we'll assign a random tCO2 amount.
+        const mintedTco2 = Math.floor(Math.random() * (2000 - 500 + 1) + 500);
+        updateProject(projectId, { tco2: mintedTco2 });
+        setProjects(getProjects()); // Refresh the project list
+        toast({
+            title: "Tokens Minted!",
+            description: `${mintedTco2.toLocaleString()} CARBO tokens have been minted for ${project.name}.`,
+        });
+    }
+  };
+
   return (
     <div className="animate-fade-in-up space-y-8">
       <div>
@@ -78,11 +68,11 @@ export default function ProjectsPage() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {projects.map((project) => (
-                        <TableRow key={project.name}>
+                    {projects.length > 0 ? projects.map((project) => (
+                        <TableRow key={project.id}>
                             <TableCell className="font-medium">
                                 <div className="flex items-center gap-3">
-                                    {project.image && <Image src={project.image.imageUrl} alt={project.name} width={40} height={40} className="rounded-md object-cover" data-ai-hint={project.image.imageHint} />}
+                                    <Image src={project.image.imageUrl} alt={project.name} width={40} height={40} className="rounded-md object-cover" data-ai-hint={project.image.imageHint} />
                                     <span>{project.name}</span>
                                 </div>
                             </TableCell>
@@ -94,19 +84,28 @@ export default function ProjectsPage() {
                                     {project.status}
                                 </Badge>
                             </TableCell>
-                            <TableCell>{project.area}</TableCell>
-                            <TableCell className="font-semibold text-primary">{project.tco2}</TableCell>
-                            <TableCell>{project.lastUpdate}</TableCell>
+                            <TableCell>{project.area_ha} ha</TableCell>
+                            <TableCell className="font-semibold text-primary">{project.tco2 ? project.tco2.toLocaleString() : 'N/A'}</TableCell>
+                            <TableCell>{new Date(project.date).toLocaleDateString()}</TableCell>
                             <TableCell className="text-right">
+                                {project.status === 'Verified' && !project.tco2 && (
+                                    <Button size="sm" onClick={() => handleMintTokens(project.id)}>
+                                        <Send className="mr-2 size-4" />
+                                        Mint Tokens
+                                    </Button>
+                                )}
                                 <Button variant="ghost" size="icon">
                                     <Eye className="size-4" />
                                 </Button>
-                                <Button variant="ghost" size="icon">
-                                    <MoreHorizontal className="size-4" />
-                                </Button>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )) : (
+                        <TableRow>
+                            <TableCell colSpan={6} className="text-center text-muted-foreground">
+                                You haven't submitted any projects yet.
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
         </CardContent>

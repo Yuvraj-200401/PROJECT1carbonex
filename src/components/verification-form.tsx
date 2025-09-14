@@ -1,11 +1,14 @@
+
 "use client";
 
 import { useFormState } from "react-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { useRouter } from 'next/navigation';
 
 import { verifyAndPredict } from "@/lib/actions";
+import { addProject } from "@/lib/demo-data";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -21,7 +24,7 @@ import {
 import { Loader2 } from "lucide-react";
 import { VerificationResults } from "./verification-results";
 import { Co2PredictionChart } from "./co2-prediction-chart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -42,7 +45,8 @@ const formSchema = z.object({
 
 export function VerificationForm() {
   const { toast } = useToast();
-  const [state, formAction] = useFormState(verifyAndPredict, null);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,22 +63,37 @@ export function VerificationForm() {
     },
   });
 
-  useEffect(() => {
-    if (state?.error) {
-      toast({
-        variant: "destructive",
-        title: "Verification Failed",
-        description: state.error,
-      });
-    }
-  }, [state, toast]);
-
-  const { isSubmitting } = form.formState;
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    // Simulate API call delay
+    setTimeout(() => {
+        const ngoName = localStorage.getItem('userName') || 'Eco Ventures';
+        
+        addProject({
+            ...values,
+            id: `proj_${Date.now()}`,
+            ngoName: ngoName,
+            status: 'Pending',
+            image: { // Use a random placeholder for the demo
+                imageUrl: `https://picsum.photos/seed/${values.siteName}/400/300`,
+                imageHint: 'satellite imagery'
+            }
+        });
+        
+        toast({
+            title: "Project Submitted!",
+            description: "Your project has been submitted for verification.",
+        });
+        
+        setIsLoading(false);
+        router.push('/dashboard/projects');
+    }, 1500);
+  };
 
   return (
     <>
       <Form {...form}>
-        <form action={formAction} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField control={form.control} name="siteName" render={({ field }) => (
                     <FormItem>
@@ -166,25 +185,17 @@ export function VerificationForm() {
                 )} />
             </div>
           
-          <Button type="submit" disabled={isSubmitting} className="w-full md:w-auto">
-            {isSubmitting ? (
+          <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
+            {isLoading ? (
               <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Verifying...
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Submitting...
               </>
             ) : (
-              "Run Verification"
+              "Submit for Verification"
             )}
           </Button>
         </form>
       </Form>
-      
-        {state && !state.error && (state.verification || state.prediction) && (
-            <div className="mt-12 space-y-8 animate-fade-in-up">
-                <h2 className="text-2xl font-bold font-headline text-center">Verification & Prediction Results</h2>
-                {state.prediction && <Co2PredictionChart prediction={state.prediction} />}
-                {state.verification && <VerificationResults verification={state.verification} />}
-            </div>
-        )}
     </>
   );
 }

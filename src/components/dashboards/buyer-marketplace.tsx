@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,42 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { ShoppingCart } from "lucide-react";
+import { getProjects, type Project } from '@/lib/demo-data';
 
-const listings = [
-  {
-    projectName: "Sulu Sea Seagrass",
-    vintage: 2023,
-    tco2: 150,
-    pricePerTon: 18.50,
-    seller: "Eco Ventures"
-  },
-  {
-    projectName: "Palawan Mangrove",
-    vintage: 2023,
-    tco2: 100,
-    pricePerTon: 22.00,
-    seller: "Eco Ventures"
-  },
-  {
-    projectName: "Andaman Coast Conservation",
-    vintage: 2022,
-    tco2: 500,
-    pricePerTon: 15.75,
-    seller: "Oceanic Guardians"
-  },
-   {
-    projectName: "Caribbean Reef Project",
-    vintage: 2023,
-    tco2: 250,
-    pricePerTon: 25.00,
-    seller: "Reef Savers Inc."
-  },
-];
 
-function BuyDialog({ listing, onPurchase }: { listing: typeof listings[0], onPurchase: (amount: number) => void }) {
+function BuyDialog({ listing, onPurchase }: { listing: Project, onPurchase: (amount: number) => void }) {
     const [amount, setAmount] = useState(1);
     const [isOpen, setIsOpen] = useState(false);
-    const totalCost = (amount * listing.pricePerTon).toFixed(2);
+    const totalCost = (amount * (listing.pricePerTon || 20)).toFixed(2);
 
     const handlePurchase = () => {
         onPurchase(amount);
@@ -64,7 +35,7 @@ function BuyDialog({ listing, onPurchase }: { listing: typeof listings[0], onPur
                 <DialogHeader>
                 <DialogTitle>Buy Carbon Credits</DialogTitle>
                 <DialogDescription>
-                    Purchase tokens from the &quot;{listing.projectName}&quot; project.
+                    Purchase tokens from the &quot;{listing.name}&quot; project.
                 </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
@@ -76,7 +47,7 @@ function BuyDialog({ listing, onPurchase }: { listing: typeof listings[0], onPur
                         id="amount"
                         type="number"
                         value={amount}
-                        onChange={(e) => setAmount(Math.min(listing.tco2, Math.max(1, parseInt(e.target.value) || 1)))}
+                        onChange={(e) => setAmount(Math.min(listing.tco2!, Math.max(1, parseInt(e.target.value) || 1)))}
                         className="col-span-3"
                         max={listing.tco2}
                         min={1}
@@ -97,9 +68,17 @@ function BuyDialog({ listing, onPurchase }: { listing: typeof listings[0], onPur
 
 export default function BuyerMarketplace() {
     const { toast } = useToast();
+    const [listings, setListings] = useState<Project[]>([]);
+
+    useEffect(() => {
+        const projects = getProjects();
+        setListings(projects.filter(p => p.listed));
+    }, []);
+
 
     const handlePurchase = (projectName: string, amount: number) => {
         console.log(`Simulating purchase of ${amount} tCO2 from ${projectName}`);
+        // In a real app, we would update the project's available tco2
         toast({
             title: "Purchase Successful!",
             description: `You have purchased ${amount} CARBO tokens from ${projectName}.`,
@@ -114,24 +93,26 @@ export default function BuyerMarketplace() {
       </div>
 
        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {listings.map((listing, index) => (
-          <Card key={index} className="bg-card/50 backdrop-blur-sm flex flex-col">
+        {listings.length > 0 ? listings.map((listing) => (
+          <Card key={listing.id} className="bg-card/50 backdrop-blur-sm flex flex-col">
             <CardHeader>
               <div className="flex justify-between items-start">
-                <CardTitle className="font-headline text-xl">{listing.projectName}</CardTitle>
-                <Badge variant="outline">Vintage {listing.vintage}</Badge>
+                <CardTitle className="font-headline text-xl">{listing.name}</CardTitle>
+                <Badge variant="outline">Vintage {new Date(listing.date).getFullYear()}</Badge>
               </div>
-              <CardDescription>Sold by <span className="text-primary">{listing.seller}</span></CardDescription>
+              <CardDescription>Sold by <span className="text-primary">{listing.ngoName || 'Eco Ventures'}</span></CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
-                <div className="text-3xl font-bold">{listing.tco2.toLocaleString()} <span className="text-base font-normal text-muted-foreground">tCO₂ available</span></div>
-                <div className="mt-4 text-2xl font-semibold text-primary">${listing.pricePerTon.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">/ ton</span></div>
+                <div className="text-3xl font-bold">{listing.tco2?.toLocaleString()} <span className="text-base font-normal text-muted-foreground">tCO₂ available</span></div>
+                <div className="mt-4 text-2xl font-semibold text-primary">${(listing.pricePerTon || 20).toFixed(2)} <span className="text-sm font-normal text-muted-foreground">/ ton</span></div>
             </CardContent>
             <CardFooter className="flex gap-2">
-                <BuyDialog listing={listing} onPurchase={(amount) => handlePurchase(listing.projectName, amount)} />
+                <BuyDialog listing={listing} onPurchase={(amount) => handlePurchase(listing.name, amount)} />
             </CardFooter>
           </Card>
-        ))}
+        )) : (
+            <p className="col-span-full text-center text-muted-foreground">There are no tokens currently listed on the marketplace.</p>
+        )}
        </div>
     </div>
   );

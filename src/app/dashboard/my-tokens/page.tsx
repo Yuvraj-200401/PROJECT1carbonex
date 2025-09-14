@@ -1,10 +1,10 @@
 
 'use client'
+import { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -18,42 +18,32 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Send, List } from 'lucide-react';
+import { List } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { getProjects, updateProject, type Project } from '@/lib/demo-data';
 
 export default function MyTokensPage() {
     const { toast } = useToast();
+    const [tokens, setTokens] = useState<Project[]>([]);
 
-    const tokens = [
-        {
-            projectName: "Sulu Sea Seagrass",
-            tco2: 150,
-            mintDate: "2023-10-26",
-            status: "Available",
-            vintage: 2023,
-        },
-        {
-            projectName: "Palawan Mangrove Restoration",
-            tco2: 950,
-            mintDate: "2023-09-15",
-            status: "Available",
-            vintage: 2023,
-        },
-        {
-            projectName: "Coastal Blue Carbon Initiative",
-            tco2: 850,
-            mintDate: "2023-08-01",
-            status: "Listed",
-            vintage: 2022,
-        },
-    ];
+    useEffect(() => {
+        const projects = getProjects();
+        // Filter for tokens that are minted but not yet listed
+        setTokens(projects.filter(p => p.status === 'Verified' && p.tco2 && !p.listed));
+    }, []);
 
-    const handleListForSale = (projectName: string) => {
-        toast({
-            title: "Tokens Listed!",
-            description: `Your tokens for ${projectName} are now on the marketplace.`
-        })
-    }
+    const handleListForSale = (projectId: string) => {
+        const project = updateProject(projectId, { listed: true });
+        if (project) {
+            setTokens(prevTokens => prevTokens.filter(t => t.id !== projectId));
+            toast({
+                title: "Tokens Listed!",
+                description: `Your tokens for ${project.name} are now on the marketplace.`
+            });
+        }
+    };
+
+    const mintedTokens = getProjects().filter(p => p.status === 'Verified' && p.tco2);
 
   return (
     <div className="animate-fade-in-up space-y-8">
@@ -82,32 +72,37 @@ export default function MyTokensPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {tokens.map((token, index) => (
-                    <TableRow key={index}>
-                        <TableCell className="font-medium">{token.projectName}</TableCell>
-                        <TableCell className="font-semibold text-primary">{token.tco2.toLocaleString()}</TableCell>
-                        <TableCell>{token.mintDate}</TableCell>
-                        <TableCell><Badge variant="outline">{token.vintage}</Badge></TableCell>
+                  {mintedTokens.length > 0 ? mintedTokens.map((token) => (
+                    <TableRow key={token.id}>
+                        <TableCell className="font-medium">{token.name}</TableCell>
+                        <TableCell className="font-semibold text-primary">{token.tco2?.toLocaleString()}</TableCell>
+                        <TableCell>{new Date().toLocaleDateString()}</TableCell>
+                        <TableCell><Badge variant="outline">{new Date().getFullYear()}</Badge></TableCell>
                         <TableCell>
-                            <Badge variant={token.status === 'Available' ? 'default' : 'secondary'} className={token.status === 'Available' ? 'bg-primary/20 text-primary-foreground' : ''}>
-                                {token.status}
+                            <Badge variant={!token.listed ? 'default' : 'secondary'} className={!token.listed ? 'bg-primary/20 text-primary-foreground' : ''}>
+                                {token.listed ? 'Listed' : 'Available'}
                             </Badge>
                         </TableCell>
                         <TableCell className="text-right">
-                           {token.status === 'Available' && (
-                               <Button size="sm" onClick={() => handleListForSale(token.projectName)}>
+                           {!token.listed ? (
+                               <Button size="sm" onClick={() => handleListForSale(token.id)}>
                                     <List className="mr-2 size-4" />
                                     List for Sale
                                 </Button>
-                           )}
-                           {token.status === 'Listed' && (
+                           ) : (
                                 <Button size="sm" variant="ghost" disabled>
                                     On Marketplace
                                 </Button>
                            )}
                         </TableCell>
                     </TableRow>
-                  ))}
+                  )) : (
+                    <TableRow>
+                        <TableCell colSpan={6} className="text-center text-muted-foreground">
+                            You have not minted any tokens yet.
+                        </TableCell>
+                    </TableRow>
+                  )}
                 </TableBody>
             </Table>
         </CardContent>

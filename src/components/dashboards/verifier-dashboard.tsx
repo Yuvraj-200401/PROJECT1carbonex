@@ -1,6 +1,6 @@
 
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,28 +19,8 @@ import {
 import { VerificationResults } from '../verification-results';
 import { Co2PredictionChart } from '../co2-prediction-chart';
 import type { VerificationResult } from '@/lib/types';
+import { getProjects, updateProject, type Project } from '@/lib/demo-data';
 
-
-const initialSubmissions = [
-  {
-    ngo: "Amazon Delta Reforestation",
-    date: "2023-10-22",
-    status: "Pending",
-    area: "5,000 ha"
-  },
-  {
-    ngo: "Coastal Blue Carbon Initiative",
-    date: "2023-10-20",
-    status: "Pending",
-    area: "850 ha"
-  },
-  {
-    ngo: "Borneo Peatland Project",
-    date: "2023-10-19",
-    status: "Pending",
-    area: "12,000 ha"
-  },
-];
 
 // This is mock data that would come from the AI verification flow
 const mockVerificationResult: VerificationResult = {
@@ -66,7 +46,7 @@ const mockVerificationResult: VerificationResult = {
 }
 
 
-function ReviewDialog({ submission, onApprove, onReject }: { submission: typeof initialSubmissions[0], onApprove: () => void, onReject: () => void }) {
+function ReviewDialog({ submission, onApprove, onReject }: { submission: Project, onApprove: () => void, onReject: () => void }) {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -76,9 +56,9 @@ function ReviewDialog({ submission, onApprove, onReject }: { submission: typeof 
             </DialogTrigger>
             <DialogContent className="max-w-4xl h-[90vh] flex flex-col">
                 <DialogHeader>
-                <DialogTitle>Review Submission: {submission.ngo}</DialogTitle>
+                <DialogTitle>Review Submission: {submission.name}</DialogTitle>
                 <DialogDescription>
-                    Submitted on {submission.date}. Area: {submission.area}.
+                    Submitted by {submission.ngoName} on {new Date(submission.date).toLocaleDateString()}. Area: {submission.area_ha} ha.
                 </DialogDescription>
                 </DialogHeader>
                 <div className="flex-1 overflow-y-auto pr-6 space-y-6">
@@ -99,23 +79,34 @@ function ReviewDialog({ submission, onApprove, onReject }: { submission: typeof 
 
 export default function VerifierDashboard() {
   const { toast } = useToast();
-  const [submissions, setSubmissions] = useState(initialSubmissions);
+  const [submissions, setSubmissions] = useState<Project[]>([]);
 
-  const handleApprove = (ngoName: string) => {
-    setSubmissions(subs => subs.filter(s => s.ngo !== ngoName));
-    toast({
-      title: "Submission Approved",
-      description: `The project "${ngoName}" has been verified and tokens will be minted.`,
-    });
+  useEffect(() => {
+    const allProjects = getProjects();
+    setSubmissions(allProjects.filter(p => p.status === 'Pending'));
+  }, []);
+
+  const handleApprove = (projectId: string) => {
+    const project = updateProject(projectId, { status: 'Verified' });
+    if(project) {
+        setSubmissions(subs => subs.filter(s => s.id !== projectId));
+        toast({
+        title: "Submission Approved",
+        description: `The project "${project.name}" has been verified.`,
+        });
+    }
   };
 
-  const handleReject = (ngoName: string) => {
-    setSubmissions(subs => subs.filter(s => s.ngo !== ngoName));
-     toast({
-      variant: "destructive",
-      title: "Submission Rejected",
-      description: `The project "${ngoName}" has been rejected. The NGO has been notified.`,
-    });
+  const handleReject = (projectId: string) => {
+    const project = updateProject(projectId, { status: 'Action Required' });
+    if(project) {
+        setSubmissions(subs => subs.filter(s => s.id !== projectId));
+        toast({
+        variant: "destructive",
+        title: "Submission Rejected",
+        description: `The project "${project.name}" has been rejected. The NGO has been notified.`,
+        });
+    }
   };
 
   return (
@@ -141,23 +132,29 @@ export default function VerifierDashboard() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {submissions.map((sub) => (
-                        <TableRow key={sub.ngo}>
-                            <TableCell className="font-medium">{sub.ngo}</TableCell>
-                            <TableCell>{sub.date}</TableCell>
+                    {submissions.length > 0 ? submissions.map((sub) => (
+                        <TableRow key={sub.id}>
+                            <TableCell className="font-medium">{sub.name}</TableCell>
+                            <TableCell>{new Date(sub.date).toLocaleDateString()}</TableCell>
                             <TableCell>
                                 <Badge variant="secondary">{sub.status}</Badge>
                             </TableCell>
-                            <TableCell>{sub.area}</TableCell>
+                            <TableCell>{sub.area_ha} ha</TableCell>
                             <TableCell className="text-right">
                                 <ReviewDialog 
                                     submission={sub} 
-                                    onApprove={() => handleApprove(sub.ngo)}
-                                    onReject={() => handleReject(sub.ngo)}
+                                    onApprove={() => handleApprove(sub.id)}
+                                    onReject={() => handleReject(sub.id)}
                                 />
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )) : (
+                         <TableRow>
+                            <TableCell colSpan={5} className="text-center text-muted-foreground">
+                                There are no pending submissions.
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
         </CardContent>
