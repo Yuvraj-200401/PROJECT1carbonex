@@ -73,9 +73,11 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
 
   const connectWallet = (type: string) => {
     if (mockWallets[type]) {
-      setWallet(mockWallets[type]);
+      const newWallet = mockWallets[type];
+      setWallet(newWallet);
       try {
         sessionStorage.setItem('walletType', type);
+        addTransaction(`${newWallet.type} wallet connected.`);
       } catch (error) {
          console.error("Could not access session storage:", error);
       }
@@ -83,12 +85,12 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const disconnectWallet = () => {
-    setWallet(null);
     try {
         sessionStorage.removeItem('walletType');
     } catch (error) {
         console.error("Could not access session storage:", error);
     }
+    setWallet(null);
   };
 
   // --- MOCK BLOCKCHAIN FUNCTIONS ---
@@ -100,9 +102,11 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
   const mintTokens = useCallback((amount: number) => {
     if (wallet?.type !== 'Admin (NCCR)') return;
     
+    // Admin mints to their own address first
+    const adminAddress = mockWallets.admin.address;
     setBalances(prev => ({
       ...prev,
-      [wallet.address]: (prev[wallet.address] || 0) + amount,
+      [adminAddress]: (prev[adminAddress] || 0) + amount,
     }));
     setTotalSupply(prev => prev + amount);
     addTransaction(`Admin minted ${amount.toLocaleString()} CARBO tokens.`);
@@ -112,6 +116,7 @@ export const Web3Provider = ({ children }: { children: React.ReactNode }) => {
     const fromBalance = balances[from] || 0;
     if (fromBalance < amount) {
       console.error("Transfer failed: Insufficient funds.");
+      addTransaction(`Transfer FAILED: Insufficient funds for ${from}.`);
       return false;
     }
 
