@@ -40,7 +40,7 @@ export default function MyTokensPage() {
                     <h1 className="text-3xl font-bold font-headline">My Tokens</h1>
                     <p className="text-muted-foreground">Manage and list your minted CARBO tokens.</p>
                 </div>
-                <Card className="p-4">
+                <Card className="p-4 bg-card">
                     <p className="text-sm text-muted-foreground">Total Owned Tokens</p>
                     <p className="text-2xl font-bold text-primary">{totalTokens.toLocaleString()}</p>
                 </Card>
@@ -64,27 +64,28 @@ export default function MyTokensPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {tokenProjects.map(project => (
-                                <TableRow key={project.id}>
-                                    <TableCell className="font-medium">{project.siteName}</TableCell>
-                                    <TableCell>{project.prediction?.oneYearPrediction.toLocaleString() || 0}</TableCell>
-                                    <TableCell>
-                                        <Badge variant={project.status === 'Listed' ? 'default' : 'secondary'}>
-                                            {project.status}
-                                        </Badge>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                        <Button
-                                            size="sm"
-                                            onClick={() => handleListForSale(project.id)}
-                                            disabled={project.status === 'Listed'}
-                                        >
-                                            {project.status === 'Listed' ? 'Listed' : 'List for Sale'}
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                             {tokenProjects.length === 0 && (
+                            {tokenProjects.length > 0 ? (
+                                tokenProjects.map(project => (
+                                    <TableRow key={project.id}>
+                                        <TableCell className="font-medium">{project.siteName}</TableCell>
+                                        <TableCell>{project.prediction?.oneYearPrediction.toLocaleString() || 0}</TableCell>
+                                        <TableCell>
+                                            <Badge variant={project.status === 'Listed' ? 'default' : 'secondary'}>
+                                                {project.status}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                            <Button
+                                                size="sm"
+                                                onClick={() => handleListForSale(project.id)}
+                                                disabled={project.status === 'Listed'}
+                                            >
+                                                {project.status === 'Listed' ? 'Listed' : 'List for Sale'}
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={4} className="h-24 text-center">
                                        You have not minted any tokens yet.

@@ -8,18 +8,16 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { ArrowLeft, Check, Award, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, Award, ShoppingCart } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import {
-  BarChart,
-  Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  LineChart,
-  Line,
 } from 'recharts';
 import { motion } from 'framer-motion';
 
@@ -45,6 +43,7 @@ export default function ProjectDetailPage() {
             title: 'Tokens Minted!',
             description: `${project.prediction?.oneYearPrediction.toLocaleString()} CARBO tokens have been minted for ${project.siteName}.`
         });
+        router.push('/dashboard/my-tokens');
     }
 
     const handleListOnMarketplace = () => {
@@ -55,6 +54,7 @@ export default function ProjectDetailPage() {
             title: 'Project Listed!',
             description: 'Your tokens are now available on the marketplace.'
         });
+        router.push('/dashboard/my-tokens');
     }
 
     if (!project) {
@@ -67,12 +67,12 @@ export default function ProjectDetailPage() {
         { name: '10 Years', value: project.prediction.tenYearPrediction, interval: project.prediction.tenYearConfidenceInterval },
     ] : [];
 
-    const statusConfig = {
-        'Pending': { color: 'yellow', description: 'This project is awaiting review from a verifier.' },
-        'Verified': { color: 'green', description: 'This project has been successfully verified.' },
-        'Action Required': { color: 'red', description: 'This project requires changes. Please review the feedback.' },
-        'Minted': { color: 'blue', description: 'Carbon credits have been minted into tokens.' },
-        'Listed': { color: 'purple', description: 'Tokens are listed for sale on the marketplace.' },
+    const statusConfig: { [key in Project['status']]: { description: string } } = {
+        'Pending': { description: 'This project is awaiting review from a verifier.' },
+        'Verified': { description: 'This project has been successfully verified.' },
+        'Action Required': { description: 'This project requires changes. Please review the feedback.' },
+        'Minted': { description: 'Carbon credits have been minted into tokens.' },
+        'Listed': { description: 'Tokens are listed for sale on the marketplace.' },
     };
 
 
@@ -89,7 +89,7 @@ export default function ProjectDetailPage() {
             
             <div className="flex flex-col lg:flex-row gap-8">
                 {/* Left Column */}
-                <div className="w-full lg:w-1/3">
+                <div className="w-full lg:w-1/3 space-y-8">
                      <Card>
                         <CardHeader>
                             <Image 
@@ -124,10 +124,7 @@ export default function ProjectDetailPage() {
 
                         </CardContent>
                      </Card>
-                </div>
-                
-                {/* Right Column */}
-                <div className="w-full lg:w-2/3 space-y-8">
+                     
                     {project.status === 'Verified' && (
                          <Card className="bg-primary/10 border-primary">
                             <CardHeader className="flex-row items-center justify-between">
@@ -162,46 +159,53 @@ export default function ProjectDetailPage() {
                             </CardHeader>
                         </Card>
                     )}
+                </div>
+                
+                {/* Right Column */}
+                <div className="w-full lg:w-2/3 space-y-8">
+                    
+                    {project.verification && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>AI Verification Report</CardTitle>
+                            </CardHeader>
+                            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="flex flex-col items-center justify-center p-6 bg-muted rounded-lg">
+                                    <p className="text-muted-foreground">Verification Score</p>
+                                    <p className="text-5xl font-bold text-primary">{project.verification.verificationScore}%</p>
+                                </div>
+                                <div className="space-y-4">
+                                    <p><strong>Guideline Compliance:</strong> {project.verification.guidelineCompliance}</p>
+                                    <p><strong>Anomaly Risk:</strong> {project.verification.anomalyRisk}</p>
+                                    <p><strong>Completeness:</strong> {project.verification.completenessPct}%</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
 
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>AI Verification Report</CardTitle>
-                        </CardHeader>
-                        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex flex-col items-center justify-center p-6 bg-muted rounded-lg">
-                                <p className="text-muted-foreground">Verification Score</p>
-                                <p className="text-5xl font-bold text-primary">{project.verification?.verificationScore}%</p>
-                            </div>
-                            <div className="space-y-4">
-                                <p><strong>Guideline Compliance:</strong> {project.verification?.guidelineCompliance}</p>
-                                <p><strong>Anomaly Risk:</strong> {project.verification?.anomalyRisk}</p>
-                                <p><strong>Completeness:</strong> {project.verification?.completenessPct}%</p>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>CO₂ Capture Prediction</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                           <ResponsiveContainer width="100%" height={300}>
-                             <LineChart data={predictionData}>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                                <XAxis dataKey="name" />
-                                <YAxis label={{ value: 'Tons of CO₂', angle: -90, position: 'insideLeft' }}/>
-                                <Tooltip
-                                     contentStyle={{
-                                        background: 'hsl(var(--background))',
-                                        border: '1px solid hsl(var(--border))',
-                                    }}
-                                />
-                                <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} name="Predicted CO₂"/>
-                             </LineChart>
-                           </ResponsiveContainer>
-                        </CardContent>
-                    </Card>
+                    {project.prediction && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>CO₂ Capture Prediction</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                               <ResponsiveContainer width="100%" height={300}>
+                                 <LineChart data={predictionData}>
+                                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                                    <XAxis dataKey="name" />
+                                    <YAxis label={{ value: 'Tons of CO₂', angle: -90, position: 'insideLeft' }}/>
+                                    <Tooltip
+                                         contentStyle={{
+                                            background: 'hsl(var(--background))',
+                                            border: '1px solid hsl(var(--border))',
+                                        }}
+                                    />
+                                    <Line type="monotone" dataKey="value" stroke="hsl(var(--primary))" strokeWidth={2} name="Predicted CO₂"/>
+                                 </LineChart>
+                               </ResponsiveContainer>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
             </div>
         </motion.div>

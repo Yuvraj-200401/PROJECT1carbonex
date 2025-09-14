@@ -35,9 +35,9 @@ export default function DashboardLayout({
   if (loading || !user) {
     return (
       <div className="flex min-h-screen w-full bg-background">
-        <div className="hidden md:flex md:w-64 flex-col border-r bg-gradient-to-b from-gray-900 to-black p-4">
+        <div className="hidden md:flex md:w-64 flex-col border-r bg-sidebar-gradient p-4">
           <div className="mb-8 flex items-center gap-2">
-            <Skeleton className="h-8 w-8 rounded-full" />
+            <Skeleton className="h-8 w-8" />
             <Skeleton className="h-4 w-32" />
           </div>
           <div className="space-y-4">
