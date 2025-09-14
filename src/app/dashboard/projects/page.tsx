@@ -2,7 +2,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getProjects, Project } from '@/lib/demo-data';
+import { getProjects, Project, subscribe } from '@/lib/demo-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
@@ -15,7 +15,10 @@ export default function ProjectsPage() {
     const [projects, setProjects] = useState<Project[]>([]);
 
     useEffect(() => {
-        setProjects(getProjects());
+        const refreshProjects = () => setProjects(getProjects());
+        refreshProjects(); // Initial fetch
+        const unsubscribe = subscribe(refreshProjects); // Subscribe to changes
+        return () => unsubscribe(); // Cleanup on unmount
     }, []);
 
     const statusStyles: { [key: string]: string } = {

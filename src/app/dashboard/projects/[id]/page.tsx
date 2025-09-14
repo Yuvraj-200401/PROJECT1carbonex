@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getProjectById, updateProjectStatus, Project } from '@/lib/demo-data';
+import { getProjectById, updateProjectStatus, Project, subscribe } from '@/lib/demo-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -29,16 +29,16 @@ export default function ProjectDetailPage() {
     const [project, setProject] = useState<Project | null>(null);
 
     useEffect(() => {
-        if (id) {
-            const foundProject = getProjectById(id);
-            setProject(foundProject || null);
-        }
+        if (!id) return;
+        const refreshProject = () => setProject(getProjectById(id) || null);
+        refreshProject();
+        const unsubscribe = subscribe(refreshProject);
+        return () => unsubscribe();
     }, [id]);
 
     const handleMintTokens = () => {
         if (!project) return;
         updateProjectStatus(project.id, 'Minted');
-        setProject(getProjectById(id) || null);
         toast({
             title: 'Tokens Minted!',
             description: `${project.prediction?.oneYearPrediction.toLocaleString()} CARBO tokens have been minted for ${project.siteName}.`
@@ -49,7 +49,6 @@ export default function ProjectDetailPage() {
     const handleListOnMarketplace = () => {
         if (!project) return;
         updateProjectStatus(project.id, 'Listed');
-        setProject(getProjectById(id) || null);
         toast({
             title: 'Project Listed!',
             description: 'Your tokens are now available on the marketplace.'
