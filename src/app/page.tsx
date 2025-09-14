@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle, Database, Waves } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { motion } from 'framer-motion';
+import { WavyBackground } from '@/components/ui/wavy-background';
 
 const heroImage = PlaceHolderImages.find((img) => img.id === 'hero-3d-landing');
 const featureImage1 = PlaceHolderImages.find((img) => img.id === 'feature-1');
@@ -45,54 +46,63 @@ export default function Home() {
 
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="container py-20 md:py-32 text-center">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-            >
-              <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl lg:text-8xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground">
-                Tokenizing Blue Carbon
-              </h1>
-              <p className='font-headline text-5xl font-bold tracking-tighter md:text-7xl lg:text-8xl text-primary -mt-2'>with AI + Blockchain.</p>
-
-              <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
-                CARBO-NEX is a decentralized platform for verifying and tokenizing blue carbon credits. We use AI and blockchain to bring transparency, liquidity, and trust to the carbon market.
-              </p>
-              <div className="mt-8 flex justify-center gap-4">
-                 <Link href="/login">
-                    <Button size="lg" className="font-semibold text-lg px-8">
-                        Get Started
-                    </Button>
-                 </Link>
-                 <Link href="/login">
-                    <Button size="lg" variant="outline" className="font-semibold text-lg px-8">
-                        Explore Marketplace
-                    </Button>
-                 </Link>
-              </div>
-            </motion.div>
-            
-            {/* Hero Image */}
-            {heroImage && 
-              <motion.div 
-                className="mt-16"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+        <WavyBackground
+          className="max-w-4xl mx-auto pb-40"
+          containerClassName="h-auto"
+          backgroundFill="hsl(var(--background))"
+          colors={['#00FF66', '#800080', 'hsl(var(--primary))', '#818cf8', '#22d3ee']}
+          waveOpacity={0.15}
+          blur={15}
+        >
+            <section className="container py-20 md:py-32 text-center">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.7, ease: "easeOut" }}
                 >
-                <Image 
-                    src={heroImage.imageUrl}
-                    alt={heroImage.description}
-                    width={1200}
-                    height={800}
-                    data-ai-hint={heroImage.imageHint}
-                    className="rounded-xl shadow-2xl shadow-primary/10 border border-primary/20"
-                    priority
-                />
-              </motion.div>
-            }
-        </section>
+                  <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl lg:text-8xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground">
+                    Tokenizing Blue Carbon
+                  </h1>
+                  <p className='font-headline text-5xl font-bold tracking-tighter md:text-7xl lg:text-8xl text-primary -mt-2'>with AI + Blockchain.</p>
+
+                  <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
+                    CARBO-NEX is a decentralized platform for verifying and tokenizing blue carbon credits. We use AI and blockchain to bring transparency, liquidity, and trust to the carbon market.
+                  </p>
+                  <div className="mt-8 flex justify-center gap-4">
+                     <Link href="/login">
+                        <Button size="lg" className="font-semibold text-lg px-8">
+                            Get Started
+                        </Button>
+                     </Link>
+                     <Link href="/login">
+                        <Button size="lg" variant="outline" className="font-semibold text-lg px-8">
+                            Explore Marketplace
+                        </Button>
+                     </Link>
+                  </div>
+                </motion.div>
+                
+                {/* Hero Image */}
+                {heroImage && 
+                  <motion.div 
+                    className="mt-16"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+                    >
+                    <Image 
+                        src={heroImage.imageUrl}
+                        alt={heroImage.description}
+                        width={1200}
+                        height={800}
+                        data-ai-hint={heroImage.imageHint}
+                        className="rounded-xl shadow-2xl shadow-primary/10 border border-primary/20"
+                        priority
+                    />
+                  </motion.div>
+                }
+            </section>
+        </WavyBackground>
 
         {/* Stats Section */}
         <section className="container py-24">
