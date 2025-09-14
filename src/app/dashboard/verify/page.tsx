@@ -3,7 +3,6 @@
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useFormState } from 'react-dom';
 import { verifyAndPredict } from '@/lib/actions';
 import { addProject } from '@/lib/demo-data';
 
@@ -13,9 +12,9 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Loader2, Sparkles, Upload } from 'lucide-react';
+import { Loader2, Sparkles } from 'lucide-react';
 import { fileToDataUri } from '@/lib/utils';
 import { motion } from 'framer-motion';
 
@@ -57,27 +56,30 @@ export default function VerificationPage() {
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
         setIsSubmitting(true);
-        const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-            if (value !== undefined) {
-                 formData.append(key, value);
-            }
-        });
-
+        
         try {
+            const imageDataUri = await fileToDataUri(data.imageData);
+            
+            const formData = new FormData();
+            Object.entries(data).forEach(([key, value]) => {
+                if (key !== 'imageData' && value !== undefined) {
+                    formData.append(key, value as string | Blob);
+                }
+            });
+            formData.append('imageDataUri', imageDataUri);
+
             const result = await verifyAndPredict(null, formData);
             
             if (result?.error) {
                 toast({ variant: 'destructive', title: 'Verification Failed', description: result.error });
             } else if (result) {
-                const imageUrl = await fileToDataUri(data.imageData);
                 const newProject = addProject({
                     siteName: data.siteName,
                     lat: data.lat,
                     lng: data.lng,
                     area_ha: data.area_ha,
                     verification: result,
-                    imageUrl,
+                    imageUrl: imageDataUri, // Pass the data URI to be stored
                 });
                 
                 toast({

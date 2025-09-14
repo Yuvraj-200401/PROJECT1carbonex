@@ -4,7 +4,6 @@
 import { z } from "zod";
 import { predictCo2 } from "@/ai/flows/co2-prediction-flow";
 import { verifyCarbonCapture } from "@/ai/flows/ai-verification";
-import { fileToDataUri } from "./utils";
 import type { VerificationResult } from "./types";
 
 const formSchema = z.object({
@@ -18,7 +17,7 @@ const formSchema = z.object({
   NDVI: z.coerce.number(),
   sampleMetadata: z.string(),
   csvData: z.instanceof(File),
-  imageData: z.instanceof(File),
+  imageDataUri: z.string(),
 });
 
 export async function verifyAndPredict(prevState: any, formData: FormData): Promise<VerificationResult | null> {
@@ -33,18 +32,16 @@ export async function verifyAndPredict(prevState: any, formData: FormData): Prom
     };
   }
 
-  const { imageData, csvData, ...rest } = validatedFields.data;
+  const { csvData, ...rest } = validatedFields.data;
 
   try {
-    const [imageDataUri, csvContent, prediction] = await Promise.all([
-      fileToDataUri(imageData),
+    const [csvContent, prediction] = await Promise.all([
       csvData.text(),
       predictCo2(rest),
     ]);
 
     const verification = await verifyCarbonCapture({
       ...rest,
-      imageDataUri,
       csvData: csvContent,
     });
     
