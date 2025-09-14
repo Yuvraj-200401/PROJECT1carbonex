@@ -61,8 +61,6 @@ export default function DashboardRootPage() {
       return <VerifierDashboard />;
     case 'Buyer':
       return <BuyerDashboard />;
-    case 'Community':
-        return <BuyerDashboard />;
     default:
         return <div className="text-center">Unsupported role. Please log in again.</div>;
   }

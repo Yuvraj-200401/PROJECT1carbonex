@@ -8,10 +8,9 @@ import { ShieldCheck, ShoppingBag, Users, Building, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const roles = [
-    { id: 'ngo', name: 'NGO', icon: <Building />, description: "Manage & tokenize carbon projects.", user: { name: 'Sulu Sea Conservation', email: 'contact@sulusea.org', role: 'NGO' } },
+    { id: 'ngo', name: 'NGO/Comm', icon: <Building />, description: "Manage & tokenize carbon projects.", user: { name: 'Sulu Sea Conservation', email: 'contact@sulusea.org', role: 'NGO' } },
     { id: 'verifier', name: 'Verifier', icon: <ShieldCheck />, description: "Verify project data for NCCR.", user: { name: 'Admin Verifier', email: 'admin@nccr.gov', role: 'Verifier' } },
-    { id: 'buyer', name: 'Buyer / Investor', icon: <ShoppingBag />, description: "Purchase & trade carbon credits.", user: { name: 'EcoCapital Inc.', email: 'trades@ecocapital.com', role: 'Buyer' } },
-    { id: 'community', name: 'Community', icon: <Users />, description: "Receive rewards and participate.", user: { name: 'Local Community Rep', email: 'community@local.org', role: 'Community' } },
+    { id: 'buyer', name: 'Buyer', icon: <ShoppingBag />, description: "Purchase & trade carbon credits.", user: { name: 'EcoCapital Inc.', email: 'trades@ecocapital.com', role: 'Buyer' } },
 ];
 
 export default function LoginPage() {
@@ -70,7 +69,7 @@ export default function LoginPage() {
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {roles.map((role, i) => (
                         <motion.div
                             key={role.id}

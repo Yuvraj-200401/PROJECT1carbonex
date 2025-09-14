@@ -49,11 +49,6 @@ const menuItemsByRole: Record<string, any[]> = {
         { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
         { href: '/dashboard/wallet', icon: <Wallet />, label: 'My Purchases' },
     ],
-    Community: [
-        { href: '/dashboard', icon: <LayoutGrid />, label: 'Overview' },
-        { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
-        { href: '/dashboard/wallet', icon: <Wallet />, label: 'My Rewards' },
-    ],
 };
 
 const bottomMenuItems = [
