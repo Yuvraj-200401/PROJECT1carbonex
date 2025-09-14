@@ -1,8 +1,8 @@
 
 'use client';
-import { useEffect, useState } from 'react';
-import DashboardHeader from '@/components/dashboard-header';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useWeb3 } from '@/lib/web3-mock';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function DashboardLayout({
@@ -10,40 +10,28 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const [role, setRole] = useState<string | null>(null);
-  const [user, setUser] = useState<{name: string, image: string} | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { wallet, loading } = useWeb3();
   const router = useRouter();
 
   useEffect(() => {
-    // We are in a client component, so we can safely access localStorage
-    const userRole = localStorage.getItem('userRole');
-    const userName = localStorage.getItem('userName');
-    const userImage = localStorage.getItem('userImage');
-
-    if (userRole && userName) {
-        setRole(userRole);
-        setUser({ name: userName, image: userImage || '' });
-    } else {
-        router.push('/login');
+    if (!loading && !wallet) {
+      router.push('/login');
     }
-    setLoading(false);
-  }, [router]);
+  }, [wallet, loading, router]);
 
-  if (loading || !role || !user) {
+  if (loading || !wallet) {
     return (
-        <div className="flex flex-col min-h-screen w-full bg-background">
-            <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:px-8">
-                 <Skeleton className="h-8 w-36" />
-                 <div className="flex items-center gap-4">
-                    <Skeleton className="h-8 w-24" />
-                    <Skeleton className="h-8 w-24" />
-                    <Skeleton className="size-8 rounded-full" />
-                 </div>
+        <div className="flex flex-col min-h-screen w-full bg-background p-8">
+            <header className="flex items-center justify-between mb-8">
+                 <Skeleton className="h-8 w-48" />
+                 <Skeleton className="h-10 w-40 rounded-full" />
             </header>
-            <main className="flex-1 p-4 md:p-8">
-                 <Skeleton className="h-12 w-1/3 mb-8" />
-                 <Skeleton className="h-64 w-full" />
+            <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <Skeleton className="h-40 w-full" />
+                <Skeleton className="h-40 w-full" />
+                <Skeleton className="h-40 w-full" />
+                <Skeleton className="h-64 w-full md:col-span-2" />
+                <Skeleton className="h-64 w-full" />
             </main>
         </div>
     )
@@ -51,10 +39,7 @@ export default function DashboardLayout({
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background">
-        <DashboardHeader role={role} user={user} />
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-            {children}
-        </main>
+        {children}
     </div>
   );
 }
