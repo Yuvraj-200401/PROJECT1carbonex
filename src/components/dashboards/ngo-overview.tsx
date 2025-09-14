@@ -5,18 +5,18 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { getProjects, Project } from '@/lib/demo-data';
+import { getProjects, Project, subscribe } from '@/lib/demo-data';
 import { CheckCircle, Clock, Award, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const StatCard = ({ title, value, icon, description }: { title: string, value: number, icon: React.ReactNode, description: string }) => (
+const StatCard = ({ title, value, icon, description }: { title: string, value: string | number, icon: React.ReactNode, description: string }) => (
     <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">{title}</CardTitle>
             <div className="text-muted-foreground">{icon}</div>
         </CardHeader>
         <CardContent>
-            <div className="text-2xl font-bold">{value.toLocaleString()}</div>
+            <div className="text-2xl font-bold">{typeof value === 'number' ? value.toLocaleString() : value}</div>
             <p className="text-xs text-muted-foreground">{description}</p>
         </CardContent>
     </Card>
@@ -37,7 +37,10 @@ export default function NGOOverview() {
   const [projects, setProjects] = useState<Project[]>([]);
   
   useEffect(() => {
-    setProjects(getProjects());
+    const refreshProjects = () => setProjects(getProjects());
+    refreshProjects();
+    const unsubscribe = subscribe(refreshProjects);
+    return () => unsubscribe();
   }, []);
 
   const verifiedCount = projects.filter(p => p.status === 'Verified').length;
@@ -63,7 +66,7 @@ export default function NGOOverview() {
       </div>
       
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <StatCard title="Verified Credits" value={verifiedCount} icon={<CheckCircle />} description="Projects successfully verified" />
+        <StatCard title="Verified Projects" value={verifiedCount} icon={<CheckCircle />} description="Projects successfully verified" />
         <StatCard title="Pending Verifications" value={pendingCount} icon={<Clock />} description="Projects awaiting review" />
         <StatCard title="Tokens Minted" value={tokensMinted} icon={<Award />} description="Total CARBO tokens minted" />
       </div>
@@ -71,8 +74,8 @@ export default function NGOOverview() {
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
         <Card className="lg:col-span-3">
           <CardHeader>
-            <CardTitle>Recent Verifications</CardTitle>
-            <CardDescription>Monthly verified credits this year.</CardDescription>
+            <CardTitle>Monthly Credits Verified</CardTitle>
+            <CardDescription>A mock chart showing credits verified this year.</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
