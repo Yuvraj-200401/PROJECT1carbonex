@@ -18,6 +18,11 @@ export type Project = {
 
 // In-memory store for the demo
 let projects: Project[] = [];
+const listeners = new Set<() => void>();
+
+function notifyListeners() {
+    listeners.forEach(listener => listener());
+}
 
 // Function to initialize data from localStorage
 function initializeData() {
@@ -27,36 +32,45 @@ function initializeData() {
             if (storedProjects) {
                 projects = JSON.parse(storedProjects);
             } else {
-                // Initialize with some default data if nothing is in localStorage
-                projects = [
-                    // You can add default projects here if needed
-                ];
+                projects = [];
                 localStorage.setItem('demoProjects', JSON.stringify(projects));
             }
         }
     } catch (error) {
         console.error("Could not access localStorage. Demo data will be ephemeral.", error);
-        projects = []; // Fallback to an empty array if localStorage is blocked
+        projects = []; 
     }
+    notifyListeners();
 }
 
 // Call initialization once
-initializeData();
+if (typeof window !== 'undefined') {
+    initializeData();
+    window.addEventListener('storage', (event) => {
+        if (event.key === 'demoProjects') {
+            initializeData();
+        }
+    });
+}
 
 
 function saveData() {
     try {
         if (typeof window !== 'undefined') {
             localStorage.setItem('demoProjects', JSON.stringify(projects));
+            notifyListeners();
         }
     } catch (error) {
         console.error("Could not save data to localStorage.", error);
     }
 }
 
+export function subscribe(listener: () => void) {
+    listeners.add(listener);
+    return () => listeners.delete(listener);
+}
+
 export function getProjects(): Project[] {
-    // Re-initialize in case data was cleared or another tab changed it
-    initializeData();
     return [...projects].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
 
@@ -87,4 +101,10 @@ export function updateProjectStatus(id: string, status: Project['status']): Proj
         return project;
     }
     return undefined;
+}
+
+// Function used by buyer dashboard to simulate purchase
+export function removeProject(id: string) {
+    projects = projects.filter(p => p.id !== id);
+    saveData();
 }

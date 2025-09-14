@@ -1,7 +1,7 @@
 
 'use client';
 import { useState, useEffect } from 'react';
-import { getProjects, updateProjectStatus, Project } from '@/lib/demo-data';
+import { getProjects, updateProjectStatus, subscribe, Project } from '@/lib/demo-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -12,13 +12,18 @@ import { motion } from 'framer-motion';
 export default function MyTokensPage() {
     const [projects, setProjects] = useState<Project[]>([]);
 
-    useEffect(() => {
+    const refreshProjects = () => {
         setProjects(getProjects());
+    }
+
+    useEffect(() => {
+        refreshProjects();
+        const unsubscribe = subscribe(refreshProjects);
+        return () => unsubscribe();
     }, []);
 
     const handleListForSale = (id: string) => {
         updateProjectStatus(id, 'Listed');
-        setProjects(getProjects());
         toast({
             title: 'Tokens Listed!',
             description: 'Your carbon credit tokens are now available on the marketplace.',
