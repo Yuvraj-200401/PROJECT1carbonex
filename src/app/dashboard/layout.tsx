@@ -1,8 +1,10 @@
 
 'use client';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useWeb3 } from '@/lib/web3-mock';
+import { DashboardHeader } from '@/components/dashboard-header';
+import { DashboardSidebar } from '@/components/dashboard-sidebar';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function DashboardLayout({
@@ -10,36 +12,68 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { wallet, loading } = useWeb3();
+  const [user, setUser] = useState<{ name: string; email: string; role: string } | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !wallet) {
+    try {
+      const storedUser = localStorage.getItem('demoUser');
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      } else {
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error("Could not access local storage:", error);
       router.push('/login');
+    } finally {
+      setLoading(false);
     }
-  }, [wallet, loading, router]);
+  }, [router]);
 
-  if (loading || !wallet) {
+  if (loading || !user) {
     return (
-        <div className="flex flex-col min-h-screen w-full bg-background p-8">
-            <header className="flex items-center justify-between mb-8">
-                 <Skeleton className="h-8 w-48" />
-                 <Skeleton className="h-10 w-40 rounded-full" />
-            </header>
-            <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <Skeleton className="h-40 w-full" />
-                <Skeleton className="h-40 w-full" />
-                <Skeleton className="h-40 w-full" />
-                <Skeleton className="h-64 w-full md:col-span-2" />
-                <Skeleton className="h-64 w-full" />
-            </main>
+      <div className="flex min-h-screen w-full bg-background">
+        <div className="hidden md:flex md:w-64 flex-col border-r bg-gradient-to-b from-gray-900 to-black p-4">
+          <div className="mb-8 flex items-center gap-2">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-8 w-full" />
+          </div>
         </div>
-    )
+        <div className="flex flex-1 flex-col">
+          <header className="flex h-16 items-center justify-between border-b px-4 md:px-8">
+            <Skeleton className="h-6 w-48" />
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-8 w-24" />
+              <Skeleton className="h-8 w-8 rounded-full" />
+            </div>
+          </header>
+          <main className="flex-1 p-4 md:p-8">
+            <Skeleton className="h-96 w-full" />
+          </main>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-background">
-        {children}
-    </div>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full bg-background">
+        <DashboardSidebar user={user} role={user.role} />
+        <div className="flex flex-1 flex-col">
+          <DashboardHeader user={user} role={user.role} />
+          <main className="flex-1 overflow-y-auto p-4 md:p-8">
+            {children}
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }

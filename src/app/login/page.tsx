@@ -1,66 +1,72 @@
 
 'use client';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CarboNexLogo } from '@/components/icons';
 import { useToast } from '@/hooks/use-toast';
-import { User, ShieldCheck, ShoppingBag, Users, Building } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ShieldCheck, ShoppingBag, Users, Building, Leaf } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useWeb3 } from '@/lib/web3-mock';
 
 const roles = [
-    { id: 'ngo', name: 'NGO Wallet', icon: <Building />, description: "Manage project credits" },
-    { id: 'community', name: 'Community Wallet', icon: <Users />, description: "Receive rewards" },
-    { id: 'buyer', name: 'Buyer / Investor Wallet', icon: <ShoppingBag />, description: "Purchase credits" },
-    { id: 'admin', name: 'Admin (NCCR) Wallet', icon: <ShieldCheck />, description: "Verify and mint tokens" },
+    { id: 'ngo', name: 'NGO', icon: <Building />, description: "Manage & tokenize carbon projects.", user: { name: 'Sulu Sea Conservation', email: 'contact@sulusea.org', role: 'NGO' } },
+    { id: 'verifier', name: 'Verifier', icon: <ShieldCheck />, description: "Verify project data for NCCR.", user: { name: 'Admin Verifier', email: 'admin@nccr.gov', role: 'Verifier' } },
+    { id: 'buyer', name: 'Buyer / Investor', icon: <ShoppingBag />, description: "Purchase & trade carbon credits.", user: { name: 'EcoCapital Inc.', email: 'trades@ecocapital.com', role: 'Buyer' } },
+    { id: 'community', name: 'Community', icon: <Users />, description: "Receive rewards and participate.", user: { name: 'Local Community Rep', email: 'community@local.org', role: 'Community' } },
 ];
 
 export default function LoginPage() {
     const router = useRouter();
     const { toast } = useToast();
-    const { connectWallet } = useWeb3();
 
-    const handleConnect = (walletType: string) => {
-        const selectedRole = roles.find(r => r.id === walletType);
-        if (!selectedRole) return;
-
-        connectWallet(walletType);
+    const handleConnect = (role: typeof roles[0]) => {
+        try {
+          localStorage.setItem('demoUser', JSON.stringify(role.user));
+        } catch (error) {
+          console.error("Could not access local storage:", error);
+          toast({
+              variant: 'destructive',
+              title: `Login Failed`,
+              description: `Could not access local storage. Please enable it in your browser settings.`,
+          });
+          return;
+        }
         
         toast({
-            title: `Wallet Connected`,
-            description: `You are now connected as: ${selectedRole.name}. Redirecting...`,
+            title: `Logged in as ${role.name}`,
+            description: `Welcome, ${role.user.name}! Redirecting to your dashboard...`,
         });
 
         router.push('/dashboard');
     };
 
     return (
-        <div className="flex min-h-screen w-full items-center justify-center p-4 relative overflow-hidden">
-            <div className="w-full max-w-4xl">
+        <div className="flex min-h-screen w-full items-center justify-center p-4 relative overflow-hidden bg-background">
+            {/* Background decorative elements */}
+            <div className="absolute top-0 left-0 -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[60rem] rounded-full bg-primary/5 blur-3xl" />
+            <div className="absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 w-[60rem] h-[60rem] rounded-full bg-secondary/5 blur-3xl" />
+
+            <div className="w-full max-w-4xl z-10">
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, ease: "easeOut" }}
                     className="text-center"
                 >
                     <motion.div 
                         className="inline-block mb-8"
-                        whileHover={{ scale: 1.1, rotate: 10 }}
+                        whileHover={{ scale: 1.1, rotate: -10 }}
                         transition={{ type: 'spring', stiffness: 300 }}
                     >
                         <CarboNexLogo className="size-24 text-primary" />
                     </motion.div>
 
-                    <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter mb-4">
-                        Welcome to CARBO-NEX
+                    <h1 className="font-headline text-5xl md:text-7xl font-bold tracking-tighter mb-4 text-foreground">
+                        Welcome to <span className="text-primary">CARBO-NEX</span>
                     </h1>
-                    <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-12">
-                        A decentralized platform for verifying and tokenizing blue carbon credits.
+                    <p className="text-lg text-muted-foreground max-w-3xl mx-auto mb-12">
+                        The future of transparent, verifiable, and liquid blue carbon markets.
                         <br/>
-                        <span className='font-semibold text-primary'>Select a demo wallet to begin.</span>
+                        <span className='font-semibold text-foreground'>Select a demo persona to explore the platform.</span>
                     </p>
                 </motion.div>
 
@@ -70,21 +76,34 @@ export default function LoginPage() {
                             key={role.id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: 0.2 + i * 0.1 }}
+                            transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
                         >
                             <button
-                                onClick={() => handleConnect(role.id)}
-                                className="group text-left p-6 rounded-xl border-2 border-primary/20 hover:border-primary hover:bg-primary/10 transition-all w-full h-full flex flex-col justify-between glass-card"
+                                onClick={() => handleConnect(role)}
+                                className="group text-left p-6 rounded-xl border-2 border-border hover:border-primary hover:bg-card/80 transition-all duration-300 w-full h-full flex flex-col justify-between bg-card/50 backdrop-blur-sm"
                             >
                                 <div>
-                                    <div className="text-primary mb-3">{role.icon}</div>
-                                    <h3 className="font-semibold text-foreground text-lg">{role.name}</h3>
-                                    <p className="text-sm text-muted-foreground mt-1">{role.description}</p>
+                                    <div className="text-primary mb-4 p-2 bg-primary/10 rounded-lg w-min">{role.icon}</div>
+                                    <h3 className="font-semibold text-foreground text-xl">{role.name}</h3>
+                                    <p className="text-sm text-muted-foreground mt-1 h-12">{role.description}</p>
                                 </div>
+                                <span className="text-primary font-semibold mt-4 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Explore Dashboard <Leaf size={16}/>
+                                </span>
                             </button>
                         </motion.div>
                     ))}
                 </div>
+                 <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 1 }}
+                    className="text-center mt-12"
+                 >
+                    <Button variant="link" onClick={() => router.push('/')}>
+                        Back to Landing Page
+                    </Button>
+                </motion.div>
             </div>
         </div>
     )

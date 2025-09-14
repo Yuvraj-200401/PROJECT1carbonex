@@ -1,0 +1,89 @@
+
+'use client';
+
+import { useState, useEffect } from 'react';
+import { getProjects, updateProjectStatus, Project } from '@/lib/demo-data';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import { toast } from '@/hooks/use-toast';
+import { motion } from 'framer-motion';
+
+export default function VerifierDashboard() {
+    const [projects, setProjects] = useState<Project[]>([]);
+    
+    useEffect(() => {
+        setProjects(getProjects());
+    }, []);
+
+    const handleUpdateStatus = (id: string, status: 'Verified' | 'Action Required') => {
+        updateProjectStatus(id, status);
+        setProjects(getProjects()); // Refresh the list
+        toast({
+            title: "Project Updated",
+            description: `Project has been marked as ${status}.`
+        });
+    }
+
+    const pendingProjects = projects.filter(p => p.status === 'Pending');
+
+    return (
+        <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="space-y-8"
+        >
+             <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold font-headline">Verification Submissions</h1>
+                    <p className="text-muted-foreground">Review and approve pending carbon credit projects.</p>
+                </div>
+            </div>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Pending Projects</CardTitle>
+                    <CardDescription>
+                        {pendingProjects.length > 0 
+                            ? `There are ${pendingProjects.length} projects awaiting your review.` 
+                            : 'There are no pending projects at this time.'}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Project Site</TableHead>
+                                <TableHead>Date Submitted</TableHead>
+                                <TableHead>Area (ha)</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {pendingProjects.map(project => (
+                                <TableRow key={project.id}>
+                                    <TableCell className="font-medium">{project.siteName}</TableCell>
+                                    <TableCell>{new Date(project.date).toLocaleDateString()}</TableCell>
+                                    <TableCell>{project.area_ha}</TableCell>
+                                    <TableCell className="text-right">
+                                        <Button variant="outline" size="sm" className="mr-2" onClick={() => handleUpdateStatus(project.id, 'Action Required')}>Reject</Button>
+                                        <Button size="sm" onClick={() => handleUpdateStatus(project.id, 'Verified')}>Approve</Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                             {pendingProjects.length === 0 && (
+                                <TableRow>
+                                    <TableCell colSpan={4} className="h-24 text-center">
+                                        All caught up!
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+        </motion.div>
+    );
+}

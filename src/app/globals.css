@@ -4,68 +4,80 @@
 
 @layer base {
   :root {
-    --background: 0 0% 0%; /* Deep Black */
+    --background: 222 47% 11%; /* Dark Blue */
     --foreground: 210 40% 98%;
 
-    --card: 210 40% 98%; /* For glass effect, this will be mostly transparent */
+    --card: 222 47% 15%; 
     --card-foreground: 210 40% 98%;
 
     --popover: 224 71% 4%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 145 100% 50%; /* Neon Green */
-    --primary-foreground: 0 0% 0%;
+    --primary: 173 98% 47%; /* Cyan */
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 300 100% 25%; /* Purple */
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 224 71% 10%;
+    --muted: 217 33% 25%;
     --muted-foreground: 210 40% 60%;
 
-    --accent: 224 71% 10%;
+    --accent: 217 33% 25%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 145 100% 50%; /* Neon Green border */
-    --input: 224 71% 15%;
-    --ring: 145 100% 50%;
+    --border: 217 33% 25%;
+    --input: 217 33% 25%;
+    --ring: 173 98% 47%;
 
     --radius: 0.5rem;
 
-    --chart-1: 145 100% 50%;
-    --chart-2: 300 100% 25%;
+    --chart-1: 173 98% 47%;
+    --chart-2: 217 33% 50%;
   }
 
   .dark {
-    --background: 0 0% 0%; /* Deep Black */
+    --background: 222 47% 11%;
     --foreground: 210 40% 98%;
 
-    --card: 210 40% 98%;
+    --card: 222 47% 15%;
     --card-foreground: 210 40% 98%;
 
     --popover: 224 71% 4%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 145 100% 50%; /* Neon Green */
-    --primary-foreground: 0 0% 0%;
+    --primary: 173 98% 47%;
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 300 100% 25%; /* Purple */
+    --secondary: 217 33% 17%;
     --secondary-foreground: 210 40% 98%;
 
-    --muted: 224 71% 10%;
+    --muted: 217 33% 25%;
     --muted-foreground: 210 40% 60%;
 
-    --accent: 224 71% 10%;
+    --accent: 217 33% 25%;
     --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 145 100% 50%;
-    --input: 224 71% 15%;
-    --ring: 145 100% 50%;
+    --border: 217 33% 25%;
+    --input: 217 33% 25%;
+    --ring: 173 98% 47%;
+    
+    --sidebar-background: 224 71% 4%;
+    --sidebar-foreground: 210 40% 98%;
+
+    --sidebar-primary: 173 98% 47%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    
+    --sidebar-accent: 222 47% 11%;
+    --sidebar-accent-foreground: 210 40% 98%;
+
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 173 98% 47%;
   }
 }
 
@@ -78,13 +90,11 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(circle at 10% 10%, hsl(var(--primary) / 0.1), transparent 30%),
-                      radial-gradient(circle at 90% 80%, hsl(var(--secondary) / 0.1), transparent 30%);
   }
 }
 
-@layer components {
-    .glass-card {
-        @apply bg-gray-500/10 backdrop-blur-lg border border-primary/20 rounded-xl shadow-lg;
+@layer utilities {
+    .bg-sidebar-gradient {
+        @apply bg-gradient-to-b from-gray-900 to-black;
     }
 }
