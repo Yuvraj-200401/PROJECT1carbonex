@@ -3,9 +3,9 @@
   "placeholderImages": [
     {
       "id": "hero-3d-landing",
-      "description": "3D abstract illustration for landing page hero",
-      "imageUrl": "https://picsum.photos/seed/carbonex-hero/1200/800",
-      "imageHint": "abstract geometric"
+      "description": "Aerial drone shot of a lush mangrove forest",
+      "imageUrl": "https://picsum.photos/seed/mangrove-hero/1200/800",
+      "imageHint": "mangrove forest"
     },
     {
       "id": "feature-1",
