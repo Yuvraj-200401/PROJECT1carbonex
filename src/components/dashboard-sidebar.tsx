@@ -24,6 +24,7 @@ import {
   HelpCircle,
   LogOut,
   ChevronLeft,
+  Briefcase,
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -34,20 +35,22 @@ interface DashboardSidebarProps {
 const menuItemsByRole: Record<string, any[]> = {
     NGO: [
         { href: '/dashboard', icon: <LayoutGrid />, label: 'Overview' },
-        { href: '/dashboard/projects', icon: <FilePlus />, label: 'Projects' },
+        { href: '/dashboard/projects', icon: <Briefcase />, label: 'Projects' },
         { href: '/dashboard/verify', icon: <FilePlus />, label: 'New Verification' },
-        { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
         { href: '/dashboard/my-tokens', icon: <Coins />, label: 'My Tokens' },
+        { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
         { href: '/dashboard/wallet', icon: <Wallet />, label: 'Wallet' },
     ],
     Verifier: [
         { href: '/dashboard', icon: <LayoutGrid />, label: 'Submissions' },
     ],
     Buyer: [
+        { href: '/dashboard', icon: <LayoutGrid />, label: 'Overview' },
         { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
         { href: '/dashboard/wallet', icon: <Wallet />, label: 'My Purchases' },
     ],
     Community: [
+        { href: '/dashboard', icon: <LayoutGrid />, label: 'Overview' },
         { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
         { href: '/dashboard/wallet', icon: <Wallet />, label: 'My Rewards' },
     ],
