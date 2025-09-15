@@ -1,19 +1,13 @@
 
 'use client';
 import Link from 'next/link';
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Database, Waves } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
-import { Skeleton } from '@/components/ui/skeleton';
-
-const EarthModel = dynamic(() => import('@/components/ui/earth-model'), {
-  ssr: false,
-  loading: () => <Skeleton className="w-full h-full rounded-full" />
-});
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const stats = [
     { value: '1M+', label: 'CO₂ Verified (t)', description: 'Tons of CO₂ equivalent verified and tokenized through our platform.' },
@@ -22,6 +16,8 @@ const stats = [
 ]
 
 export default function Home() {
+  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-3d-landing');
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm">
@@ -83,11 +79,17 @@ export default function Home() {
                   </div>
                 </motion.div>
                 
-                {/* Hero 3D Model */}
-                <div className="w-full h-[400px] lg:h-[500px]">
-                  <Suspense fallback={<Skeleton className="w-full h-full rounded-full" />}>
-                      <EarthModel />
-                  </Suspense>
+                {/* Hero Image */}
+                 <div className="w-full h-[400px] lg:h-[500px] relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10">
+                    {heroImage && (
+                        <Image
+                            src={heroImage.imageUrl}
+                            alt={heroImage.description}
+                            fill
+                            className="object-cover"
+                            data-ai-hint={heroImage.imageHint}
+                        />
+                    )}
                 </div>
             </section>
         </WavyBackground>
