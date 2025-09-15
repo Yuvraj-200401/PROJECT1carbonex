@@ -3,9 +3,9 @@
   "placeholderImages": [
     {
       "id": "hero-3d-landing",
-      "description": "Aerial drone shot of a lush mangrove forest",
-      "imageUrl": "https://picsum.photos/seed/mangrove-hero/1200/800",
-      "imageHint": "mangrove forest"
+      "description": "A close-up shot of a dense mangrove forest with intricate roots visible above the water.",
+      "imageUrl": "https://storage.googleapis.com/studioprompt/prod/1723555541_973121_image.jpeg",
+      "imageHint": "mangrove roots"
     },
     {
       "id": "feature-1",
