@@ -10,7 +10,7 @@ import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const EarthModel = dynamic(() => import('@/components/ui/earth-model').then(mod => mod.EarthModel), {
+const EarthModel = dynamic(() => import('@/components/ui/earth-model'), {
   ssr: false,
   loading: () => <Skeleton className="w-full h-full rounded-full" />
 });

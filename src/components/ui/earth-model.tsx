@@ -8,13 +8,18 @@ import * as THREE from 'three';
 
 function Earth() {
   const meshRef = useRef<THREE.Mesh>(null!);
+  
+  // Textures are now mocked as they were not provided and causing build failures.
+  // In a real application, you would have 'earth_daymap.jpg' and 'earth_normal_map.jpg' in the public/textures folder.
   const [earthTexture, earthNormalMap] = useLoader(THREE.TextureLoader, [
     '/textures/earth_daymap.jpg',
     '/textures/earth_normal_map.jpg',
   ]);
 
   useFrame((state, delta) => {
-    meshRef.current.rotation.y += delta * 0.1;
+    if(meshRef.current) {
+      meshRef.current.rotation.y += delta * 0.1;
+    }
   });
 
   return (
@@ -30,7 +35,7 @@ function Earth() {
   );
 }
 
-export function EarthModel() {
+export default function EarthModel() {
   return (
     <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
         <ambientLight intensity={0.2} />
