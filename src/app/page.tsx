@@ -88,8 +88,8 @@ export default function Home() {
                       <Image
                         src={heroImage.imageUrl}
                         alt={heroImage.description}
-                        width={900}
-                        height={600}
+                        width={1200}
+                        height={800}
                         className="rounded-xl shadow-2xl shadow-primary/10 mx-auto"
                         data-ai-hint={heroImage.imageHint}
                         priority
