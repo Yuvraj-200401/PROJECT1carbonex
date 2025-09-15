@@ -3,7 +3,6 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { I18nProviderClient } from '@/locales/client';
 import type { ReactNode } from 'react';
-import { getLocale } from '@/locales/server';
 
 export const metadata: Metadata = {
   title: 'CARBO-NEX',
@@ -17,7 +16,7 @@ export default async function RootLayout({
   children: ReactNode;
   params: { locale: string };
 }>) {
-  const effectiveLocale = locale || await getLocale() || 'en';
+  const effectiveLocale = locale || 'en';
 
   return (
     <html lang={effectiveLocale} className="dark">
