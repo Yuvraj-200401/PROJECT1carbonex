@@ -2,13 +2,18 @@
 'use client';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Database, Waves } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
-import { EarthModel } from '@/components/ui/earth-model';
 import { Skeleton } from '@/components/ui/skeleton';
+
+const EarthModel = dynamic(() => import('@/components/ui/earth-model').then(mod => mod.EarthModel), {
+  ssr: false,
+  loading: () => <Skeleton className="w-full h-full rounded-full" />
+});
 
 const stats = [
     { value: '1M+', label: 'CO₂ Verified (t)', description: 'Tons of CO₂ equivalent verified and tokenized through our platform.' },
