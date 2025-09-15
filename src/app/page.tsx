@@ -16,6 +16,7 @@ const stats = [
 ]
 
 export default function Home() {
+    const heroImage = PlaceHolderImages.find(img => img.id === 'hero-3d-landing');
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -76,6 +77,26 @@ export default function Home() {
                         </Button>
                      </Link>
                   </div>
+                  
+                  {heroImage && (
+                    <motion.div 
+                      className="mt-16"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
+                    >
+                      <Image
+                        src={heroImage.imageUrl}
+                        alt={heroImage.description}
+                        width={1200}
+                        height={800}
+                        className="rounded-xl shadow-2xl shadow-primary/10"
+                        data-ai-hint={heroImage.imageHint}
+                        priority
+                      />
+                    </motion.div>
+                  )}
+
                 </motion.div>
             </section>
         </WavyBackground>
