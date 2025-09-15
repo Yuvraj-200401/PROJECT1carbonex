@@ -51,7 +51,7 @@ export default function Home() {
           waveOpacity={0.1}
           blur={10}
         >
-            <section className="container py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
+            <section className="container py-20 md:py-32 grid grid-cols-1 items-center gap-12 text-center">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -62,10 +62,10 @@ export default function Home() {
                   </h1>
                   <p className='font-headline text-5xl font-bold tracking-tighter md:text-7xl text-primary -mt-2'>with AI + Blockchain.</p>
 
-                  <p className="mt-6 text-lg text-muted-foreground max-w-2xl">
+                  <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
                     CARBO-NEX is a decentralized platform for verifying and tokenizing blue carbon credits. We use AI and blockchain to bring transparency, liquidity, and trust to the carbon market.
                   </p>
-                  <div className="mt-8 flex gap-4">
+                  <div className="mt-8 flex justify-center gap-4">
                      <Link href="/login">
                         <Button size="lg" className="font-semibold text-lg px-8">
                             Get Started
@@ -78,19 +78,6 @@ export default function Home() {
                      </Link>
                   </div>
                 </motion.div>
-                
-                {/* Hero Image */}
-                 <div className="w-full h-[400px] lg:h-[500px] relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10">
-                    {heroImage && (
-                        <Image
-                            src={heroImage.imageUrl}
-                            alt={heroImage.description}
-                            fill
-                            className="object-cover"
-                            data-ai-hint={heroImage.imageHint}
-                        />
-                    )}
-                </div>
             </section>
         </WavyBackground>
 
