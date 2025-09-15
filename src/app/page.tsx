@@ -16,7 +16,6 @@ const stats = [
 ]
 
 export default function Home() {
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero-3d-landing');
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -62,7 +61,7 @@ export default function Home() {
                   </h1>
                   <p className='font-headline text-5xl font-bold tracking-tighter md:text-7xl text-primary -mt-2'>with AI + Blockchain.</p>
 
-                  <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
+                  <p className="mt-6 text-lg text-primary max-w-3xl mx-auto">
                     CARBO-NEX is a decentralized platform for verifying and tokenizing blue carbon credits. We use AI and blockchain to bring transparency, liquidity, and trust to the carbon market.
                   </p>
                   <div className="mt-8 flex justify-center gap-4">
