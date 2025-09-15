@@ -6,8 +6,6 @@ import { ArrowRight, CheckCircle, Database, Waves, Globe } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
-import { useI18n, useChangeLocale, useCurrentLocale } from '@/locales/client';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 
 const stats = [
@@ -17,9 +15,6 @@ const stats = [
 ]
 
 export default function Home() {
-    const t = useI18n();
-    const changeLocale = useChangeLocale();
-    const currentLocale = useCurrentLocale();
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -33,29 +28,13 @@ export default function Home() {
           </Link>
           <div className="flex flex-1 items-center justify-end space-x-4">
              <Button variant="ghost" asChild>
-                <Link href="/login">{t('hero.marketplace')}</Link>
+                <Link href="/login">Explore Marketplace</Link>
              </Button>
              <Link href="/login">
                 <Button>
-                  {t('hero.launchApp')} <ArrowRight className="ml-2 size-4" />
+                  Launch App <ArrowRight className="ml-2 size-4" />
                 </Button>
               </Link>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button variant="outline" size="icon">
-                        <Globe className="h-[1.2rem] w-[1.2rem]" />
-                        <span className="sr-only">Change language</span>
-                    </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => changeLocale('en')}>
-                        English
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => changeLocale('es')}>
-                        Español
-                    </DropdownMenuItem>
-                </DropdownMenuContent>
-             </DropdownMenu>
           </div>
         </div>
       </header>
@@ -77,22 +56,22 @@ export default function Home() {
                   transition={{ duration: 0.7, ease: "easeOut" }}
                 >
                   <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground">
-                     {t('hero.title1')}
+                     Tokenizing Blue Carbon
                   </h1>
-                  <p className='font-headline text-5xl font-bold tracking-tighter md:text-7xl text-primary -mt-2'>{t('hero.title2')}</p>
+                  <p className='font-headline text-5xl font-bold tracking-tighter md:text-7xl text-primary -mt-2'>with AI + Blockchain.</p>
 
                   <p className="mt-6 text-lg text-primary max-w-3xl mx-auto">
-                    {t('hero.subtitle')}
+                    CARBO-NEX is a decentralized platform for verifying and tokenizing blue carbon credits. We use AI and blockchain to bring transparency, liquidity, and trust to the carbon market.
                   </p>
                   <div className="mt-8 flex justify-center gap-4">
                      <Link href="/login">
                         <Button size="lg" className="font-semibold text-lg px-8">
-                            {t('hero.getStarted')}
+                            Get Started
                         </Button>
                      </Link>
                      <Link href="/login">
                         <Button size="lg" variant="outline" className="font-semibold text-lg px-8">
-                             {t('hero.marketplace')}
+                             Explore Marketplace
                         </Button>
                      </Link>
                   </div>
@@ -113,8 +92,8 @@ export default function Home() {
                         viewport={{ once: true }}
                     >
                         <h2 className="text-5xl font-bold font-headline text-primary">{stat.value}</h2>
-                        <h3 className="text-xl font-semibold mt-2">{t(`stats.${index}.label` as any)}</h3>
-                        <p className="text-muted-foreground mt-2 text-sm">{t(`stats.${index}.description` as any)}</p>
+                        <h3 className="text-xl font-semibold mt-2">{stat.label}</h3>
+                        <p className="text-muted-foreground mt-2 text-sm">{stat.description}</p>
                     </motion.div>
                 ))}
             </div>
@@ -123,8 +102,8 @@ export default function Home() {
         {/* Features Section */}
         <section className="container py-24">
             <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold font-headline">{t('features.title')}</h2>
-                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">{t('features.subtitle')}</p>
+                <h2 className="text-4xl font-bold font-headline">How It Works</h2>
+                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">A seamless flow from verification to monetization, built on trust and transparency.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
                 <motion.div 
@@ -136,8 +115,8 @@ export default function Home() {
                     <div className="p-4 bg-primary/10 rounded-full border-4 border-primary/20 text-primary">
                         <CheckCircle size={40} />
                     </div>
-                    <h3 className="text-2xl font-bold mt-6">{t('features.items.0.title')}</h3>
-                    <p className="text-muted-foreground mt-2">{t('features.items.0.description')}</p>
+                    <h3 className="text-2xl font-bold mt-6">AI-Powered Verification</h3>
+                    <p className="text-muted-foreground mt-2">Upload drone imagery and site data. Our AI models analyze and verify the data against NCCR guidelines, ensuring integrity and accuracy.</p>
                 </motion.div>
                 <motion.div 
                     className="flex flex-col items-center"
@@ -148,8 +127,8 @@ export default function Home() {
                      <div className="p-4 bg-primary/10 rounded-full border-4 border-primary/20 text-primary">
                         <Database size={40} />
                     </div>
-                    <h3 className="text-2xl font-bold mt-6">{t('features.items.1.title')}</h3>
-                    <p className="text-muted-foreground mt-2">{t('features.items.1.description')}</p>
+                    <h3 className="text-2xl font-bold mt-6">Tokenize Your Impact</h3>
+                    <p className="text-muted-foreground mt-2">Once verified, your carbon credits are minted as unique tokens on the blockchain, creating a transparent and immutable record of your environmental impact.</p>
                 </motion.div>
                 <motion.div 
                     className="flex flex-col items-center"
@@ -160,8 +139,8 @@ export default function Home() {
                     <div className="p-4 bg-primary/10 rounded-full border-4 border-primary/20 text-primary">
                         <Waves size={40} />
                     </div>
-                    <h3 className="text-2xl font-bold mt-6">{t('features.items.2.title')}</h3>
-                    <p className="text-muted-foreground mt-2">{t('features.items.2.description')}</p>
+                    <h3 className="text-2xl font-bold mt-6">Liquid Marketplace</h3>
+                    <p className="text-muted-foreground mt-2">List your tokenized credits on our open marketplace. Connect with buyers and investors to fund your conservation efforts and scale your impact.</p>
                 </motion.div>
             </div>
         </section>
@@ -176,7 +155,7 @@ export default function Home() {
                 <span className="font-bold">CARBO-NEX</span>
             </div>
             <p className="text-sm text-muted-foreground">
-                {t('footer.copyright', { year: new Date().getFullYear() })}
+                © {new Date().getFullYear()} CARBO-NEX. All rights reserved.
             </p>
         </div>
       </footer>
