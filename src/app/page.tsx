@@ -53,7 +53,6 @@ export default function Home() {
         >
             <section className="container py-20 md:py-32 grid grid-cols-1 lg:grid-cols-2 items-center gap-12">
                 <motion.div
-                  className="order-2 lg:order-1" 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, ease: "easeOut" }}
@@ -81,7 +80,7 @@ export default function Home() {
                 </motion.div>
                 
                 {/* Hero Image */}
-                 <div className="order-1 lg:order-2 w-full h-[400px] lg:h-[500px] relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10">
+                 <div className="w-full h-[400px] lg:h-[500px] relative rounded-2xl overflow-hidden shadow-2xl shadow-primary/10">
                     {heroImage && (
                         <Image
                             src={heroImage.imageUrl}
