@@ -2,12 +2,13 @@
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Database, Waves, Globe } from 'lucide-react';
+import { ArrowRight, CheckCircle, Database, Waves } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
 import { useI18n } from '@/locales/client';
 import { MainHeader } from '@/components/main-header';
+
 
 const stats = [
     { value: '1M+', labelKey: 'stats.co2' as const, descriptionKey: 'stats.co2_desc' as const },
@@ -20,7 +21,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-     <MainHeader />
+      <MainHeader />
       <main className="flex-1">
         {/* Hero Section */}
         <WavyBackground
@@ -51,7 +52,7 @@ export default function Home() {
                             {t('hero.cta_get_started')}
                         </Button>
                      </Link>
-                     <Link href="/login">
+                     <Link href="/dashboard/marketplace">
                         <Button size="lg" variant="outline" className="font-semibold text-lg px-8">
                              {t('hero.cta_explore')}
                         </Button>

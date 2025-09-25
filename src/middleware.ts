@@ -2,7 +2,7 @@ import { createI18nMiddleware } from 'next-international/middleware';
 import { NextRequest } from 'next/server';
 
 const I18nMiddleware = createI18nMiddleware({
-  locales: ['en', 'hi'],
+  locales: ['en', 'hi', 'bn', 'te', 'mr', 'ta', 'ur', 'gu', 'kn', 'ml', 'or'],
   defaultLocale: 'en',
   urlMappingStrategy: 'rewrite',
 });
@@ -12,5 +12,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico|login|dashboard).*)'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 };

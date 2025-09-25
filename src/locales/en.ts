@@ -1,5 +1,5 @@
 export default {
-  'header.explore': 'Explore Marketplace',
+  'header.explore': 'Explore',
   'header.launch': 'Launch App',
   'hero.title_1': 'Tokenizing Blue Carbon',
   'hero.title_2': 'with AI + Blockchain.',
@@ -21,4 +21,16 @@ export default {
   'features.marketplace.title': 'Liquid Marketplace',
   'features.marketplace.description': 'List your tokenized credits on our open marketplace. Connect with buyers and investors to fund your conservation efforts and scale your impact.',
   'footer.rights_reserved': 'All rights reserved.',
+  // Language Names
+  'lang.en': 'English',
+  'lang.hi': 'Hindi',
+  'lang.bn': 'Bengali',
+  'lang.te': 'Telugu',
+  'lang.mr': 'Marathi',
+  'lang.ta': 'Tamil',
+  'lang.ur': 'Urdu',
+  'lang.gu': 'Gujarati',
+  'lang.kn': 'Kannada',
+  'lang.ml': 'Malayalam',
+  'lang.or': 'Odia',
 } as const;
