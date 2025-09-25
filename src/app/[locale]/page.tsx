@@ -7,6 +7,7 @@ import { CarboNexLogo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
 import { useI18n } from '@/locales/client';
+import { MainHeader } from '@/components/main-header';
 
 const stats = [
     { value: '1M+', labelKey: 'stats.co2' as const, descriptionKey: 'stats.co2_desc' as const },
@@ -19,6 +20,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+     <MainHeader />
       <main className="flex-1">
         {/* Hero Section */}
         <WavyBackground

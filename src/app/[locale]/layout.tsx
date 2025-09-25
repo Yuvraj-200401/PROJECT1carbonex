@@ -3,7 +3,6 @@ import '../globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { OceanGuardian } from '@/components/ocean-guardian';
 import { I18nProviderClient } from '@/locales/client';
-import { MainHeader } from '@/components/main-header';
 
 export const metadata: Metadata = {
   title: 'CARBO-NEX',
@@ -26,7 +25,6 @@ export default function RootLayout({
           <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
         </head>
         <body className="font-body antialiased">
-          <MainHeader />
             {children}
           <Toaster />
           <OceanGuardian />
