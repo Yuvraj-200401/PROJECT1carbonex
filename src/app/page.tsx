@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle, Database, Waves, Globe } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
+import { OceanGuardian } from '@/components/ocean-guardian';
 
 
 const stats = [
@@ -83,7 +84,7 @@ export default function Home() {
         <section className="container py-24">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {stats.map((stat, index) => (
-                    <motion.div 
+                    <motion.div
                         key={stat.label}
                         className="p-6 border border-border rounded-lg bg-card text-center"
                         initial={{ opacity: 0, y: 20 }}
@@ -106,8 +107,8 @@ export default function Home() {
                 <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">A seamless flow from verification to monetization, built on trust and transparency.</p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                <motion.div 
-                    className="flex flex-col items-center" 
+                <motion.div
+                    className="flex flex-col items-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
@@ -118,7 +119,7 @@ export default function Home() {
                     <h3 className="text-2xl font-bold mt-6">AI-Powered Verification</h3>
                     <p className="text-muted-foreground mt-2">Upload drone imagery and site data. Our AI models analyze and verify the data against NCCR guidelines, ensuring integrity and accuracy.</p>
                 </motion.div>
-                <motion.div 
+                <motion.div
                     className="flex flex-col items-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -130,7 +131,7 @@ export default function Home() {
                     <h3 className="text-2xl font-bold mt-6">Tokenize Your Impact</h3>
                     <p className="text-muted-foreground mt-2">Once verified, your carbon credits are minted as unique tokens on the blockchain, creating a transparent and immutable record of your environmental impact.</p>
                 </motion.div>
-                <motion.div 
+                <motion.div
                     className="flex flex-col items-center"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -159,6 +160,7 @@ export default function Home() {
             </p>
         </div>
       </footer>
+      <OceanGuardian />
     </div>
   );
 }
