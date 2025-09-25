@@ -1,3 +1,5 @@
+// This is the root layout for all pages that don't match the [locale] layout.
+// It does not have i18n capabilities.
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
