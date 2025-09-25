@@ -6,7 +6,6 @@ import { ArrowRight, CheckCircle, Database, Waves, Globe } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { motion } from 'framer-motion';
 import { WavyBackground } from '@/components/ui/wavy-background';
-import { OceanGuardian } from '@/components/ocean-guardian';
 
 
 const stats = [
@@ -160,7 +159,6 @@ export default function Home() {
             </p>
         </div>
       </footer>
-      <OceanGuardian />
     </div>
   );
 }
