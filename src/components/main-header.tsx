@@ -13,13 +13,21 @@ import { useI18n, useChangeLocale, useCurrentLocale } from '@/locales/client';
 
 const locales = ['en', 'hi', 'bn', 'te', 'mr', 'ta', 'ur', 'gu', 'kn', 'ml', 'or'] as const;
 
+const navLinks = [
+    { href: "#home", label: "Home" },
+    { href: "#features", label: "Features" },
+    { href: "#about", label: "About" },
+    { href: "#services", label: "Services" },
+    { href: "#contact", label: "Contact" },
+]
+
 export function MainHeader() {
   const t = useI18n();
   const changeLocale = useChangeLocale();
   const currentLocale = useCurrentLocale();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-sm">
       <div className="container flex h-16 items-center">
         <Link href="/" className="mr-6 flex items-center space-x-2">
           <CarboNexLogo className="h-6 w-6 text-primary" />
@@ -27,15 +35,22 @@ export function MainHeader() {
             CARBO-NEX
           </span>
         </Link>
-        <div className="flex flex-1 items-center justify-end space-x-4">
+        <nav className="hidden md:flex flex-1 items-center justify-center space-x-6">
+            {navLinks.map(link => (
+                 <Button key={link.href} variant="ghost" asChild>
+                    <Link href={link.href}>{link.label}</Link>
+                </Button>
+            ))}
+        </nav>
+        <div className="flex items-center justify-end space-x-2">
           <Button variant="ghost" asChild>
-            <Link href="/dashboard/marketplace">{t('header.explore')}</Link>
+            <Link href="/login">Sign In</Link>
           </Button>
-          <Link href="/login">
-            <Button>
-              {t('header.launch')} <ArrowRight className="ml-2 size-4" />
-            </Button>
-          </Link>
+          <Button asChild>
+            <Link href="/login">
+              Sign Up <ArrowRight className="ml-2 size-4" />
+            </Link>
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">

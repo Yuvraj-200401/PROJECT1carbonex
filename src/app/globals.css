@@ -22,7 +22,7 @@
     --muted: 217 33% 25%;
     --muted-foreground: 210 40% 60%;
 
-    --accent: 300 100% 25%; /* Purple */
+    --accent: 217 33% 15%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 63% 31%;
@@ -57,7 +57,7 @@
     --muted: 217 33% 25%;
     --muted-foreground: 210 40% 60%;
 
-    --accent: 300 100% 25%;
+    --accent: 217 33% 15%;
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 63% 31%;
