@@ -102,25 +102,4 @@
     .glass-card {
         @apply bg-card/50 backdrop-blur-sm border border-border/30;
     }
-
-    .animate-fadeOut {
-        animation: fadeOutLabel 4s ease-out forwards;
-    }
 }
-
-@keyframes fadeOutLabel { 
-  0% { 
-    opacity: 1; 
-    transform: translateX(0) scale(1); 
-  } 
-  70% { 
-    opacity: 1; 
-    transform: translateX(0) scale(1); 
-  } 
-  100% { 
-    opacity: 0; 
-    transform: translateX(0.5rem) scale(0.95); 
-  } 
-}
-
-    
