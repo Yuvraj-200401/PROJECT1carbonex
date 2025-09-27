@@ -1,301 +1,364 @@
 
-// src/app/[locale]/page.tsx
 'use client';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Database, Waves, ShieldCheck, Cpu, GitCompareArrows, LineChart, Users, Star, Mail, Phone, MapPin, Send } from 'lucide-react';
-import { CarboNexLogo } from '@/components/icons';
-import { motion } from 'framer-motion';
-import { WavyBackground } from '@/components/ui/wavy-background';
-import { useI18n } from '@/locales/client';
-import { MainHeader } from '@/components/main-header';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-
-
-const stats = [
-    { value: '99.8%', label: 'Verification Accuracy', description: 'AI-driven data validation' },
-    { value: '1M+', label: 'Tonnes CO₂ Verified', description: 'Across global projects' },
-    { value: '25+', label: 'NGOs Onboarded', description: 'Funding conservation efforts' },
-    { value: '10x', label: 'Faster Liquidity', description: 'Compared to traditional markets' },
-];
-
-const features = [
-    { icon: <ShieldCheck size={32} />, title: 'Immutable Registry', description: 'Blockchain-powered verification ensures every carbon credit is unique, traceable, and cannot be double-spent. Complete transparency from source to offset.' },
-    { icon: <Cpu size={32} />, title: 'AI-Powered Verification', 'description': 'Our advanced AI analyzes satellite imagery, sensor data, and ecological models to verify carbon sequestration with unparalleled accuracy, reducing manual overhead.' },
-    { icon: <GitCompareArrows size={32} />, title: 'Community Ecosystem', description: 'We provide tools for data collection with verified user engagement, transparent data validation, and government integration for a holistic approach.' }
-]
-
-const services = [
-    { icon: <Database />, title: "Carbon Registry", description: "Secure, transparent ledger for all carbon assets." },
-    { icon: <ShieldCheck />, title: "AI Verification", description: "Automated data validation with high accuracy." },
-    { icon: <Waves />, title: "Marketplace", description: "A liquid market to trade tokenized carbon credits." },
-    { icon: <LineChart />, title: "Analytics Dashboard", description: "Track, analyze, and report your environmental impact." },
-    { icon: <Users />, title: "NGO Integration", description: "Onboard projects and connect with funders seamlessly." },
-    { icon: <Star />, title: "Mobile App", description: "Manage and track assets on the go." }
-]
-
-const team = [
-    { name: "John Doe", role: "Lead Blockchain Engineer" },
-    { name: "Jane Smith", role: "AI & Climate Science Lead" },
-    { name: "Peter Jones", role: "Head of Platform & Growth" },
-    { name: "Sarah Williams", role: "Senior Frontend Engineer" },
-    { name: "Mike Johnson", role: "Smart Contract Developer" },
-    { name: "Emily Brown", role: "UX/UI Designer" }
-]
-
-export default function Home() {
-  const t = useI18n();
-
-  return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <MainHeader />
-      <main className="flex-1">
-        {/* Hero Section */}
-        <WavyBackground
-          className="max-w-7xl mx-auto pb-40"
-          containerClassName="h-auto"
-          backgroundFill="hsl(var(--background))"
-          colors={['hsl(var(--primary))', 'hsl(var(--secondary))', '#818cf8', '#22d3ee']}
-          waveOpacity={0.1}
-          blur={10}
-        >
-            <section className="container py-20 md:py-32 grid grid-cols-1 items-center gap-12 text-center">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.7, ease: "easeOut" }}
-                >
-                  <h1 className="font-headline text-5xl font-bold tracking-tighter md:text-7xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-muted-foreground">
-                     SAVE OUR PLANET
-                  </h1>
-                  <p className='font-headline text-5xl font-bold tracking-tighter md:text-7xl text-primary -mt-2'>{t('hero.title_2')}</p>
-
-                  <p className="mt-6 text-lg text-muted-foreground max-w-3xl mx-auto">
-                    Empower your business and community with transparent, AI-driven carbon credit solutions. CARBO-NEX ensures every action for the planet is verified, impactful, and rewarded.
-                  </p>
-                  <div className="mt-8 flex justify-center gap-4">
-                     <Link href="/login">
-                        <Button size="lg" className="font-semibold text-lg px-8">
-                            Learn More
-                        </Button>
-                     </Link>
-                     <Link href="/dashboard/marketplace">
-                        <Button size="lg" variant="outline" className="font-semibold text-lg px-8">
-                             Watch Demo
-                        </Button>
-                     </Link>
-                  </div>
-                </motion.div>
-            </section>
-        </WavyBackground>
-
-        {/* Features Section */}
-        <section className="container py-24">
-            <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Revolutionary Technology</h2>
-                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Experience the future of environmental conservation with our cutting-edge platform.</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {features.map((feature, index) => (
-                    <motion.div
-                        key={index}
-                        className="p-1 rounded-lg bg-gradient-to-b from-primary/20 to-transparent"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        whileHover={{ y: -5, scale: 1.02}}
-                        transition={{ duration: 0.3, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                    >
-                       <Card className="h-full glass-card border-0 p-8 text-center">
-                            <div className="inline-block p-4 bg-primary/10 rounded-full border-2 border-primary/30 text-primary mb-4">
-                                {feature.icon}
-                            </div>
-                            <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                            <p className="text-muted-foreground">{feature.description}</p>
-                       </Card>
-                    </motion.div>
-                ))}
-            </div>
-        </section>
-
-        {/* Performance Metrics Section */}
-        <section className="container py-24">
-            <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Performance Metrics</h2>
-                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Real-time recognition showing CARBO-NEX's superior performance compared to traditional carbon credit systems.</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map((stat, index) => (
-                    <motion.div
-                        key={stat.label}
-                        className="p-1 rounded-lg bg-gradient-to-b from-primary/10 to-transparent"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                    >
-                        <Card className="glass-card border-0 p-6 text-center">
-                            <h3 className="text-5xl font-bold font-headline text-primary">{stat.value}</h3>
-                            <p className="text-lg font-semibold mt-2 text-foreground">{stat.label}</p>
-                            <p className="text-sm text-muted-foreground">{stat.description}</p>
-                        </Card>
-                    </motion.div>
-                ))}
-            </div>
-        </section>
-
-        {/* About Section */}
-        <section className="container py-24">
-             <div className="grid md:grid-cols-2 gap-12 items-center">
-                <motion.div
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}>
-                     <h2 className="text-4xl font-bold font-headline mb-4">About CARBO-NEX</h2>
-                     <p className="text-lg text-muted-foreground mb-4">We are revolutionizing carbon credit management through blockchain innovation and AI-powered verification.</p>
-                     <h3 className="text-2xl font-bold text-primary mb-2">Our Mission</h3>
-                     <p className="text-muted-foreground">CARBO-NEX is pioneering the future of environmental conservation by creating a transparent, liquid, and accessible platform for carbon credit management. We combine cutting-edge technology including AI and verifiable credentials to create a carbon credit that is verifiable, traceable, and impactful. We empower conservation communities, businesses, and governance participants to pursue their climate objectives with confidence. We believe that a decarbonized future can be achieved by embracing technology and market-driven solutions.</p>
-                </motion.div>
-                <motion.div
-                    className="p-1 rounded-xl bg-gradient-to-br from-primary via-secondary to-background"
-                     initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                    viewport={{ once: true }}>
-                    <div className="bg-card p-8 rounded-lg">
-                        <h3 className="text-2xl font-bold mb-4 text-center">Key Achievements</h3>
-                        <ul className="space-y-4">
-                            <li className="flex items-center gap-3"><CheckCircle className="text-primary"/><span>99.8% AI Validation Accuracy</span></li>
-                            <li className="flex items-center gap-3"><CheckCircle className="text-primary"/><span>100% Blockchain Traceability</span></li>
-                            <li className="flex items-center gap-3"><CheckCircle className="text-primary"/><span>70% Lower Transaction Fees</span></li>
-                            <li className="flex items-center gap-3"><CheckCircle className="text-primary"/><span>50% Faster Project Onboarding</span></li>
-                        </ul>
-                    </div>
-                </motion.div>
-             </div>
-        </section>
-        
-        {/* Services Section */}
-        <section className="container py-24">
-             <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Our Services</h2>
-                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">We offer scalable solutions to credit management, powered by blockchain and AI.</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                 {services.map((service) => (
-                    <motion.div
-                        key={service.title}
-                        className="p-1 rounded-lg bg-gradient-to-b from-primary/10 to-transparent"
-                        whileHover={{ y: -5 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <Card className="glass-card h-full border-0 p-6">
-                             <div className="p-3 inline-block bg-primary/10 text-primary rounded-md mb-4">{service.icon}</div>
-                            <h3 className="text-xl font-bold mb-2">{service.title}</h3>
-                            <p className="text-muted-foreground text-sm">{service.description}</p>
-                        </Card>
-                    </motion.div>
-                ))}
-            </div>
-        </section>
-
-        {/* Team Section */}
-        <section className="container py-24">
-             <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Blockbusters</h2>
-                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Meet the brilliant minds behind CarbonX, aspiring to win Google's AI hackathon 2024 and revolutionize carbon credit management.</p>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                 {team.map((member) => (
-                    <motion.div key={member.name}
-                        className="p-1 rounded-lg bg-gradient-to-b from-secondary/10 to-transparent"
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5 }}
-                        viewport={{ once: true }}>
-                        <Card className="glass-card text-center border-0 p-6">
-                            <div className="w-24 h-24 rounded-full mx-auto mb-4 bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
-                                <span className="text-4xl font-bold">?</span>
-                            </div>
-                            <h3 className="text-xl font-bold">{member.name}</h3>
-                            <p className="text-secondary font-semibold">{member.role}</p>
-                        </Card>
-                    </motion.div>
-                 ))}
-            </div>
-        </section>
-
-        {/* Contact Section */}
-        <section className="container py-24">
-             <div className="text-center mb-16">
-                <h2 className="text-4xl font-bold font-headline bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">Get In Touch</h2>
-                <p className="text-muted-foreground mt-2 max-w-2xl mx-auto">Ready to revolutionize your carbon credit management? Let's discuss how CarbonX can transform your environmental impact.</p>
-            </div>
-            <div className="grid md:grid-cols-2 gap-12">
-                 <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{duration: 0.5}}>
-                    <h3 className="text-2xl font-bold mb-4">Contact Information</h3>
-                    <div className="space-y-4">
-                        <div className="flex items-start gap-4">
-                            <Mail className="text-primary mt-1"/>
-                            <div>
-                                <h4 className="font-semibold">Email</h4>
-                                <a href="mailto:info@carbonx.io" className="text-muted-foreground hover:text-primary">info@carbonx.io</a>
-                            </div>
-                        </div>
-                         <div className="flex items-start gap-4">
-                            <Phone className="text-primary mt-1"/>
-                            <div>
-                                <h4 className="font-semibold">Phone</h4>
-                                <p className="text-muted-foreground">+1 (555) 123-4567</p>
-                            </div>
-                        </div>
-                         <div className="flex items-start gap-4">
-                            <MapPin className="text-primary mt-1"/>
-                            <div>
-                                <h4 className="font-semibold">Location</h4>
-                                <p className="text-muted-foreground">Virtual First, Global Impact</p>
-                            </div>
-                        </div>
-                    </div>
-                </motion.div>
-
-                 <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{duration: 0.5}}>
-                    <Card className="p-8 bg-card/50 backdrop-blur-sm border-primary/20">
-                        <h3 className="text-2xl font-bold mb-4">Send us a Message</h3>
-                        <form className="space-y-4">
-                            <div className="grid sm:grid-cols-2 gap-4">
-                                <Input placeholder="First Name" />
-                                <Input placeholder="Last Name" />
-                            </div>
-                             <Input type="email" placeholder="Email Address" />
-                             <Input placeholder="Subject" />
-                             <Textarea placeholder="Your message..." rows={5}/>
-                             <Button type="submit" className="w-full" size="lg">
-                                <Send className="mr-2"/> Send Message
-                             </Button>
-                        </form>
-                    </Card>
-                </motion.div>
-            </div>
-        </section>
-
-      </main>
-
-       {/* Footer */}
-      <footer className="border-t border-border/40">
-        <div className="container py-8 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-                <CarboNexLogo className="h-6 w-6 text-primary" />
-                <span className="font-bold">CARBO-NEX</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-                © {new Date().getFullYear()} CARBO-NEX. {t('footer.rights_reserved')}
-            </p>
-        </div>
-      </footer>
-    </div>
-  );
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react"; 
+import Globe from "@/components/ui/globe"; 
+import { cn } from "@/lib/utils"; 
+// Reusable ScrollGlobe component following shadcn/ui patterns 
+interface ScrollGlobeProps { 
+sections: { 
+id: string; 
+badge?: string; 
+title: string; 
+subtitle?: string; 
+description: string; 
+align?: 'left' | 'center' | 'right'; 
+features?: { title: string; description: string }[]; 
+actions?: { label: string; variant: 'primary' | 'secondary'; onClick?: () => void }[]; 
+}[]; 
+globeConfig?: { 
+positions: { 
+top: string; 
+left: string; 
+scale: number; 
+}[]; 
+}; 
+className?: string; 
+} 
+const defaultGlobeConfig = { 
+positions: [ 
+{ top: "50%", left: "75%", scale: 1.4 }, // Hero: Right side, balanced 
+{ top: "25%", left: "50%", scale: 0.9 }, // Innovation: Top side, subtle 
+{ top: "15%", left: "90%", scale: 2 }, // Discovery: Left side, medium 
+{ top: "50%", left: "50%", scale: 1.8 }, // Future: Center, large backdrop 
+] 
+}; 
+// Utility function to smoothly interpolate between values 
+const lerp = (start: number, end: number, factor: number): number => { 
+return start + (end - start) * factor; 
+}; 
+// Parse percentage string to number 
+const parsePercent = (str: string): number => parseFloat(str.replace('%', '')); 
+function ScrollGlobe({ sections, globeConfig = defaultGlobeConfig, className }: ScrollGlobeProps) { 
+const [activeSection, setActiveSection] = useState(0); 
+const [scrollProgress, setScrollProgress] = useState(0); 
+const [globeTransform, setGlobeTransform] = useState(""); 
+const [showNavLabel, setShowNavLabel] = useState(false); 
+const containerRef = useRef<HTMLDivElement>(null); 
+const sectionRefs = useRef<(HTMLDivElement | null)[]>([]); 
+const lastScrollTime = useRef(0); 
+const animationFrameId = useRef<number>(); 
+const navLabelTimeoutRef = useRef<NodeJS.Timeout>(); 
+// Pre-calculate positions for performance 
+const calculatedPositions = useMemo(() => { 
+return globeConfig.positions.map(pos => ({ 
+top: parsePercent(pos.top), 
+left: parsePercent(pos.left), 
+scale: pos.scale 
+})); 
+}, [globeConfig.positions]); 
+// Simple, direct scroll tracking 
+const updateScrollPosition = useCallback(() => { 
+const scrollTop = window.pageYOffset; 
+const docHeight = document.documentElement.scrollHeight - window.innerHeight; 
+const progress = Math.min(Math.max(scrollTop / docHeight, 0), 1); 
+setScrollProgress(progress); 
+// Simple section detection 
+const viewportCenter = window.innerHeight / 2; 
+let newActiveSection = 0; 
+let minDistance = Infinity; 
+sectionRefs.current.forEach((ref, index) => { 
+if (ref) { 
+const rect = ref.getBoundingClientRect(); 
+const sectionCenter = rect.top + rect.height / 2; 
+const distance = Math.abs(sectionCenter - viewportCenter); 
+if (distance < minDistance) { 
+minDistance = distance; 
+newActiveSection = index; 
+} 
+} 
+}); 
+// Direct position update - no interpolation 
+const currentPos = calculatedPositions[newActiveSection]; 
+if (currentPos) {
+    const transform = `translate3d(${currentPos.left}vw, ${currentPos.top}vh, 0) translate3d(-50%, -50%, 0) scale3d(${currentPos.scale}, ${currentPos.scale}, 1)`; 
+    setGlobeTransform(transform); 
 }
+setActiveSection(newActiveSection); 
+}, [calculatedPositions]); 
+// Throttled scroll handler with RAF 
+useEffect(() => { 
+let ticking = false; 
+const handleScroll = () => { 
+if (!ticking) { 
+animationFrameId.current = requestAnimationFrame(() => { 
+updateScrollPosition(); 
+ticking = false; 
+}); 
+ticking = true; 
+} 
+}; 
+// Use passive listeners and immediate execution 
+window.addEventListener("scroll", handleScroll, { passive: true }); 
+updateScrollPosition(); // Initial call 
+return () => { 
+window.removeEventListener("scroll", handleScroll); 
+if (animationFrameId.current) { 
+cancelAnimationFrame(animationFrameId.current); 
+} 
+if (navLabelTimeoutRef.current) { 
+clearTimeout(navLabelTimeoutRef.current); 
+} 
+}; 
+}, [updateScrollPosition]); 
+// Initial globe position 
+useEffect(() => { 
+const initialPos = calculatedPositions[0]; 
+const initialTransform = `translate3d(${initialPos.left}vw, ${initialPos.top}vh, 0) translate3d(-50%, -50%, 0) scale3d(${initialPos.scale}, ${initialPos.scale}, 1)`; 
+setGlobeTransform(initialTransform); 
+}, [calculatedPositions]); 
+return ( 
+<div 
+ref={containerRef} 
+className={cn( 
+"relative w-full max-w-screen overflow-x-hidden min-h-screen bg-background text-foreground", 
+className 
+)} 
+> 
+{/* Progress Bar */} 
+<div className="fixed top-0 left-0 w-full h-0.5 bg-gradient-to-r from-border/20 via-border/40 to-border/20 z-50"> 
+<div 
+className="h-full bg-gradient-to-r from-primary via-blue-600 to-blue-900 will-change-transform shadow-sm" 
+style={{ 
+transform: `scaleX(${scrollProgress})`, 
+transformOrigin: 'left center', 
+transition: 'transform 0.15s ease-out', 
+filter: 'drop-shadow(0 0 2px rgba(59, 130, 246, 0.3))' 
+}} 
+/> 
+</div> 
+{/* Enhanced Navigation with auto-hiding labels - Fully Responsive */} 
+<div className="hidden sm:flex fixed right-2 sm:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-40"> 
+<div className="space-y-3 sm:space-y-4 lg:space-y-6"> 
+{sections.map((section, index) => ( 
+<div key={index} className="relative group"> 
+{/* Auto-hiding section label - Always visible but with responsive sizing */} 
+<div 
+className={cn( 
+"nav-label absolute right-5 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2", 
+"px-2 sm:px-3 lg:px-4 py-1 sm:py-1.5 lg:py-2 rounded-md sm:rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap", 
+"bg-background/95 backdrop-blur-md border border-border/60 shadow-xl z-50", 
+activeSection === index ? "animate-fadeOut" : "opacity-0" 
+)} 
+> 
+<div className="flex items-center gap-1 sm:gap-1.5 lg:gap-2"> 
+<div className="w-1 sm:w-1.5 lg:w-2 h-1 sm:h-1.5 lg:h-2 rounded-full bg-primary animate-pulse" /> 
+<span className="text-xs sm:text-sm lg:text-base"> 
+{section.badge || `Section ${index + 1}`} 
+</span> 
+</div> 
+</div> 
+<button 
+onClick={() => { 
+sectionRefs.current[index]?.scrollIntoView({ 
+behavior: 'smooth', 
+block: 'center' 
+}); 
+}} 
+className={cn( 
+"relative w-2 h-2 sm:w-2.5 sm:h-2.5 lg:w-3 lg:h-3 rounded-full border-2 transition-all duration-300 hover:scale-125", 
+"before:absolute before:inset-0 before:rounded-full before:transition-all before:duration-300", 
+activeSection === index 
+? "bg-primary border-primary shadow-lg before:animate-ping before:bg-primary/20" 
+: "bg-transparent border-muted-foreground/40 hover:border-primary/60 hover:bg-primary/10" 
+)} 
+aria-label={`Go to ${section.badge || `section ${index + 1}`}`} 
+/> 
+</div> 
+))} 
+</div> 
+{/* Enhanced navigation line - Responsive */} 
+<div className="absolute left-1/2 top-0 bottom-0 w-0.5 lg:w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent -translate-x-1/2 -z-10" /> 
+</div> 
+{/* Ultra-smooth Globe with responsive scaling */} 
+<div 
+className="fixed z-10 pointer-events-none will-change-transform transition-all duration-[1400ms] ease-[cubic-bezier(0.23,1,0.32,1)]" 
+style={{ 
+transform: globeTransform, 
+filter: `opacity(${activeSection === 3 ? 0.4 : 0.85})`, // Subtle opacity for backdrop effect 
+}} 
+> 
+<div className="scale-75 sm:scale-90 lg:scale-100"> 
+<Globe /> 
+</div> 
+</div> 
+{/* Dynamic sections - fully responsive */} 
+{sections.map((section, index) => ( 
+<section 
+key={section.id} 
+ref={(el) => (sectionRefs.current[index] = el)} 
+className={cn( 
+"relative min-h-screen flex flex-col justify-center px-4 sm:px-6 md:px-8 lg:px-12 z-20 py-12 sm:py-16 lg:py-20", 
+"w-full max-w-full overflow-hidden", 
+section.align === 'center' && "items-center text-center", 
+section.align === 'right' && "items-end text-right", 
+section.align !== 'center' && section.align !== 'right' && "items-start text-left" 
+)} 
+> 
+<div className={cn( 
+"w-full max-w-sm sm:max-w-lg md:max-w-2xl lg:max-w-4xl xl:max-w-5xl will-change-transform transition-all duration-700", 
+"opacity-100 translate-y-0" 
+)}> 
+<h1 className={cn( 
+"font-bold mb-6 sm:mb-8 leading-[1.1] tracking-tight", 
+index === 0 
+? "text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 2xl:text-8xl" 
+: "text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl 2xl:text-7xl" 
+)}> 
+{section.subtitle ? ( 
+<div className="space-y-1 sm:space-y-2"> 
+<div className="bg-gradient-to-r from-foreground to-foreground/80 bg-clip-text text-transparent"> 
+{section.title} 
+</div> 
+<div className="text-muted-foreground/90 text-[0.6em] sm:text-[0.7em] font-medium tracking-wider"> 
+{section.subtitle} 
+</div> 
+</div> 
+) : ( 
+<div className="bg-gradient-to-r from-foreground via-foreground to-foreground/80 bg-clip-text text-transparent"> 
+{section.title} 
+</div> 
+)} 
+</h1> 
+<div className={cn( 
+"text-muted-foreground/80 leading-relaxed mb-8 sm:mb-10 text-base sm:text-lg lg:text-xl font-light", 
+section.align === 'center' ? "max-w-full mx-auto text-center" : "max-w-full" 
+)}> 
+<p className="mb-3 sm:mb-4">{section.description}</p> 
+{index === 0 && ( 
+<div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs sm:text-sm text-muted-foreground/60 mt-4 sm:mt-6"> 
+<div className="flex items-center gap-1.5 sm:gap-2"> 
+<div className="w-1 h-1 rounded-full bg-primary animate-pulse" /> 
+<span>Interactive Experience</span> 
+</div> 
+<div className="flex items-center gap-1.5 sm:gap-2"> 
+<div className="w-1 h-1 rounded-full bg-primary animate-pulse" style={{ animationDelay: '0.5s' }} /> 
+<span>Scroll to Explore</span> 
+</div> 
+</div> 
+)} 
+</div> 
+{/* Enhanced Features - Responsive grid */} 
+{section.features && ( 
+<div className="grid gap-3 sm:gap-4 mb-8 sm:mb-10"> 
+{section.features.map((feature, featureIndex) => ( 
+<div 
+key={feature.title} 
+className={cn( 
+"group p-4 sm:p-5 lg:p-6 rounded-lg sm:rounded-xl border bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5", 
+"hover:border-primary/20 hover:-translate-y-1" 
+)} 
+style={{ animationDelay: `${featureIndex * 0.1}s` }} 
+> 
+<div className="flex items-start gap-3 sm:gap-4"> 
+<div className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-primary/60 mt-1.5 sm:mt-2 group-hover:bg-primary transition-colors flex-shrink-0" /> 
+<div className="flex-1 space-y-1.5 sm:space-y-2 min-w-0"> 
+<h3 className="font-semibold text-card-foreground text-base sm:text-lg">{feature.title}</h3> 
+<p className="text-muted-foreground/80 leading-relaxed text-sm sm:text-base">{feature.description}</p> 
+</div> 
+</div> 
+</div> 
+))} 
+</div> 
+)} 
+{/* Enhanced Actions - Responsive buttons */} 
+{section.actions && ( 
+<div className={cn( 
+"flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4", 
+section.align === 'center' && "justify-center", 
+section.align === 'right' && "justify-end", 
+(!section.align || section.align === 'left') && "justify-start" 
+)}> 
+{section.actions.map((action, actionIndex) => ( 
+<button 
+key={action.label} 
+onClick={action.onClick} 
+className={cn( 
+"group relative px-6 sm:px-8 py-3 sm:py-4 rounded-lg sm:rounded-xl font-medium transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-sm sm:text-base", 
+"hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-auto", 
+action.variant === 'primary' 
+? "bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg shadow-primary/20 hover:shadow-primary/30" 
+: "border-2 border-border/60 bg-background/50 backdrop-blur-sm hover:bg-accent/50 hover:border-primary/30 text-foreground" 
+)} 
+style={{ animationDelay: `${actionIndex * 0.1 + 0.2}s` }} 
+> 
+<span className="relative z-10">{action.label}</span> 
+{action.variant === 'primary' && ( 
+<div className="absolute inset-0 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary to-primary/80 opacity-0 group-hover:opacity-100 transition-opacity duration-300" /> 
+)} 
+</button> 
+))} 
+</div> 
+)} 
+</div> 
+</section> 
+))} 
+</div> 
+); 
+} 
+// Demo component showcasing the ScrollGlobe 
+export default function GlobeScrollDemo() { 
+const demoSections = [ 
+{ 
+id: "hero", 
+badge: "Welcome", 
+title: "Explore", 
+subtitle: "Our World", 
+description: "Journey through an immersive experience where technology meets innovation. Watch as perspectives shift and possibilities unfold with every interaction, creating a symphony of digital artistry.", 
+align: "left" as const, 
+actions: [ 
+{ label: "Begin Journey", variant: "primary" as const, onClick: () => console.log("Get started clicked") }, 
+{ label: "Learn More", variant: "secondary" as const, onClick: () => console.log("Learn more clicked") }, 
+] 
+}, 
+{ 
+id: "innovation", 
+badge: "Innovation", 
+title: "Connected Worldwide", 
+description: "From every corner of the globe, we witness the interconnected web of human achievement. Each connection represents progress, every interaction drives innovation forward into uncharted territories.", 
+align: "center" as const, 
+}, 
+{ 
+id: "discovery", 
+badge: "Discovery", 
+title: "Expanding", 
+subtitle: "Possibilities", 
+description: "As we push beyond familiar boundaries, new worlds of opportunity emerge from the horizon. What seemed impossible yesterday becomes tomorrow's foundation for extraordinary achievements.", 
+align: "left" as const, 
+features: [ 
+{ title: "Limitless Exploration", description: "Discover new dimensions of possibility and innovation" }, 
+{ title: "Seamless Integration", description: "Where cutting-edge technology meets human intuition" }, 
+{ title: "Future-Ready Solutions", description: "Built for tomorrow's challenges and opportunities" } 
+] 
+}, 
+{ 
+id: "future", 
+badge: "Future", 
+title: "Our Shared", 
+subtitle: "Tomorrow", 
+description: "In this moment of unity, we see not just a planet, but a canvas of infinite human potential. Every connection represents hope, every innovation builds bridges to our collective future of endless possibilities.", 
+align: "center" as const, 
+actions: [ 
+{ label: "Join the Movement", variant: "primary" as const, onClick: () => console.log("Join clicked") }, 
+{ label: "Explore More", variant: "secondary" as const, onClick: () => console.log("Explore clicked") } 
+] 
+} 
+]; 
+return ( 
+<ScrollGlobe 
+sections={demoSections} 
+className="bg-gradient-to-br from-background via-muted/20 to-background" 
+/> 
+); 
+}
+
+    
