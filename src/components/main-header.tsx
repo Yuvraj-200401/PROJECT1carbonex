@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useI18n, useChangeLocale, useCurrentLocale } from '@/locales/client';
+import { usePathname } from 'next/navigation';
 
 const locales = ['en', 'hi', 'bn', 'te', 'mr', 'ta', 'ur', 'gu', 'kn', 'ml', 'or'] as const;
 
@@ -25,6 +26,11 @@ export function MainHeader() {
   const t = useI18n();
   const changeLocale = useChangeLocale();
   const currentLocale = useCurrentLocale();
+  const pathname = usePathname();
+
+  if (pathname.includes('/dashboard')) {
+    return null;
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-sm">
