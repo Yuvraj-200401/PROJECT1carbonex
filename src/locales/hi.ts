@@ -1,5 +1,5 @@
 export default {
-  'header.explore': 'अन्वेषण करें',
+  'header.explore': 'बाज़ार का अन्वेषण करें',
   'header.launch': 'ऐप लॉन्च करें',
   'hero.title_1': 'ब्लू कार्बन का टोकनीकरण',
   'hero.title_2': 'एआई + ब्लॉकचेन के साथ।',
@@ -21,7 +21,6 @@ export default {
   'features.marketplace.title': 'लिक्विड मार्केटप्लेस',
   'features.marketplace.description': 'हमारे खुले बाज़ार पर अपने टोकनयुक्त क्रेडिट सूचीबद्ध करें। अपने संरक्षण प्रयासों को निधि देने और अपने प्रभाव को बढ़ाने के लिए खरीदारों और निवेशकों से जुड़ें।',
   'footer.rights_reserved': 'सर्वाधिकार सुरक्षित।',
-  // Language Names
   'lang.en': 'English',
   'lang.hi': 'हिंदी',
   'lang.bn': 'Bengali',
@@ -33,4 +32,22 @@ export default {
   'lang.kn': 'Kannada',
   'lang.ml': 'Malayalam',
   'lang.or': 'Odia',
+
+  'dashboard.header.new_verification': 'नई सत्यापन',
+  'dashboard.header.my_account': 'मेरा खाता',
+  'dashboard.header.settings': 'सेटिंग्स',
+  'dashboard.header.logout': 'लॉग आउट',
+  
+  'dashboard.sidebar.overview': 'अवलोकन',
+  'dashboard.sidebar.projects': 'परियोजनाएं',
+  'dashboard.sidebar.new_verification': 'नई सत्यापन',
+  'dashboard.sidebar.my_tokens': 'मेरे टोकन',
+  'dashboard.sidebar.marketplace': 'बाज़ार',
+  'dashboard.sidebar.wallet': 'बटुआ',
+  'dashboard.sidebar.submissions': 'प्रस्तुतियाँ',
+  'dashboard.sidebar.my_purchases': 'मेरी खरीदारी',
+  'dashboard.sidebar.settings': 'सेटिंग्स',
+  'dashboard.sidebar.support': 'सहायता और समर्थन',
+  'dashboard.sidebar.logout': 'लॉग आउट',
+
 } as const;

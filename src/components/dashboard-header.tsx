@@ -22,8 +22,13 @@ import {
   PlusCircle,
   Settings,
   LogOut,
+  Globe,
 } from 'lucide-react';
 import { useSidebar } from './ui/sidebar';
+import { useI18n, useChangeLocale, useCurrentLocale } from '@/locales/client';
+
+const locales = ['en', 'hi', 'bn', 'te', 'mr', 'ta', 'ur', 'gu', 'kn', 'ml', 'or'] as const;
+
 
 interface DashboardHeaderProps {
   user: { name: string; email: string };
@@ -33,6 +38,9 @@ interface DashboardHeaderProps {
 export function DashboardHeader({ user, role }: DashboardHeaderProps) {
   const { toggle } = useSidebar();
   const router = useRouter();
+  const t = useI18n();
+  const changeLocale = useChangeLocale();
+  const currentLocale = useCurrentLocale();
 
   const handleLogout = () => {
     try {
@@ -77,7 +85,7 @@ export function DashboardHeader({ user, role }: DashboardHeaderProps) {
             onClick={() => router.push('/dashboard/verify')}
           >
             <PlusCircle />
-            New Verification
+            {t('dashboard.header.new_verification')}
           </Button>
         )}
         
@@ -90,6 +98,25 @@ export function DashboardHeader({ user, role }: DashboardHeaderProps) {
           <Bell className="h-5 w-5" />
           <span className="sr-only">Notifications</span>
         </Button>
+         <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="icon">
+                <Globe className="h-[1.2rem] w-[1.2rem]" />
+                <span className="sr-only">Change language</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {locales.map((locale) => (
+                <DropdownMenuItem
+                  key={locale}
+                  onClick={() => changeLocale(locale)}
+                  className={currentLocale === locale ? 'font-bold' : ''}
+                >
+                  {t(`lang.${locale}`)}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -106,16 +133,16 @@ export function DashboardHeader({ user, role }: DashboardHeaderProps) {
             </button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>{t('dashboard.header.my_account')}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={() => router.push('/dashboard/settings')}>
                 <Settings className='mr-2'/>
-                Settings
+                {t('dashboard.header.settings')}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className='mr-2'/>
-                Logout
+                {t('dashboard.header.logout')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

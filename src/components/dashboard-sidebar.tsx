@@ -3,8 +3,6 @@
 
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
 import {
   Sidebar,
   SidebarBody,
@@ -26,40 +24,45 @@ import {
   ChevronLeft,
   Briefcase,
 } from 'lucide-react';
+import { Button } from './ui/button';
+import { useI18n } from '@/locales/client';
 
 interface DashboardSidebarProps {
   user: { name: string; email: string };
   role: string;
 }
 
-const menuItemsByRole: Record<string, any[]> = {
-    NGO: [
-        { href: '/dashboard', icon: <LayoutGrid />, label: 'Overview' },
-        { href: '/dashboard/projects', icon: <Briefcase />, label: 'Projects' },
-        { href: '/dashboard/verify', icon: <FilePlus />, label: 'New Verification' },
-        { href: '/dashboard/my-tokens', icon: <Coins />, label: 'My Tokens' },
-        { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
-        { href: '/dashboard/wallet', icon: <Wallet />, label: 'Wallet' },
-    ],
-    Verifier: [
-        { href: '/dashboard', icon: <LayoutGrid />, label: 'Submissions' },
-    ],
-    Buyer: [
-        { href: '/dashboard', icon: <LayoutGrid />, label: 'Overview' },
-        { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: 'Marketplace' },
-        { href: '/dashboard/wallet', icon: <Wallet />, label: 'My Purchases' },
-    ],
-};
-
-const bottomMenuItems = [
-    { href: '/dashboard/settings', icon: <Settings />, label: 'Settings' },
-    { href: '/dashboard/support', icon: <HelpCircle />, label: 'Help & Support' },
-];
 
 export function DashboardSidebar({ user, role }: DashboardSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const { open, setOpen, isMobile } = useSidebar();
+  const t = useI18n();
+
+  const menuItemsByRole: Record<string, any[]> = {
+    NGO: [
+        { href: '/dashboard', icon: <LayoutGrid />, label: t('dashboard.sidebar.overview') },
+        { href: '/dashboard/projects', icon: <Briefcase />, label: t('dashboard.sidebar.projects') },
+        { href: '/dashboard/verify', icon: <FilePlus />, label: t('dashboard.sidebar.new_verification') },
+        { href: '/dashboard/my-tokens', icon: <Coins />, label: t('dashboard.sidebar.my_tokens') },
+        { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: t('dashboard.sidebar.marketplace') },
+        { href: '/dashboard/wallet', icon: <Wallet />, label: t('dashboard.sidebar.wallet') },
+    ],
+    Verifier: [
+        { href: '/dashboard', icon: <LayoutGrid />, label: t('dashboard.sidebar.submissions') },
+    ],
+    Buyer: [
+        { href: '/dashboard', icon: <LayoutGrid />, label: t('dashboard.sidebar.overview') },
+        { href: '/dashboard/marketplace', icon: <ShoppingCart />, label: t('dashboard.sidebar.marketplace') },
+        { href: '/dashboard/wallet', icon: <Wallet />, label: t('dashboard.sidebar.my_purchases') },
+    ],
+  };
+
+  const bottomMenuItems = [
+      { href: '/dashboard/settings', icon: <Settings />, label: t('dashboard.sidebar.settings') },
+      { href: '/dashboard/support', icon: <HelpCircle />, label: t('dashboard.sidebar.support') },
+  ];
+
 
   const handleLogout = () => {
     try {
@@ -97,7 +100,7 @@ export function DashboardSidebar({ user, role }: DashboardSidebarProps) {
                         key={item.href}
                         href={item.href}
                         icon={item.icon}
-                        active={pathname === item.href}
+                        active={pathname.endsWith(item.href)}
                         onClick={() => isMobile && setOpen(false)}
                     >
                         {item.label}
@@ -110,7 +113,7 @@ export function DashboardSidebar({ user, role }: DashboardSidebarProps) {
                         key={item.href}
                         href={item.href}
                         icon={item.icon}
-                        active={pathname === item.href}
+                        active={pathname.endsWith(item.href)}
                         onClick={() => isMobile && setOpen(false)}
                     >
                         {item.label}
@@ -120,7 +123,7 @@ export function DashboardSidebar({ user, role }: DashboardSidebarProps) {
                     icon={<LogOut />}
                     onClick={handleLogout}
                 >
-                    Logout
+                    {t('dashboard.sidebar.logout')}
                 </SidebarItem>
             </SidebarSection>
         </SidebarBody>

@@ -1,5 +1,5 @@
 export default {
-  'header.explore': 'Explore',
+  'header.explore': 'Explore Marketplace',
   'header.launch': 'Launch App',
   'hero.title_1': 'Tokenizing Blue Carbon',
   'hero.title_2': 'with AI + Blockchain.',
@@ -21,7 +21,6 @@ export default {
   'features.marketplace.title': 'Liquid Marketplace',
   'features.marketplace.description': 'List your tokenized credits on our open marketplace. Connect with buyers and investors to fund your conservation efforts and scale your impact.',
   'footer.rights_reserved': 'All rights reserved.',
-  // Language Names
   'lang.en': 'English',
   'lang.hi': 'Hindi',
   'lang.bn': 'Bengali',
@@ -33,4 +32,22 @@ export default {
   'lang.kn': 'Kannada',
   'lang.ml': 'Malayalam',
   'lang.or': 'Odia',
+
+  'dashboard.header.new_verification': 'New Verification',
+  'dashboard.header.my_account': 'My Account',
+  'dashboard.header.settings': 'Settings',
+  'dashboard.header.logout': 'Logout',
+
+  'dashboard.sidebar.overview': 'Overview',
+  'dashboard.sidebar.projects': 'Projects',
+  'dashboard.sidebar.new_verification': 'New Verification',
+  'dashboard.sidebar.my_tokens': 'My Tokens',
+  'dashboard.sidebar.marketplace': 'Marketplace',
+  'dashboard.sidebar.wallet': 'Wallet',
+  'dashboard.sidebar.submissions': 'Submissions',
+  'dashboard.sidebar.my_purchases': 'My Purchases',
+  'dashboard.sidebar.settings': 'Settings',
+  'dashboard.sidebar.support': 'Help & Support',
+  'dashboard.sidebar.logout': 'Logout',
+
 } as const;
