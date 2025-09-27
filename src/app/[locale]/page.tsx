@@ -78,13 +78,13 @@ export default function HomePage() {
                         className="relative z-10 space-y-6"
                     >
                         <h1 className="text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-                            CarbonX
+                            Carbo-Nex
                         </h1>
                         <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-primary font-headline">
                             SAVE OUR PLANET
                         </h2>
                         <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                            Empower your business and community with transparent, AI-driven carbon credit solutions. CarbonX ensures every action for the planet is verified, impactful, and rewarded.
+                            Empower your business and community with transparent, AI-driven carbon credit solutions. Carbo-Nex ensures every action for the planet is verified, impactful, and rewarded.
                         </p>
                         <div className="space-x-4">
                             <Button size="lg" onClick={() => router.push('/login')}>Learn More</Button>
@@ -116,7 +116,7 @@ export default function HomePage() {
                     </div>
                 </Section>
 
-                <Section id="metrics" title="Performance Metrics" subtitle="Real-time insights on CarbonX's superior performance compared to traditional carbon credit systems.">
+                <Section id="metrics" title="Performance Metrics" subtitle="Real-time insights on Carbo-Nex's superior performance compared to traditional carbon credit systems.">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         <StatCard icon={<Dna size={32} />} value="99.9%" label="Accuracy Rate" description="AI Model Precision" />
                         <StatCard icon={<Briefcase size={32} />} value="1000x" label="Livelihood Impact" description="Better Remuneration" />
@@ -125,13 +125,13 @@ export default function HomePage() {
                     </div>
                 </Section>
 
-                <Section id="about" title="About CarbonX" subtitle="Revolutionizing carbon credit management through blockchain innovation and AI-powered verification.">
+                <Section id="about" title="About Carbo-Nex" subtitle="Revolutionizing carbon credit management through blockchain innovation and AI-powered verification.">
                     <div className="glass-card rounded-2xl p-8 lg:p-12">
                         <div className="grid lg:grid-cols-2 gap-12">
                             <div>
                                 <h3 className="text-2xl font-bold text-foreground mb-4">Our Mission</h3>
                                 <p className="text-muted-foreground mb-6">
-                                    CarbonX is pioneering the future of environmental conservation by creating a transparent, efficient, and accessible platform for carbon credit management. We integrate cutting-edge technologies including AI and blockchain to create more robust, verifiable, traceable, auditable, and reportable.
+                                    Carbo-Nex is pioneering the future of environmental conservation by creating a transparent, efficient, and accessible platform for carbon credit management. We integrate cutting-edge technologies including AI and blockchain to create more robust, verifiable, traceable, auditable, and reportable.
                                 </p>
                                 <p className="text-muted-foreground mb-6">
                                     We empower conservationists, communities, businesses, and government to participate in the global carbon market with confidence, knowing their contributions are measured and accounted for.
@@ -164,7 +164,7 @@ export default function HomePage() {
                     </div>
                 </Section>
                 
-                <Section id="team" title="Blockbusters" subtitle="Meet the Indians behind CarbonX — applying to the Google India Hackathon 2024 with a solution for blue carbon credit management.">
+                <Section id="team" title="Blockbusters" subtitle="Meet the Indians behind Carbo-Nex — applying to the Google India Hackathon 2024 with a solution for blue carbon credit management.">
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                         {['Malay Raval', 'B Himanshu Raaa', 'Rivoj Parekh', 'Ben Patel', 'Tisha Sharma', 'Gayatri Bhamare'].map(name => (
                             <div key={name} className="glass-card text-center p-6 rounded-2xl">
@@ -178,7 +178,7 @@ export default function HomePage() {
                     </div>
                 </Section>
 
-                <Section id="contact" title="Get In Touch" subtitle="Ready to revolutionize your carbon credit management? Let's discuss how CarbonX can transform your environmental impact.">
+                <Section id="contact" title="Get In Touch" subtitle="Ready to revolutionize your carbon credit management? Let's discuss how Carbo-Nex can transform your environmental impact.">
                     <div className="glass-card rounded-2xl p-8 lg:p-12">
                         <div className="grid lg:grid-cols-3 gap-12">
                             <div className="lg:col-span-1">
@@ -227,7 +227,7 @@ export default function HomePage() {
                     <div className="container flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
                         <div className="flex items-center gap-2">
                             <CarboNexLogo className="h-6 w-6 text-primary" />
-                            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} CarbonX Building the future of carbon credit management</p>
+                            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Carbo-Nex Building the future of carbon credit management</p>
                         </div>
                         <p className="text-sm text-muted-foreground">Made for Google India Hackathon 2024</p>
                     </div>
@@ -255,5 +255,7 @@ const CheckCircle = (props: React.SVGProps<SVGSVGElement>) => (
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
     </svg>
 );
+
+    
 
     
