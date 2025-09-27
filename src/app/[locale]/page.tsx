@@ -4,12 +4,11 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useI18n } from '@/locales/client';
 import { motion } from 'framer-motion';
-import { BarChart, Briefcase, ChevronRight, Database, Dna, Landmark, Mail, MapPin, Phone, Users } from 'lucide-react';
+import { BarChart, Briefcase, ChevronRight, Database, Dna, Landmark, Mail, MapPin, Phone, Users, Bot } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { StarsBackground } from '@/components/ui/stars-background';
-import { Bot } from 'lucide-react';
 
 const StatCard = ({ icon, value, label, description }: { icon: React.ReactNode, value: string, label: string, description: string }) => (
     <motion.div 
@@ -71,7 +70,7 @@ export default function HomePage() {
     return (
         <StarsBackground>
             <div className="flex flex-col min-h-screen text-foreground">
-                <main className="flex-grow flex items-center justify-center text-center px-4 pt-24 pb-16">
+                <main id="home" className="flex-grow flex items-center justify-center text-center px-4 pt-24 pb-16">
                     <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -94,7 +93,7 @@ export default function HomePage() {
                     </motion.div>
                 </main>
                 
-                <Section title="Revolutionary Technology" subtitle="Experience the future of environmental conservation with our cutting-edge platform.">
+                <Section id="features" title="Revolutionary Technology" subtitle="Experience the future of environmental conservation with our cutting-edge platform.">
                     <div className="grid md:grid-cols-3 gap-8">
                         <FeatureCard 
                             icon={<Database size={24} />}
@@ -117,7 +116,7 @@ export default function HomePage() {
                     </div>
                 </Section>
 
-                <Section title="Performance Metrics" subtitle="Real-time insights on CarbonX's superior performance compared to traditional carbon credit systems.">
+                <Section id="metrics" title="Performance Metrics" subtitle="Real-time insights on CarbonX's superior performance compared to traditional carbon credit systems.">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                         <StatCard icon={<Dna size={32} />} value="99.9%" label="Accuracy Rate" description="AI Model Precision" />
                         <StatCard icon={<Briefcase size={32} />} value="1000x" label="Livelihood Impact" description="Better Remuneration" />
@@ -126,7 +125,7 @@ export default function HomePage() {
                     </div>
                 </Section>
 
-                <Section title="About CarbonX" subtitle="Revolutionizing carbon credit management through blockchain innovation and AI-powered verification.">
+                <Section id="about" title="About CarbonX" subtitle="Revolutionizing carbon credit management through blockchain innovation and AI-powered verification.">
                     <div className="glass-card rounded-2xl p-8 lg:p-12">
                         <div className="grid lg:grid-cols-2 gap-12">
                             <div>
@@ -154,7 +153,7 @@ export default function HomePage() {
                     </div>
                 </Section>
 
-                <Section title="Our Services" subtitle="We offer a scalable solution for carbon credit management powered by blockchain and AI.">
+                <Section id="services" title="Our Services" subtitle="We offer a scalable solution for carbon credit management powered by blockchain and AI.">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <ServiceCard icon={<Database />} title="Carbon Registry" items={["Blockchain Based", "Decentralized", "Secure & Transparent"]} />
                         <ServiceCard icon={<Bot />} title="AI Verification" items={["AI/ML Driven", "Computer Vision", "Real-time Monitoring"]} />
@@ -165,7 +164,7 @@ export default function HomePage() {
                     </div>
                 </Section>
                 
-                <Section title="Blockbusters" subtitle="Meet the Indians behind CarbonX — applying to the Google India Hackathon 2024 with a solution for blue carbon credit management.">
+                <Section id="team" title="Blockbusters" subtitle="Meet the Indians behind CarbonX — applying to the Google India Hackathon 2024 with a solution for blue carbon credit management.">
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                         {['Malay Raval', 'B Himanshu Raaa', 'Rivoj Parekh', 'Ben Patel', 'Tisha Sharma', 'Gayatri Bhamare'].map(name => (
                             <div key={name} className="glass-card text-center p-6 rounded-2xl">
@@ -179,7 +178,7 @@ export default function HomePage() {
                     </div>
                 </Section>
 
-                <Section title="Get In Touch" subtitle="Ready to revolutionize your carbon credit management? Let's discuss how CarbonX can transform your environmental impact.">
+                <Section id="contact" title="Get In Touch" subtitle="Ready to revolutionize your carbon credit management? Let's discuss how CarbonX can transform your environmental impact.">
                     <div className="glass-card rounded-2xl p-8 lg:p-12">
                         <div className="grid lg:grid-cols-3 gap-12">
                             <div className="lg:col-span-1">
@@ -239,8 +238,8 @@ export default function HomePage() {
 }
 
 
-const Section = ({ title, subtitle, children }: { title: string, subtitle: string, children: React.ReactNode }) => (
-    <section className="container py-16 lg:py-24">
+const Section = ({ id, title, subtitle, children }: { id?: string, title: string, subtitle: string, children: React.ReactNode }) => (
+    <section id={id} className="container py-16 lg:py-24">
         <div className="text-center mb-12">
             <h2 className="text-4xl lg:text-5xl font-bold font-headline text-primary mb-2">{title}</h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">{subtitle}</p>
