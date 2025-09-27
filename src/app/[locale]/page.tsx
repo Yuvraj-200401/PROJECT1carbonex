@@ -3,13 +3,13 @@
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { useI18n } from '@/locales/client';
-import { WavyBackground } from '@/components/ui/wavy-background';
 import { motion } from 'framer-motion';
-import { BarChart, Bot, Briefcase, ChevronRight, Database, Dna, FileText, Landmark, Mail, MapPin, Phone, Users } from 'lucide-react';
+import { BarChart, Briefcase, ChevronRight, Database, Dna, Landmark, Mail, MapPin, Phone, Users } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { StarsBackground } from '@/components/ui/stars-background';
+import { Bot } from 'lucide-react';
 
 const StatCard = ({ icon, value, label, description }: { icon: React.ReactNode, value: string, label: string, description: string }) => (
     <motion.div 
@@ -70,31 +70,29 @@ export default function HomePage() {
     const router = useRouter();
     return (
         <StarsBackground>
-            <div className="flex flex-col min-h-screen bg-transparent text-foreground">
-                <WavyBackground>
-                    <main className="flex-grow flex items-center justify-center text-center">
-                        <motion.div 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, ease: 'easeOut' }}
-                            className="relative z-10 space-y-6"
-                        >
-                            <h1 className="text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-                                CarbonX
-                            </h1>
-                            <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-primary font-headline">
-                                SAVE OUR PLANET
-                            </h2>
-                            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                                Empower your business and community with transparent, AI-driven carbon credit solutions. CarbonX ensures every action for the planet is verified, impactful, and rewarded.
-                            </p>
-                            <div className="space-x-4">
-                                <Button size="lg" onClick={() => router.push('/login')}>Learn More</Button>
-                                <Button size="lg" variant="outline" onClick={() => router.push('/login')}>Watch Demo</Button>
-                            </div>
-                        </motion.div>
-                    </main>
-                </WavyBackground>
+            <div className="flex flex-col min-h-screen text-foreground">
+                <main className="flex-grow flex items-center justify-center text-center px-4 pt-24 pb-16">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, ease: 'easeOut' }}
+                        className="relative z-10 space-y-6"
+                    >
+                        <h1 className="text-5xl font-bold tracking-tighter sm:text-7xl md:text-8xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+                            CarbonX
+                        </h1>
+                        <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-primary font-headline">
+                            SAVE OUR PLANET
+                        </h2>
+                        <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                            Empower your business and community with transparent, AI-driven carbon credit solutions. CarbonX ensures every action for the planet is verified, impactful, and rewarded.
+                        </p>
+                        <div className="space-x-4">
+                            <Button size="lg" onClick={() => router.push('/login')}>Learn More</Button>
+                            <Button size="lg" variant="outline" onClick={() => router.push('/login')}>Watch Demo</Button>
+                        </div>
+                    </motion.div>
+                </main>
                 
                 <Section title="Revolutionary Technology" subtitle="Experience the future of environmental conservation with our cutting-edge platform.">
                     <div className="grid md:grid-cols-3 gap-8">
@@ -258,3 +256,5 @@ const CheckCircle = (props: React.SVGProps<SVGSVGElement>) => (
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
     </svg>
 );
+
+    
