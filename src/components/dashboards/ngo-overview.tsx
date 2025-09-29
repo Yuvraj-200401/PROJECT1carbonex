@@ -14,6 +14,7 @@ import { LiveMap } from './live-map';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 import { Input } from '../ui/input';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
 const StatCard = ({ title, value, icon, description }: { title: string, value: string | number, icon: React.ReactNode, description: string }) => (
     <Card>
@@ -281,7 +282,13 @@ export default function NGOOverview() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <LiveMap />
+                    <Alert variant="destructive">
+                        <AlertTriangle className="h-4 w-4" />
+                        <AlertTitle>Map Currently Unavailable</AlertTitle>
+                        <AlertDescription>
+                          The map is temporarily disabled due to an API key configuration issue. Please update your key's referrer settings in the Google Cloud Console.
+                        </AlertDescription>
+                    </Alert>
                 </CardContent>
             </Card>
       
