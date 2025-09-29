@@ -5,6 +5,7 @@ import { DashboardHeader } from '@/components/dashboard-header';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
+import { APIProvider } from '@vis.gl/react-google-maps';
 
 export default function DashboardLayout({
   children,
@@ -63,16 +64,18 @@ export default function DashboardLayout({
   }
 
   return (
-    <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
-        <DashboardSidebar user={user} role={user.role} />
-        <div className="flex flex-1 flex-col">
-          <DashboardHeader user={user} role={user.role} />
-          <main className="flex-1 overflow-y-auto p-4 md:p-8">
-            {children}
-          </main>
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ''}>
+      <SidebarProvider>
+        <div className="flex min-h-screen w-full bg-background">
+          <DashboardSidebar user={user} role={user.role} />
+          <div className="flex flex-1 flex-col">
+            <DashboardHeader user={user} role={user.role} />
+            <main className="flex-1 overflow-y-auto p-4 md:p-8">
+              {children}
+            </main>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </APIProvider>
   );
 }

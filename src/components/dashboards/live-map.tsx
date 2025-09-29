@@ -1,82 +1,157 @@
 
 'use client';
 
+import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { motion } from 'framer-motion';
-import { MapPin, Shield, Wind, Flame, Mountain, Droplets } from 'lucide-react';
-import Image from 'next/image';
+import { MapPin, Shield, Wind, Flame, Droplets } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+
+// Dark theme for Google Maps
+const mapStyle = [
+  { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
+  {
+    featureType: "administrative.locality",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#d59563" }],
+  },
+  {
+    featureType: "poi",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#d59563" }],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "geometry",
+    stylers: [{ color: "#263c3f" }],
+  },
+  {
+    featureType: "poi.park",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#6b9a76" }],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [{ color: "#38414e" }],
+  },
+  {
+    featureType: "road",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#212a37" }],
+  },
+  {
+    featureType: "road",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#9ca5b3" }],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry",
+    stylers: [{ color: "#746855" }],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
+    stylers: [{ color: "#1f2835" }],
+  },
+  {
+    featureType: "road.highway",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#f3d19c" }],
+  },
+  {
+    featureType: "transit",
+    elementType: "geometry",
+    stylers: [{ color: "#2f3948" }],
+  },
+  {
+    featureType: "transit.station",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#d59563" }],
+  },
+  {
+    featureType: "water",
+    elementType: "geometry",
+    stylers: [{ color: "#17263c" }],
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text.fill",
+    stylers: [{ color: "#515c6d" }],
+  },
+  {
+    featureType: "water",
+    elementType: "labels.text.stroke",
+    stylers: [{ color: "#17263c" }],
+  },
+];
 
 export function LiveMap() {
-  // Mock data for map points within India
   const points = [
-    { id: 'threat-1', type: 'Cyclone', top: '45%', left: '80%', label: 'Cyclone Alert: Sundarbans' },
-    { id: 'ngo-1', type: 'Project', top: '60%', left: '75%', label: 'Mangrove Planting: Bhitarkanika' },
-    { id: 'threat-2', type: 'Pollution', top: '75%', left: '35%', label: 'Industrial Runoff: Pichavaram' },
-    { id: 'ngo-2', type: 'Project', top: '30%', left: '20%', label: 'Community Patrol: Gulf of Kutch' },
-    { id: 'threat-3', type: 'Wildfire', top: '25%', left: '45%', label: 'Forest Fire Risk: Simlipal' },
+    { id: 'threat-1', type: 'Cyclone', lat: 21.9, lng: 89.1, label: 'Cyclone Alert: Sundarbans' },
+    { id: 'ngo-1', type: 'Project', lat: 20.7, lng: 86.9, label: 'Mangrove Planting: Bhitarkanika' },
+    { id: 'threat-2', type: 'Pollution', lat: 11.4, lng: 79.7, label: 'Industrial Runoff: Pichavaram' },
+    { id: 'ngo-2', type: 'Project', lat: 22.6, lng: 69.8, label: 'Community Patrol: Gulf of Kutch' },
+    { id: 'threat-3', type: 'Wildfire', lat: 21.9, lng: 86.7, label: 'Forest Fire Risk: Simlipal' },
   ];
 
   const getIcon = (type: string) => {
     switch (type) {
-        case 'Cyclone': return <Wind className="w-5 h-5 text-white" />;
-        case 'Pollution': return <Droplets className="w-5 h-5 text-white" />;
-        case 'Wildfire': return <Flame className="w-5 h-5 text-white" />;
-        case 'Project': return <Shield className="w-5 h-5 text-white" />;
-        default: return <MapPin className="w-5 h-5 text-white" />;
+      case 'Cyclone': return <Wind className="w-5 h-5 text-white" />;
+      case 'Pollution': return <Droplets className="w-5 h-5 text-white" />;
+      case 'Wildfire': return <Flame className="w-5 h-5 text-white" />;
+      case 'Project': return <Shield className="w-5 h-5 text-white" />;
+      default: return <MapPin className="w-5 h-5 text-white" />;
     }
   }
 
   const getColor = (type: string) => {
     switch (type) {
-        case 'Cyclone': return 'bg-blue-500';
-        case 'Pollution': return 'bg-gray-500';
-        case 'Wildfire': return 'bg-orange-600';
-        case 'Project': return 'bg-primary';
-        default: return 'bg-red-500';
+      case 'Cyclone': return 'bg-blue-500';
+      case 'Pollution': return 'bg-gray-500';
+      case 'Wildfire': return 'bg-orange-600';
+      case 'Project': return 'bg-primary';
+      default: return 'bg-red-500';
     }
   }
 
   return (
     <div className="relative w-full h-[500px] bg-muted/30 rounded-lg overflow-hidden border border-border">
-      {/* Placeholder for a real map library, using a background image of India */}
-      <Image
-        src="https://picsum.photos/seed/india-map/1200/800"
-        alt="Map of India"
-        layout="fill"
-        objectFit="cover"
-        className="opacity-20"
-        data-ai-hint="map India satellite"
-      />
-      
-      {/* Heatmap overlay simulation */}
-      <div className="absolute top-1/4 left-3/4 w-32 h-32 bg-red-500/20 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/2 right-1/4 w-24 h-24 bg-yellow-500/10 rounded-full blur-2xl animate-pulse [animation-delay:0.5s]" />
-      <div className="absolute top-1/2 left-1/4 w-48 h-48 bg-orange-500/15 rounded-full blur-3xl animate-pulse [animation-delay:1s]" />
-
-
-      {/* Mock data points */}
-      {points.map((point, index) => (
-        <motion.div
-          key={point.id}
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5, delay: index * 0.2, type: 'spring' }}
-          className="absolute group"
-          style={{ top: point.top, left: point.left }}
-        >
-          <div className="relative flex flex-col items-center">
-             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${getColor(point.type)} shadow-lg border-2 border-background`}>
-                {getIcon(point.type)}
-             </div>
-            
-            {/* Tooltip */}
-            <div className="absolute bottom-full mb-2 w-max px-3 py-1 bg-background text-foreground text-xs rounded-md border border-border shadow-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-              {point.label}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-background"></div>
-            </div>
-          </div>
-        </motion.div>
-      ))}
-
+      <Map
+        defaultCenter={{ lat: 20.5937, lng: 78.9629 }}
+        defaultZoom={5}
+        mapId="carbo-nex-map"
+        styles={mapStyle}
+        gestureHandling={'greedy'}
+        disableDefaultUI={true}
+      >
+        {points.map((point, index) => (
+          <AdvancedMarker
+            key={point.id}
+            position={{ lat: point.lat, lng: point.lng }}
+          >
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1, type: 'spring' }}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${getColor(point.type)} shadow-lg border-2 border-background cursor-pointer`}
+                  >
+                    {getIcon(point.type)}
+                  </motion.div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{point.label}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </AdvancedMarker>
+        ))}
+      </Map>
     </div>
   );
 }
