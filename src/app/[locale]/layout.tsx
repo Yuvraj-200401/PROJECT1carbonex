@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { OceanGuardian } from '@/components/ocean-guardian';
 import { MainHeader } from '@/components/main-header';
 import { I18nProviderClient } from '@/locales/client';
+import React from 'react';
 
 export const metadata: Metadata = {
   title: 'CARBO-NEX',

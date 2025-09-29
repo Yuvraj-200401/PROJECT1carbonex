@@ -9,6 +9,7 @@ import { CarboNexLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { StarsBackground } from '@/components/ui/stars-background';
+import React from 'react';
 
 const StatCard = ({ icon, value, label, description }: { icon: React.ReactNode, value: string, label: string, description: string }) => (
     <motion.div 
