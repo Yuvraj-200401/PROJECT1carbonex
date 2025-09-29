@@ -1,16 +1,16 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getProjects, purchaseProject, subscribe, Project } from '@/lib/demo-data';
+import { getProjects, subscribe, Project } from '@/lib/demo-data';
 import Image from 'next/image';
-import { toast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
 import { Input } from '../ui/input';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Search, ChevronDown, Leaf, Globe, BarChart } from 'lucide-react';
+import { Search, Leaf, Globe, BarChart } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Badge } from '../ui/badge';
 
 const StatCard = ({ title, value, icon }: { title: string, value: string | number, icon: React.ReactNode }) => (
     <Card>
@@ -34,9 +34,6 @@ export default function BuyerDashboard() {
     const refreshProjects = () => {
         const projects = getProjects();
         setAllProjects(projects);
-        // Apply initial filtering for listed projects
-        const listed = projects.filter(p => p.status === 'Listed');
-        setFilteredProjects(listed); 
     }
     
     useEffect(() => {
@@ -48,14 +45,12 @@ export default function BuyerDashboard() {
     useEffect(() => {
         let projectsToFilter = allProjects.filter(p => p.status === 'Listed');
 
-        // Search
         if (searchTerm) {
             projectsToFilter = projectsToFilter.filter(p => 
                 p.siteName.toLowerCase().includes(searchTerm.toLowerCase())
             );
         }
 
-        // Sort
         switch (sortOrder) {
             case 'price_asc':
                 projectsToFilter.sort((a, b) => (a.prediction?.oneYearPrediction || 0) - (b.prediction?.oneYearPrediction || 0));
@@ -72,6 +67,7 @@ export default function BuyerDashboard() {
         setFilteredProjects(projectsToFilter);
     }, [searchTerm, sortOrder, allProjects]);
 
+    const listedProjectsCount = allProjects.filter(p => p.status === 'Listed').length;
     const totalCarbonSequestered = allProjects.reduce((sum, p) => sum + (p.prediction?.oneYearPrediction || 0), 0);
 
     return (
@@ -87,8 +83,8 @@ export default function BuyerDashboard() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <StatCard title="Total Projects" value={allProjects.length} icon={<Globe />} />
-                <StatCard title="Projects for Sale" value={filteredProjects.length} icon={<Leaf />} />
+                <StatCard title="Total Verified Projects" value={allProjects.length} icon={<Globe />} />
+                <StatCard title="Projects for Sale" value={listedProjectsCount} icon={<Leaf />} />
                 <StatCard title="Total Carbon Sequestered (tCO₂e/yr)" value={totalCarbonSequestered.toLocaleString()} icon={<BarChart />} />
             </div>
 
@@ -168,5 +164,5 @@ export default function BuyerDashboard() {
                 </CardContent>
             </Card>
         </motion.div>
-    )
+    );
 }
