@@ -7,7 +7,7 @@
  * - OceanGuardianInput - The input schema for the flow.
  * - OceanGuardianOutput - The output schema for the flow.
  */
-
+import 'dotenv/config';
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 
