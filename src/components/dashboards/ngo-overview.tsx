@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -282,13 +281,7 @@ export default function NGOOverview() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <Alert variant="destructive">
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertTitle>Map Currently Unavailable</AlertTitle>
-                        <AlertDescription>
-                          The map is temporarily disabled due to an API key configuration issue. Please update your key's referrer settings in the Google Cloud Console.
-                        </AlertDescription>
-                    </Alert>
+                    <LiveMap />
                 </CardContent>
             </Card>
       
