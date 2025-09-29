@@ -9,7 +9,7 @@ import { CarboNexLogo } from '@/components/icons';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { StarsBackground } from '@/components/ui/stars-background';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 const StatCard = ({ icon, value, label, description }: { icon: React.ReactNode, value: string, label: string, description: string }) => (
     <motion.div 
@@ -68,6 +68,15 @@ const ServiceCard = ({ icon, title, items }: { icon: React.ReactNode, title: str
 function HomePageContent() {
     const t = useI18n();
     const router = useRouter();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null;
+    }
     
     const teamMembers = [
       { name: 'Priyanshu', role: 'Team Lead & AI Engineer' },
@@ -275,3 +284,5 @@ const CheckCircle = (props: React.SVGProps<SVGSVGElement>) => (
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
     </svg>
 );
+
+    
