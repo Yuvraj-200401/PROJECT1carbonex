@@ -31,12 +31,11 @@ export default function BuyerDashboard() {
     const [searchTerm, setSearchTerm] = useState('');
     const [sortOrder, setSortOrder] = useState('newest');
 
-    const refreshProjects = () => {
-        const projects = getProjects();
-        setAllProjects(projects);
-    }
-    
     useEffect(() => {
+        const refreshProjects = () => {
+            const projects = getProjects();
+            setAllProjects(projects);
+        }
         refreshProjects();
         const unsubscribe = subscribe(refreshProjects);
         return () => unsubscribe();
@@ -69,6 +68,8 @@ export default function BuyerDashboard() {
 
     const listedProjectsCount = allProjects.filter(p => p.status === 'Listed').length;
     const totalCarbonSequestered = allProjects.reduce((sum, p) => sum + (p.prediction?.oneYearPrediction || 0), 0);
+    const verifiedProjectsCount = allProjects.filter(p => p.status !== 'Pending' && p.status !== 'Action Required').length;
+
 
     return (
         <motion.div 
@@ -83,7 +84,7 @@ export default function BuyerDashboard() {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                <StatCard title="Total Verified Projects" value={allProjects.length} icon={<Globe />} />
+                <StatCard title="Total Verified Projects" value={verifiedProjectsCount} icon={<Globe />} />
                 <StatCard title="Projects for Sale" value={listedProjectsCount} icon={<Leaf />} />
                 <StatCard title="Total Carbon Sequestered (tCO₂e/yr)" value={totalCarbonSequestered.toLocaleString()} icon={<BarChart />} />
             </div>
