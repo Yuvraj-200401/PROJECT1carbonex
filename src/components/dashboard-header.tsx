@@ -1,7 +1,9 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { getProjects, subscribe, Project } from '@/lib/demo-data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,7 +14,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { CarboNexLogo } from './icons';
 import {
   Bell,
@@ -41,6 +42,33 @@ export function DashboardHeader({ user, role }: DashboardHeaderProps) {
   const t = useI18n();
   const changeLocale = useChangeLocale();
   const currentLocale = useCurrentLocale();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [tokenBalance, setTokenBalance] = useState(0);
+
+  useEffect(() => {
+    const refreshProjects = () => {
+      const allProjects = getProjects();
+      setProjects(allProjects);
+    };
+    refreshProjects();
+    const unsubscribe = subscribe(refreshProjects);
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    let balance = 0;
+    if (role === 'NGO') {
+      balance = projects
+        .filter(p => p.ownerId === 'NGO' && (p.status === 'Minted' || p.status === 'Listed'))
+        .reduce((sum, p) => sum + (p.prediction?.oneYearPrediction || 0), 0);
+    } else if (role === 'Buyer') {
+      balance = projects
+        .filter(p => p.ownerId === 'Buyer' && p.status === 'Purchased')
+        .reduce((sum, p) => sum + (p.prediction?.oneYearPrediction || 0), 0);
+    }
+    setTokenBalance(balance);
+  }, [projects, role]);
+
 
   const handleLogout = () => {
     try {
@@ -91,7 +119,7 @@ export function DashboardHeader({ user, role }: DashboardHeaderProps) {
         
         <Button size="sm" variant="outline" className="hidden sm:flex items-center gap-2">
             <span className="text-primary"><Coins/></span>
-            <span className='font-bold'>1,800 CARBO</span>
+            <span className='font-bold'>{tokenBalance.toLocaleString()} CARBO</span>
         </Button>
 
         <Button variant="ghost" size="icon" className="rounded-full">
