@@ -64,7 +64,6 @@ export default function DashboardLayout({
   }
 
   return (
-    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!}>
       <SidebarProvider>
         <div className="flex min-h-screen w-full bg-background">
           <DashboardSidebar user={user} role={user.role} />
@@ -76,6 +75,5 @@ export default function DashboardLayout({
           </div>
         </div>
       </SidebarProvider>
-    </APIProvider>
   );
 }
