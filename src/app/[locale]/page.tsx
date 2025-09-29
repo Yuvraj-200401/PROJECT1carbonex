@@ -249,7 +249,7 @@ function HomePageContent() {
 }
 
 export default function HomePage({ params }: { params: { locale: string } }) {
-    const { locale } = params;
+    const { locale } = React.use(params);
     return (
         <I18nProviderClient locale={locale}>
             <HomePageContent />

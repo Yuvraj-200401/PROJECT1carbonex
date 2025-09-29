@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }>) {
-  const { locale } = params;
+  const { locale } = React.use(params);
   return (
     <I18nProviderClient locale={locale}>
       <html lang={locale} className="dark">
