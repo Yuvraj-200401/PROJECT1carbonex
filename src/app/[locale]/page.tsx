@@ -81,10 +81,10 @@ export default function HomePage() {
                             Carbo-Nex
                         </h1>
                         <h2 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl text-primary font-headline">
-                            SAVE OUR PLANET
+                            The Future of Carbon Credits is Here.
                         </h2>
                         <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                            Empower your business and community with transparent, AI-driven carbon credit solutions. Carbo-Nex ensures every action for the planet is verified, impactful, and rewarded.
+                            Carbo-Nex is engineering a new paradigm for environmental assets. We fuse AI and Blockchain to create a carbon credit ecosystem that is transparent, liquid, and fundamentally trustworthy.
                         </p>
                         <div className="space-x-4">
                             <Button size="lg" onClick={() => router.push('/login')}>Learn More</Button>
@@ -98,69 +98,69 @@ export default function HomePage() {
                         <FeatureCard 
                             icon={<Database size={24} />}
                             title="Immutable Registry"
-                            description="Blockchain-powered verification provides complete data immutability with end-to-end transparency."
+                            description="Leverage the power of blockchain for a tamper-proof record of every carbon credit. End-to-end transparency is not a feature; it's the foundation."
                             link="#"
                         />
                         <FeatureCard 
                             icon={<Bot size={24} />}
                             title="AI-Powered Verification"
-                            description="Real-time automated validation using satellite imagery, drone data, and advanced computer vision."
+                            description="Our advanced AI analyzes satellite, drone, and field data in real-time, delivering unparalleled accuracy and automating the verification process."
                             link="#"
                         />
                         <FeatureCard 
                             icon={<Users size={24} />}
                             title="Community Ecosystem"
-                            description="Mobile-first data collection with gamified user engagement, hyper-tokenization and government integration."
+                            description="Engage communities and stakeholders with a gamified, mobile-first data collection system that democratizes participation in conservation."
                             link="#"
                         />
                     </div>
                 </Section>
 
-                <Section id="metrics" title="Performance Metrics" subtitle="Real-time insights on Carbo-Nex's superior performance compared to traditional carbon credit systems.">
+                <Section id="metrics" title="Performance Metrics" subtitle="Real-time insights into the quantifiable impact and efficiency of the Carbo-Nex platform.">
                     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                        <StatCard icon={<Dna size={32} />} value="99.9%" label="Accuracy Rate" description="AI Model Precision" />
-                        <StatCard icon={<Briefcase size={32} />} value="1000x" label="Livelihood Impact" description="Better Remuneration" />
-                        <StatCard icon={<BarChart size={32} />} value="90%" label="Cost Reduction" description="Operational Savings" />
-                        <StatCard icon={<Landmark size={32} />} value="100%" label="Compliance" description="Govt. Approved" />
+                        <StatCard icon={<Dna size={32} />} value="99.9%" label="Accuracy Rate" description="AI model precision in data verification." />
+                        <StatCard icon={<Briefcase size={32} />} value="1000x" label="Livelihood Impact" description="Empowering local communities directly." />
+                        <StatCard icon={<BarChart size={32} />} value="90%" label="Cost Reduction" description="Operational savings vs. traditional methods." />
+                        <StatCard icon={<Landmark size={32} />} value="100%" label="Compliance" description="Adherence to global and national standards." />
                     </div>
                 </Section>
 
-                <Section id="about" title="About Carbo-Nex" subtitle="Revolutionizing carbon credit management through blockchain innovation and AI-powered verification.">
+                <Section id="about" title="About Carbo-Nex" subtitle="We are architects of a new environmental economy, built on truth and powered by technology.">
                     <div className="glass-card rounded-2xl p-8 lg:p-12">
                         <div className="grid lg:grid-cols-2 gap-12">
                             <div>
                                 <h3 className="text-2xl font-bold text-foreground mb-4">Our Mission</h3>
                                 <p className="text-muted-foreground mb-6">
-                                    Carbo-Nex is pioneering the future of environmental conservation by creating a transparent, efficient, and accessible platform for carbon credit management. We integrate cutting-edge technologies including AI and blockchain to create more robust, verifiable, traceable, auditable, and reportable.
+                                    Our mission is to unlock the full potential of our planet's natural assets by building a transparent, liquid, and trustworthy market for carbon credits. We empower NGOs, corporations, and governments to take meaningful climate action with data-driven confidence.
                                 </p>
                                 <p className="text-muted-foreground mb-6">
-                                    We empower conservationists, communities, businesses, and government to participate in the global carbon market with confidence, knowing their contributions are measured and accounted for.
+                                   Carbo-Nex is more than a platform; it's a movement to rewire the economics of conservation, making it profitable to protect our planet.
                                 </p>
                                 <Button variant="link" className="p-0 text-primary">
-                                    Global Impact: Connecting Stakeholders Worldwide
+                                    Join us in building a sustainable future.
                                 </Button>
                             </div>
                             <div className="bg-primary/5 p-8 rounded-lg">
                                 <h3 className="text-2xl font-bold text-foreground mb-4">Key Achievements</h3>
                                 <ul className="space-y-4">
                                     <li className="flex items-center gap-3"><CheckCircle className="text-primary" /><span>99.9% AI Validation Accuracy</span></li>
-                                    <li className="flex items-center gap-3"><CheckCircle className="text-primary" /><span>10x Livelihood Improvement</span></li>
-                                    <li className="flex items-center gap-3"><CheckCircle className="text-primary" /><span>90% Cost Reduction</span></li>
-                                    <li className="flex items-center gap-3"><CheckCircle className="text-primary" /><span>100% Compliance</span></li>
+                                    <li className="flex items-center gap-3"><CheckCircle className="text-primary" /><span>1000x Livelihood Improvement for Communities</span></li>
+                                    <li className="flex items-center gap-3"><CheckCircle className="text-primary" /><span>90% Reduction in Verification Costs</span></li>
+                                    <li className="flex items-center gap-3"><CheckCircle className="text-primary" /><span>100% Compliance with NCCR Standards</span></li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </Section>
 
-                <Section id="services" title="Our Services" subtitle="We offer a scalable solution for carbon credit management powered by blockchain and AI.">
+                <Section id="services" title="Our Services" subtitle="A comprehensive suite of tools to manage the entire lifecycle of carbon credits.">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <ServiceCard icon={<Database />} title="Carbon Registry" items={["Blockchain Based", "Decentralized", "Secure & Transparent"]} />
-                        <ServiceCard icon={<Bot />} title="AI Verification" items={["AI/ML Driven", "Computer Vision", "Real-time Monitoring"]} />
-                        <ServiceCard icon={<Landmark />} title="Marketplace" items={["Integrated with global markets", "Real-time settlement", "Open & Transparent"]} />
-                        <ServiceCard icon={<BarChart />} title="Analytics Dashboard" items={["Real-time analytics", "Impact monitoring", "Custom reporting"]} />
-                        <ServiceCard icon={<Users />} title="NGO Integration" items={["Easy Onboarding", "Project Management", "Fund Management"]} />
-                        <ServiceCard icon={<Briefcase />} title="Mobile App" items={["Data Collection", "Community Engagement", "Gamification"]} />
+                        <ServiceCard icon={<Database />} title="Carbon Registry" items={["Decentralized & immutable record-keeping", "Full traceability from origin to retirement", "Built on secure blockchain technology"]} />
+                        <ServiceCard icon={<Bot />} title="AI Verification" items={["Automated analysis of geospatial data", "Real-time monitoring and anomaly detection", "Drastically reduced verification times"]} />
+                        <ServiceCard icon={<Landmark />} title="Marketplace" items={["Liquid and transparent trading environment", "Direct access for buyers and sellers", "Integrated with global carbon markets"]} />
+                        <ServiceCard icon={<BarChart />} title="Analytics Dashboard" items={["Visualize your environmental impact", "Track project performance in real-time", "Generate auditable, custom reports"]} />
+                        <ServiceCard icon={<Users />} title="NGO Integration" items={["Streamlined onboarding for new projects", "Tools for project and fund management", "Direct channel to funding and support"]} />
+                        <ServiceCard icon={<Briefcase />} title="Mobile App" items={["Field data collection with ease", "Gamified community engagement tools", "Offline capabilities for remote areas"]} />
                     </div>
                 </Section>
                 
@@ -227,7 +227,7 @@ export default function HomePage() {
                     <div className="container flex flex-col md:flex-row justify-between items-center text-center md:text-left gap-4">
                         <div className="flex items-center gap-2">
                             <CarboNexLogo className="h-6 w-6 text-primary" />
-                            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Carbo-Nex Building the future of carbon credit management</p>
+                            <p className="text-sm text-muted-foreground">&copy; {new Date().getFullYear()} Carbo-Nex. Engineering a new environmental economy.</p>
                         </div>
                         <p className="text-sm text-muted-foreground">Made for Google India Hackathon 2024</p>
                     </div>
@@ -255,6 +255,8 @@ const CheckCircle = (props: React.SVGProps<SVGSVGElement>) => (
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
     </svg>
 );
+
+    
 
     
 
