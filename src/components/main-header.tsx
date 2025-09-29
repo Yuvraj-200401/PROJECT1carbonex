@@ -1,5 +1,5 @@
-
 'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { CarboNexLogo } from '@/components/icons';
@@ -28,8 +28,14 @@ export function MainHeader() {
   const changeLocale = useChangeLocale();
   const currentLocale = useCurrentLocale();
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
 
-  if (pathname.includes('/dashboard')) {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+
+  if (!mounted || pathname.includes('/dashboard')) {
     return null;
   }
 
