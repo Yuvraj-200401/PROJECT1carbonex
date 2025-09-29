@@ -92,8 +92,11 @@ export default function NGOOverview() {
         setThreats(currentThreats => currentThreats.map(t => t.id === id ? {...t, acknowledged: true} : t));
     };
 
-    const pendingProjects = projects.filter(p => p.status === 'Pending').length;
-    const verifiedProjects = projects.filter(p => p.status === 'Verified').length;
+    const pendingProjectsCount = projects.filter(p => p.status === 'Pending').length;
+    const verifiedProjectsCount = projects.filter(p => ['Verified', 'Minted', 'Listed', 'Purchased'].includes(p.status)).length;
+    const totalCarbonSequestered = projects
+        .filter(p => ['Verified', 'Minted', 'Listed', 'Purchased'].includes(p.status))
+        .reduce((sum, p) => sum + (p.prediction?.oneYearPrediction || 0), 0);
     
     return (
         <motion.div 
@@ -116,9 +119,9 @@ export default function NGOOverview() {
       
             {/* --- STATS ROW --- */}
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <StatCard title="Projects Under Review" value={pendingProjects} icon={<Clock />} description="Awaiting verification" />
-                <StatCard title="Verified Projects" value={verifiedProjects} icon={<Shield />} description="Eligible for carbon credits" />
-                <StatCard title="Carbon Sequestered (tCO₂e)" value={'75,500'} icon={<Trees />} description="Total verified credits generated in India" />
+                <StatCard title="Projects Under Review" value={pendingProjectsCount} icon={<Clock />} description="Awaiting verification" />
+                <StatCard title="Verified Projects" value={verifiedProjectsCount} icon={<Shield />} description="Eligible for carbon credits" />
+                <StatCard title="Carbon Sequestered (tCO₂e)" value={totalCarbonSequestered.toLocaleString()} icon={<Trees />} description="Total verified credits generated in India" />
                 <StatCard title="Community Members Engaged" value={'15,000+'} icon={<Users />} description="Livelihoods supported in coastal villages" />
             </div>
 
