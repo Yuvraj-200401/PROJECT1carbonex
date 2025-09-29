@@ -2,7 +2,7 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/navigation';
-import { useI18n } from '@/locales/client';
+import { I18nProviderClient, useI18n } from '@/locales/client';
 import { motion } from 'framer-motion';
 import { BarChart, Briefcase, ChevronRight, Database, Dna, Landmark, Mail, MapPin, Phone, Users, Bot } from 'lucide-react';
 import { CarboNexLogo } from '@/components/icons';
@@ -64,7 +64,7 @@ const ServiceCard = ({ icon, title, items }: { icon: React.ReactNode, title: str
 );
 
 
-export default function HomePage() {
+function HomePageContent() {
     const t = useI18n();
     const router = useRouter();
     
@@ -247,6 +247,14 @@ export default function HomePage() {
     );
 }
 
+export default function HomePage({ params: { locale } }: { params: { locale: string } }) {
+    return (
+        <I18nProviderClient locale={locale}>
+            <HomePageContent />
+        </I18nProviderClient>
+    );
+}
+
 
 const Section = ({ id, title, subtitle, children }: { id?: string, title: string, subtitle: string, children: React.ReactNode }) => (
     <section id={id} className="container py-16 lg:py-24">
@@ -265,9 +273,3 @@ const CheckCircle = (props: React.SVGProps<SVGSVGElement>) => (
         <polyline points="22 4 12 14.01 9 11.01"></polyline>
     </svg>
 );
-
-    
-
-    
-
-    

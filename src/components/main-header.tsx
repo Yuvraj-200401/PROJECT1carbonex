@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useI18n, useChangeLocale, useCurrentLocale } from '@/locales/client';
+import { I18nProviderClient, useI18n, useChangeLocale, useCurrentLocale } from '@/locales/client';
 import { usePathname } from 'next/navigation';
 
 const locales = ['en', 'hi', 'bn', 'te', 'mr', 'ta', 'ur', 'gu', 'kn', 'ml', 'or'] as const;
@@ -23,7 +23,7 @@ const navLinks = [
     { href: "#contact", label: "Contact" },
 ]
 
-export function MainHeader() {
+function HeaderContent() {
   const t = useI18n();
   const changeLocale = useChangeLocale();
   const currentLocale = useCurrentLocale();
@@ -83,4 +83,10 @@ export function MainHeader() {
   );
 }
 
-    
+export function MainHeader({ locale }: { locale: string }) {
+  return (
+    <I18nProviderClient locale={locale}>
+      <HeaderContent />
+    </I18nProviderClient>
+  );
+}
