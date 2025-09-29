@@ -4,13 +4,14 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
 import { getProjects, Project, subscribe } from '@/lib/demo-data';
-import { CheckCircle, Clock, Award, ArrowRight, Rss, Shield, AlertTriangle, Lightbulb, Vote, Hand, Map, Filter, Bell } from 'lucide-react';
+import { CheckCircle, Clock, Award, ArrowRight, Rss, Shield, AlertTriangle, Lightbulb, Vote, Hand, Map, Filter, Bell, Trees, Users, IndianRupee } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { LiveMap } from './live-map';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../ui/table';
 
 const StatCard = ({ title, value, icon, description }: { title: string, value: string | number, icon: React.ReactNode, description: string }) => (
     <Card>
@@ -25,62 +26,45 @@ const StatCard = ({ title, value, icon, description }: { title: string, value: s
     </Card>
 );
 
-const chartData = [
-  { month: 'Jan', credits: 400 },
-  { month: 'Feb', credits: 300 },
-  { month: 'Mar', credits: 500 },
-  { month: 'Apr', credits: 800 },
-  { month: 'May', credits: 600 },
-  { month: 'Jun', credits: 750 },
+const stateProgressData = [
+  { state: 'Gujarat', restored_ha: 1200, carbon_t: 15000 },
+  { state: 'West Bengal', restored_ha: 2500, carbon_t: 32000 },
+  { state: 'Odisha', restored_ha: 800, carbon_t: 9500 },
+  { state: 'Andhra Pradesh', restored_ha: 950, carbon_t: 11000 },
+  { state: 'Maharashtra', restored_ha: 700, carbon_t: 8000 },
 ];
 
 const threatFrequencyData = [
-    { name: 'Mon', threats: 4 },
-    { name: 'Tue', threats: 3 },
-    { name: 'Wed', threats: 5 },
+    { name: 'Mon', threats: 2 },
+    { name: 'Tue', threats: 1 },
+    { name: 'Wed', threats: 3 },
     { name: 'Thu', threats: 2 },
-    { name: 'Fri', threats: 8 },
-    { name: 'Sat', threats: 6 },
-    { name: 'Sun', threats: 7 },
+    { name: 'Fri', threats: 4 },
+    { name: 'Sat', threats: 3 },
+    { name: 'Sun', threats: 2 },
 ]
 
 const newsUpdates = [
-    { id: 1, category: 'Community', text: 'Successful mangrove planting event last weekend at Site B.' },
-    { id: 2, category: 'Government', text: 'New environmental protection grant announced.' },
-    { id: 3, category: 'Alert', text: 'Illegal logging reported near the northern boundary.' },
+    { id: 1, category: 'Community', text: 'Successful mangrove planting drive in the Sundarbans.' },
+    { id: 2, category: 'Government', text: 'MoEFCC announces new coastal restoration grants.' },
+    { id: 3, category: 'Alert', text: 'Illegal shrimp farming reported near Pichavaram mangroves.' },
 ];
 
 const possibleThreats = [
-    { id: 1, text: 'Illegal fishing activities in protected zones.', severity: 'High', area: 'Zone A' },
-    { id: 2, text: 'Pollution runoff from nearby factories.', severity: 'Medium', area: 'River Delta' },
-    { id: 3, text: 'Potential encroachment on conservation land.', severity: 'Low', area: 'West Boundary' },
+    { id: 1, text: 'Illegal fishing in Bhitarkanika protected zones.', severity: 'High', area: 'Odisha' },
+    { id: 2, text: 'Pollution from industrial clusters near the Gulf of Khambhat.', severity: 'Medium', area: 'Gujarat' },
+    { id: 3, text: 'Encroachment for aquaculture in Krishna-Godavari delta.', severity: 'Low', area: 'Andhra Pradesh' },
 ];
 
 const communityInputs = [
-    { id: 1, text: 'Request for more waste bins near the beach.', votes: 45 },
-    { id: 2, text: 'Observation of unusual algae bloom.', votes: 28 },
+    { id: 1, text: 'Request for solar lights in Sundarban villages.', votes: 120 },
+    { id: 2, text: 'Observation of coral bleaching in Palk Bay.', votes: 75 },
 ]
 
 
 export default function NGOOverview() {
   const router = useRouter();
-  const [projects, setProjects] = useState<Project[]>([]);
   
-  useEffect(() => {
-    const refreshProjects = () => setProjects(getProjects());
-    refreshProjects();
-    const unsubscribe = subscribe(refreshProjects);
-    return () => unsubscribe();
-  }, []);
-
-  const verifiedCount = projects.filter(p => p.status === 'Verified').length;
-  const pendingCount = projects.filter(p => p.status === 'Pending').length;
-  const tokensMinted = projects
-    .filter(p => p.status === 'Minted' || p.status === 'Listed')
-    .reduce((sum, p) => sum + (p.prediction?.oneYearPrediction || 0), 0);
-  
-  const recentActivities = projects.slice(0, 3);
-
   const getSeverityBadge = (severity: 'High' | 'Medium' | 'Low' | string) => {
     switch (severity) {
         case 'High': return 'destructive';
@@ -99,24 +83,69 @@ export default function NGOOverview() {
     >
       <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold font-headline">NGO & Community Dashboard</h1>
-            <p className="text-muted-foreground">Monitor environmental health, track projects, and engage your community.</p>
+            <h1 className="text-3xl font-bold font-headline">India Coastal Ecosystem Dashboard</h1>
+            <p className="text-muted-foreground">Monitor mangrove health, track restoration projects, and engage local communities.</p>
           </div>
           <Button variant="outline"><Bell className="mr-2" /> View Alerts (3)</Button>
       </div>
       
       {/* --- STATS ROW --- */}
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <StatCard title="Verified Projects" value={verifiedCount} icon={<CheckCircle />} description="Projects successfully verified" />
-        <StatCard title="Pending Verifications" value={pendingCount} icon={<Clock />} description="Projects awaiting review" />
-        <StatCard title="Active Threats" value={possibleThreats.length} icon={<AlertTriangle className="text-destructive" />} description="Urgent issues needing attention" />
+        <StatCard title="Mangrove Cover Restored" value={'6,150 ha'} icon={<Trees />} description="Across all Indian coastal states" />
+        <StatCard title="Carbon Sequestered" value={'75,500 tCO₂e'} icon={<CheckCircle />} description="Total verified carbon credits generated" />
+        <StatCard title="Community Members Engaged" value={'15,000+'} icon={<Users />} description="Livelihoods supported in coastal villages" />
+      </div>
+      
+      {/* --- STATE-WISE PROGRESS & THREATS --- */}
+       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
+            <Card className="lg:col-span-3">
+                 <CardHeader>
+                    <CardTitle>State-wise Progress</CardTitle>
+                    <CardDescription>Restoration and carbon capture breakdown by state.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>State</TableHead>
+                                <TableHead>Area Restored (ha)</TableHead>
+                                <TableHead>Carbon Captured (tCO₂e)</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {stateProgressData.map(d => (
+                                <TableRow key={d.state}>
+                                    <TableCell className="font-medium">{d.state}</TableCell>
+                                    <TableCell>{d.restored_ha.toLocaleString()}</TableCell>
+                                    <TableCell>{d.carbon_t.toLocaleString()}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+            <div className="lg:col-span-2 space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2"><Lightbulb /> AI-Powered Insights</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-sm font-semibold text-primary">High Salinity Detected:</p>
+                        <p className="text-sm text-muted-foreground mb-4">AI analysis of satellite data shows increasing soil salinity in the Mahanadi delta, which could impact mangrove sapling survival.</p>
+                        <p className="text-sm font-semibold text-primary">Recommended Action:</p>
+                        <div className="p-3 bg-muted rounded-lg text-sm">
+                            Initiate freshwater flushing in affected zones and plant salt-tolerant species like *Avicennia marina*.
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
       </div>
 
-      {/* --- THREATS AND INSIGHTS ROW --- */}
+      {/* --- THREATS AND COMMUNITY ROW --- */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="lg:col-span-2">
             <CardHeader>
-                <CardTitle className="flex items-center gap-2"><Shield /> Threat Monitoring</CardTitle>
+                <CardTitle className="flex items-center gap-2"><Shield /> Threat Monitoring (India)</CardTitle>
                 <CardDescription>Overview of potential and active environmental risks.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -155,14 +184,16 @@ export default function NGOOverview() {
         <div className="space-y-6">
             <Card>
                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><Lightbulb /> AI-Powered Insights</CardTitle>
+                    <CardTitle className="flex items-center gap-2"><Rss /> News & Updates</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-sm font-semibold text-primary">Emerging Threat Detected:</p>
-                    <p className="text-sm text-muted-foreground mb-4">Increased boat traffic in the "Coral Gardens" protected zone may indicate illegal tourism.</p>
-                    <p className="text-sm font-semibold text-primary">Recommended Action:</p>
-                    <div className="p-3 bg-muted rounded-lg text-sm">
-                        Dispatch a patrol to the area and notify local authorities. Consider increasing signage about protected zone status.
+                    <div className="space-y-4">
+                        {newsUpdates.map(item => (
+                            <div key={item.id} className="flex items-start gap-3">
+                                <Badge variant={item.category === 'Alert' ? 'destructive' : 'secondary'} className="capitalize mt-1 h-fit">{item.category}</Badge>
+                                <p className="text-sm text-muted-foreground">{item.text}</p>
+                            </div>
+                        ))}
                     </div>
                 </CardContent>
             </Card>
@@ -175,47 +206,12 @@ export default function NGOOverview() {
                         <div key={input.id}>
                             <p className="text-sm font-medium">{input.text}</p>
                             <div className="flex items-center gap-2">
-                                <Progress value={(input.votes / 50) * 100} className="h-2"/>
+                                <Progress value={(input.votes / 150) * 100} className="h-2"/>
                                 <span className="text-xs font-bold">{input.votes} Votes</span>
                             </div>
                         </div>
                     ))}
                     <Button className="w-full mt-2" variant="secondary"><Hand className="mr-2"/> Submit a Report</Button>
-                </CardContent>
-            </Card>
-        </div>
-      </div>
-
-
-      {/* --- NEWS AND ACTIVITY ROW --- */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
-        <Card className="lg:col-span-3">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2"><Rss /> News & Updates</CardTitle>
-            <CardDescription>Latest environmental news and community announcements.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-                {newsUpdates.map(item => (
-                    <div key={item.id} className="flex items-start gap-3">
-                        <Badge variant={item.category === 'Alert' ? 'destructive' : 'secondary'} className="capitalize mt-1 h-fit">{item.category}</Badge>
-                        <p className="text-sm text-muted-foreground">{item.text}</p>
-                    </div>
-                ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <div className="lg:col-span-2 space-y-6">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Ready to verify a new site?</CardTitle>
-                    <CardDescription>Submit your project data to get it verified and tokenized.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Button className="w-full" onClick={() => router.push('/dashboard/verify')}>
-                        Start New Verification <ArrowRight className="ml-2"/>
-                    </Button>
                 </CardContent>
             </Card>
         </div>
@@ -226,8 +222,8 @@ export default function NGOOverview() {
           <CardHeader>
               <div className="flex justify-between items-center">
                 <div>
-                    <CardTitle className="flex items-center gap-2"><Map /> Live Threat & Activity Map</CardTitle>
-                    <CardDescription>Real-time overview of field operations and environmental alerts.</CardDescription>
+                    <CardTitle className="flex items-center gap-2"><Map /> Live Threat & Activity Map of India</CardTitle>
+                    <CardDescription>Real-time overview of field operations and environmental alerts on the Indian coastline.</CardDescription>
                 </div>
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="sm"><Filter className="mr-2"/> Filters</Button>
