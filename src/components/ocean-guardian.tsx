@@ -19,6 +19,11 @@ export function OceanGuardian() {
   const [inputValue, setInputValue] = useState('');
   const [isThinking, setIsThinking] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const { isListening, transcript, startListening, stopListening, speak } = useSpeech({
     onSpeechEnd: (text) => {
@@ -71,6 +76,10 @@ export function OceanGuardian() {
       startListening();
     }
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <>
