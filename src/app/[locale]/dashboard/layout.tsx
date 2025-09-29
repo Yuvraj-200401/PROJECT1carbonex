@@ -5,7 +5,6 @@ import { DashboardHeader } from '@/components/dashboard-header';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Skeleton } from '@/components/ui/skeleton';
-import { APIProvider } from '@vis.gl/react-google-maps';
 
 export default function DashboardLayout({
   children,
@@ -64,7 +63,6 @@ export default function DashboardLayout({
   }
 
   return (
-    <APIProvider apiKey={"YOUR_GOOGLE_MAPS_API_KEY"}>
       <SidebarProvider>
         <div className="flex min-h-screen w-full bg-background">
           <DashboardSidebar user={user} role={user.role} />
@@ -76,6 +74,5 @@ export default function DashboardLayout({
           </div>
         </div>
       </SidebarProvider>
-    </APIProvider>
   );
 }

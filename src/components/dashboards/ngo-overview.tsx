@@ -281,7 +281,9 @@ export default function NGOOverview() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <LiveMap />
+                    <div className="relative w-full h-[500px] bg-muted/30 rounded-lg overflow-hidden border border-border flex items-center justify-center">
+                        <p className="text-muted-foreground">Map view is temporarily disabled. Please add a valid Google Maps API key.</p>
+                    </div>
                 </CardContent>
             </Card>
       
