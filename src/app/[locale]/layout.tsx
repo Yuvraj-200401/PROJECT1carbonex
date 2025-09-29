@@ -1,12 +1,10 @@
 
-'use client';
 import type {Metadata} from 'next';
 import '../globals.css';
 import { Toaster } from "@/components/ui/toaster";
 import { OceanGuardian } from '@/components/ocean-guardian';
 import { I18nProviderClient } from '@/locales/client';
 import { MainHeader } from '@/components/main-header';
-import { APIProvider } from '@vis.gl/react-google-maps';
 
 export const metadata: Metadata = {
   title: 'CARBO-NEX',
