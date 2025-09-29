@@ -2,12 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { getProjectById, updateProjectStatus, Project, subscribe } from '@/lib/demo-data';
+import { getProjectById, updateProjectStatus, Project, subscribe, purchaseProject } from '@/lib/demo-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
-import { ArrowLeft, Award, ShoppingCart } from 'lucide-react';
+import { ArrowLeft, Award, ShoppingCart, Leaf } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import {
   LineChart,
@@ -19,6 +19,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { motion } from 'framer-motion';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProjectDetailPage() {
     const router = useRouter();
@@ -26,10 +27,26 @@ export default function ProjectDetailPage() {
     const id = params.id as string;
     
     const [project, setProject] = useState<Project | null>(null);
+    const [role, setRole] = useState<string | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        try {
+            const storedUser = localStorage.getItem('demoUser');
+            if (storedUser) {
+                setRole(JSON.parse(storedUser).role);
+            }
+        } catch (error) {
+            console.error("Could not access local storage:", error);
+        }
+    }, []);
 
     useEffect(() => {
         if (!id) return;
-        const refreshProject = () => setProject(getProjectById(id) || null);
+        const refreshProject = () => {
+            setProject(getProjectById(id) || null);
+            setLoading(false);
+        };
         refreshProject();
         const unsubscribe = subscribe(refreshProject);
         return () => unsubscribe();
@@ -55,8 +72,31 @@ export default function ProjectDetailPage() {
         router.push('/dashboard/my-tokens');
     }
 
-    if (!project) {
-        return <div className="text-center">Project not found or loading...</div>;
+    const handlePurchase = () => {
+        if (!project) return;
+        purchaseProject(project.id);
+        toast({
+            title: "Purchase Successful!",
+            description: `You have successfully purchased credits from ${project.siteName}. View them in 'My Purchases'.`,
+        });
+        router.push('/dashboard/marketplace');
+    }
+
+    if (loading || !project) {
+        return (
+             <div className="space-y-8">
+                <Skeleton className="h-10 w-40" />
+                <div className="flex flex-col lg:flex-row gap-8">
+                    <div className="w-full lg:w-1/3 space-y-8">
+                        <Skeleton className="h-[450px] w-full" />
+                    </div>
+                    <div className="w-full lg:w-2/3 space-y-8">
+                        <Skeleton className="h-64 w-full" />
+                        <Skeleton className="h-80 w-full" />
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     const predictionData = project.prediction ? [
@@ -70,7 +110,8 @@ export default function ProjectDetailPage() {
         'Verified': { description: 'This project has been successfully verified.' },
         'Action Required': { description: 'This project requires changes. Please review the feedback.' },
         'Minted': { description: 'Carbon credits have been minted into tokens.' },
-        'Listed': { description: 'Tokens are listed for sale on the marketplace.' },
+        'Listed': { description: 'Tokens are for sale on the marketplace.' },
+        'Purchased': { description: 'These tokens have been purchased.' },
     };
 
 
@@ -82,7 +123,7 @@ export default function ProjectDetailPage() {
             className="space-y-8"
         >
             <Button variant="outline" onClick={() => router.back()} className="mb-4">
-                <ArrowLeft className="mr-2" /> Back to Projects
+                <ArrowLeft className="mr-2" /> Back
             </Button>
             
             <div className="flex flex-col lg:flex-row gap-8">
@@ -123,7 +164,7 @@ export default function ProjectDetailPage() {
                         </CardContent>
                      </Card>
                      
-                    {project.status === 'Verified' && (
+                    {role === 'NGO' && project.status === 'Verified' && (
                          <Card className="bg-primary/10 border-primary">
                             <CardHeader className="flex-row items-center justify-between">
                                 <div>
@@ -136,7 +177,7 @@ export default function ProjectDetailPage() {
                             </CardHeader>
                         </Card>
                     )}
-                    {project.status === 'Minted' && (
+                    {role === 'NGO' && project.status === 'Minted' && (
                          <Card className="bg-primary/10 border-primary">
                             <CardHeader className="flex-row items-center justify-between">
                                 <div>
@@ -149,7 +190,24 @@ export default function ProjectDetailPage() {
                             </CardHeader>
                         </Card>
                     )}
-                    {project.status === 'Action Required' && (
+                    {role === 'Buyer' && project.status === 'Listed' && (
+                         <Card className="bg-primary/10 border-primary">
+                            <CardHeader className="w-full">
+                                <CardTitle>Purchase Carbon Credits</CardTitle>
+                                <CardDescription>Acquire these CARBO tokens to offset your footprint and support this vital conservation project.</CardDescription>
+                                <div className="flex justify-between items-center mt-4">
+                                     <div>
+                                        <p className="font-bold text-primary text-2xl">{project.prediction?.oneYearPrediction.toLocaleString()}</p>
+                                        <p className="text-sm text-muted-foreground">CARBO Tokens</p>
+                                    </div>
+                                    <Button onClick={handlePurchase} size="lg">
+                                        <Leaf className="mr-2"/> Purchase Credits
+                                    </Button>
+                                </div>
+                            </CardHeader>
+                        </Card>
+                    )}
+                    {role === 'NGO' && project.status === 'Action Required' && (
                         <Card className="border-destructive bg-destructive/10">
                             <CardHeader>
                                 <CardTitle>Action Required</CardTitle>
@@ -185,6 +243,7 @@ export default function ProjectDetailPage() {
                         <Card>
                             <CardHeader>
                                 <CardTitle>CO₂ Capture Prediction</CardTitle>
+                                <CardDescription>Projected carbon sequestration over time.</CardDescription>
                             </CardHeader>
                             <CardContent>
                                <ResponsiveContainer width="100%" height={300}>
