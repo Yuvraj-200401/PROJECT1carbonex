@@ -67,7 +67,9 @@ export default function BuyerDashboard() {
     }, [searchTerm, sortOrder, allProjects]);
 
     const listedProjectsCount = allProjects.filter(p => p.status === 'Listed').length;
-    const totalCarbonSequestered = allProjects.reduce((sum, p) => sum + (p.prediction?.oneYearPrediction || 0), 0);
+    const totalCarbonSequestered = allProjects
+        .filter(p => p.prediction?.oneYearPrediction)
+        .reduce((sum, p) => sum + p.prediction!.oneYearPrediction, 0);
     const verifiedProjectsCount = allProjects.filter(p => p.status !== 'Pending' && p.status !== 'Action Required').length;
 
 
