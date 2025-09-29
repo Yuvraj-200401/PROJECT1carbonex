@@ -67,6 +67,16 @@ const ServiceCard = ({ icon, title, items }: { icon: React.ReactNode, title: str
 export default function HomePage() {
     const t = useI18n();
     const router = useRouter();
+    
+    const teamMembers = [
+      { name: 'Priyanshu', role: 'Team Lead & AI Engineer' },
+      { name: 'Yuvraj', role: 'Blockchain / Core Feature Developer' },
+      { name: 'Vanshika', role: 'Designer & Presentation Specialist' },
+      { name: 'Manan', role: 'Product Manager' },
+      { name: 'Nishant', role: 'Backend Developer' },
+      { name: 'Manmohan', role: 'Frontend Developer (UI/UX)' }
+    ];
+
     return (
         <StarsBackground>
             <div className="flex flex-col min-h-screen text-foreground">
@@ -164,15 +174,15 @@ export default function HomePage() {
                     </div>
                 </Section>
                 
-                <Section id="team" title="Blockbusters" subtitle="Meet the Indians behind Carbo-Nex — applying to the Google India Hackathon 2024 with a solution for blue carbon credit management.">
+                <Section id="team" title="THE TEAM" subtitle="Meet the passionate innovators driving Carbo-Nex forward — blending AI, blockchain, and design to create a sustainable future.">
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                        {['Malay Raval', 'B Himanshu Raaa', 'Rivoj Parekh', 'Ben Patel', 'Tisha Sharma', 'Gayatri Bhamare'].map(name => (
-                            <div key={name} className="glass-card text-center p-6 rounded-2xl">
+                        {teamMembers.map(member => (
+                            <div key={member.name} className="glass-card text-center p-6 rounded-2xl">
                                 <div className="w-24 h-24 rounded-full bg-primary/10 mx-auto mb-4 flex items-center justify-center">
-                                    <span className="text-3xl font-bold text-primary">?</span>
+                                    <span className="text-3xl font-bold text-primary">{member.name.charAt(0)}</span>
                                 </div>
-                                <h4 className="font-bold text-foreground">{name}</h4>
-                                <p className="text-sm text-muted-foreground">Role Description</p>
+                                <h4 className="font-bold text-foreground">{member.name}</h4>
+                                <p className="text-sm text-muted-foreground">{member.role}</p>
                             </div>
                         ))}
                     </div>
