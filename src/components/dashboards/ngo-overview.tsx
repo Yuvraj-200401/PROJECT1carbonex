@@ -281,7 +281,7 @@ export default function NGOOverview() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <p>Map is temporarily unavailable. Please ensure your Google Maps API key is correctly configured in your Google Cloud project.</p>
+                    <LiveMap />
                 </CardContent>
             </Card>
       
