@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getProjects, removeProject, subscribe, Project } from '@/lib/demo-data';
+import { getProjects, purchaseProject, subscribe, Project } from '@/lib/demo-data';
 import Image from 'next/image';
 import { toast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
@@ -23,12 +23,11 @@ export default function BuyerDashboard() {
     }, []);
 
     const handlePurchase = (project: Project) => {
+        purchaseProject(project.id);
         toast({
             title: "Purchase Successful!",
             description: `You have successfully purchased credits from ${project.siteName}.`,
         });
-        // In a real app, this would transfer ownership. For the demo, we remove it.
-        removeProject(project.id);
     }
     
     return (

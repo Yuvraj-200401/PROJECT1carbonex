@@ -5,12 +5,13 @@ import { VerificationResult } from "./types";
 
 export type Project = {
     id: string;
-    status: 'Pending' | 'Verified' | 'Action Required' | 'Minted' | 'Listed';
+    status: 'Pending' | 'Verified' | 'Action Required' | 'Minted' | 'Listed' | 'Purchased';
     siteName: string;
     lat: number;
     lng: number;
     area_ha: number;
     date: string; // ISO string
+    ownerId: 'NGO' | 'Buyer'; // To track ownership
     imageUrl?: string;
     verification?: VerificationResult['verification'];
     prediction?: VerificationResult['prediction'];
@@ -78,12 +79,13 @@ export function getProjectById(id: string): Project | undefined {
     return projects.find(p => p.id === id);
 }
 
-export function addProject(projectData: Omit<Project, 'id' | 'status' | 'date'> & { verification: VerificationResult, imageUrl: string }): Project {
+export function addProject(projectData: Omit<Project, 'id' | 'status' | 'date' | 'ownerId'> & { verification: VerificationResult, imageUrl: string }): Project {
     const newProject: Project = {
         ...projectData,
         id: `proj_${Date.now()}`,
         status: 'Pending',
         date: new Date().toISOString(),
+        ownerId: 'NGO', // Default owner
         verification: projectData.verification.verification,
         prediction: projectData.verification.prediction,
         imageUrl: projectData.imageUrl
@@ -97,6 +99,17 @@ export function updateProjectStatus(id: string, status: Project['status']): Proj
     const project = projects.find(p => p.id === id);
     if (project) {
         project.status = status;
+        saveData();
+        return project;
+    }
+    return undefined;
+}
+
+export function purchaseProject(id: string): Project | undefined {
+    const project = projects.find(p => p.id === id);
+    if (project) {
+        project.status = 'Purchased';
+        project.ownerId = 'Buyer';
         saveData();
         return project;
     }
