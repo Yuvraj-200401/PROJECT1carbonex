@@ -247,7 +247,8 @@ function HomePageContent() {
     );
 }
 
-export default function HomePage({ params: { locale } }: { params: { locale: string } }) {
+export default function HomePage({ params }: { params: { locale: string } }) {
+    const { locale } = params;
     return (
         <I18nProviderClient locale={locale}>
             <HomePageContent />
