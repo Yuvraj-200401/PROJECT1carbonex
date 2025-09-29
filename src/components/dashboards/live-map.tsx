@@ -3,8 +3,9 @@
 
 import { Map, AdvancedMarker } from '@vis.gl/react-google-maps';
 import { motion } from 'framer-motion';
-import { MapPin, Shield, Wind, Flame, Droplets } from 'lucide-react';
+import { MapPin, Shield, Wind, Flame, Droplets, AlertTriangle } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import type { Project } from '@/lib/demo-data';
 
 // Dark theme for Google Maps
 const mapStyle = [
@@ -88,31 +89,34 @@ const mapStyle = [
   },
 ];
 
-export function LiveMap() {
-  const points = [
-    { id: 'threat-1', type: 'Cyclone', lat: 21.9, lng: 89.1, label: 'Cyclone Alert: Sundarbans' },
-    { id: 'ngo-1', type: 'Project', lat: 20.7, lng: 86.9, label: 'Mangrove Planting: Bhitarkanika' },
-    { id: 'threat-2', type: 'Pollution', lat: 11.4, lng: 79.7, label: 'Industrial Runoff: Pichavaram' },
-    { id: 'ngo-2', type: 'Project', lat: 22.6, lng: 69.8, label: 'Community Patrol: Gulf of Kutch' },
-    { id: 'threat-3', type: 'Wildfire', lat: 21.9, lng: 86.7, label: 'Forest Fire Risk: Simlipal' },
-  ];
+type Threat = {
+    id: number;
+    text: string;
+    severity: string;
+    area: string;
+    lat: number;
+    lng: number;
+}
 
-  const getIcon = (type: string) => {
+interface LiveMapProps {
+    projects: Project[];
+    threats: Threat[];
+}
+
+export function LiveMap({ projects, threats }: LiveMapProps) {
+  
+  const getIcon = (type: 'Project' | 'Threat') => {
     switch (type) {
-      case 'Cyclone': return <Wind className="w-5 h-5 text-white" />;
-      case 'Pollution': return <Droplets className="w-5 h-5 text-white" />;
-      case 'Wildfire': return <Flame className="w-5 h-5 text-white" />;
       case 'Project': return <Shield className="w-5 h-5 text-white" />;
+      case 'Threat': return <AlertTriangle className="w-5 h-5 text-white" />;
       default: return <MapPin className="w-5 h-5 text-white" />;
     }
   }
 
-  const getColor = (type: string) => {
+  const getColor = (type: 'Project' | 'Threat') => {
     switch (type) {
-      case 'Cyclone': return 'bg-blue-500';
-      case 'Pollution': return 'bg-gray-500';
-      case 'Wildfire': return 'bg-orange-600';
       case 'Project': return 'bg-primary';
+      case 'Threat': return 'bg-destructive';
       default: return 'bg-red-500';
     }
   }
@@ -127,9 +131,9 @@ export function LiveMap() {
         gestureHandling={'greedy'}
         disableDefaultUI={true}
       >
-        {points.map((point, index) => (
+        {projects.map((point, index) => (
           <AdvancedMarker
-            key={point.id}
+            key={`project-${point.id}`}
             position={{ lat: point.lat, lng: point.lng }}
           >
             <TooltipProvider>
@@ -139,13 +143,39 @@ export function LiveMap() {
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 0.5, delay: index * 0.1, type: 'spring' }}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center ${getColor(point.type)} shadow-lg border-2 border-background cursor-pointer`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${getColor('Project')} shadow-lg border-2 border-background cursor-pointer`}
                   >
-                    {getIcon(point.type)}
+                    {getIcon('Project')}
                   </motion.div>
                 </TooltipTrigger>
                 <TooltipContent>
-                  <p>{point.label}</p>
+                  <p className='font-semibold'>{point.siteName}</p>
+                  <p>Status: {point.status}</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </AdvancedMarker>
+        ))}
+         {threats.map((point, index) => (
+          <AdvancedMarker
+            key={`threat-${point.id}`}
+            position={{ lat: point.lat, lng: point.lng }}
+          >
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 0.5, delay: (projects.length + index) * 0.1, type: 'spring' }}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center ${getColor('Threat')} shadow-lg border-2 border-background cursor-pointer`}
+                  >
+                    {getIcon('Threat')}
+                  </motion.div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className='font-semibold'>{point.area}: {point.severity} Severity</p>
+                  <p>{point.text}</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>

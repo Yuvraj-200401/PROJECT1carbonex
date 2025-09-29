@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -55,10 +56,10 @@ const newsUpdates = [
 ];
 
 const possibleThreats = [
-    { id: 1, text: 'Illegal fishing & trawling reported in Bhitarkanika protected zones.', severity: 'High', area: 'Odisha', acknowledged: false },
-    { id: 2, text: 'High industrial pollution detected near the Gulf of Khambhat.', severity: 'Medium', area: 'Gujarat', acknowledged: true },
-    { id: 3, text: 'Satellite shows possible encroachment for aquaculture in Krishna-Godavari delta.', severity: 'Medium', area: 'Andhra Pradesh', acknowledged: false },
-    { id: 4, text: 'Increased deforestation rate observed near Ratnagiri mangroves.', severity: 'High', area: 'Maharashtra', acknowledged: false },
+    { id: 1, text: 'Illegal fishing & trawling reported in Bhitarkanika protected zones.', severity: 'High', area: 'Odisha', acknowledged: false, lat: 20.7, lng: 86.9 },
+    { id: 2, text: 'High industrial pollution detected near the Gulf of Khambhat.', severity: 'Medium', area: 'Gujarat', acknowledged: true, lat: 22.0, lng: 72.5 },
+    { id: 3, text: 'Satellite shows possible encroachment for aquaculture in Krishna-Godavari delta.', severity: 'Medium', area: 'Andhra Pradesh', acknowledged: false, lat: 16.5, lng: 82.2 },
+    { id: 4, text: 'Increased deforestation rate observed near Ratnagiri mangroves.', severity: 'High', area: 'Maharashtra', acknowledged: false, lat: 17.0, lng: 73.3 },
 ];
 
 const communityInputs = [
@@ -281,7 +282,7 @@ export default function NGOOverview() {
                     </div>
                 </CardHeader>
                 <CardContent>
-                    <LiveMap />
+                    <LiveMap projects={projects} threats={threats} />
                 </CardContent>
             </Card>
       
