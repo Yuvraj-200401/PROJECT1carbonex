@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { toast } from '@/hooks/use-toast';
 import { motion } from 'framer-motion';
+import { Badge } from '../ui/badge';
 
 export default function VerifierDashboard() {
     const [projects, setProjects] = useState<Project[]>([]);
@@ -31,6 +32,7 @@ export default function VerifierDashboard() {
     }
 
     const pendingProjects = projects.filter(p => p.status === 'Pending');
+    const approvedProjects = projects.filter(p => p.status === 'Verified');
 
     return (
         <motion.div 
@@ -89,6 +91,46 @@ export default function VerifierDashboard() {
                     </Table>
                 </CardContent>
             </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle>Approved Projects</CardTitle>
+                    <CardDescription>
+                        A record of all projects you have successfully verified.
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead>Project Site</TableHead>
+                                <TableHead>Date Approved</TableHead>
+                                <TableHead>Status</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {approvedProjects.length > 0 ? (
+                                approvedProjects.map(project => (
+                                    <TableRow key={project.id}>
+                                        <TableCell className="font-medium">{project.siteName}</TableCell>
+                                        <TableCell>{new Date(project.date).toLocaleDateString()}</TableCell>
+                                        <TableCell>
+                                            <Badge variant="default">{project.status}</Badge>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={3} className="h-24 text-center">
+                                       No projects have been approved yet.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+
         </motion.div>
     );
 }
