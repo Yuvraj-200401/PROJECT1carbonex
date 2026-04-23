@@ -104,6 +104,8 @@ interface LiveMapProps {
 }
 
 export function LiveMap({ projects, threats }: LiveMapProps) {
+
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   
   const getIcon = (type: 'Project' | 'Threat') => {
     switch (type) {
@@ -112,6 +114,7 @@ export function LiveMap({ projects, threats }: LiveMapProps) {
       default: return <MapPin className="w-5 h-5 text-white" />;
     }
   }
+
 
   const getColor = (type: 'Project' | 'Threat') => {
     switch (type) {
